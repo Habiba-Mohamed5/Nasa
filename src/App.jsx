@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Heart, Activity, Brain, Bone, ShieldAlert, ShieldCheck,
   Radio, WifiOff, Clock, User, Sparkles, ChevronRight,
   RefreshCw, CheckCircle2, AlertTriangle, ExternalLink, Bot,
-  Sliders, Compass, Eye, Flame, Award, Maximize2
+  Sliders, Compass, Eye, Flame, Award, Maximize2, Volume2, VolumeX,
+  Box, Sparkle
 } from 'lucide-react';
 
 import {
@@ -12,9 +13,12 @@ import {
   calculateSpacePhysiology
 } from './data/nasaKnowledgeBase';
 import BioTwinVisualizer from './BioTwinVisualizer';
+import ThreeBioTwin3D from './ThreeBioTwin3D';
+import SpaceNebulaCanvas from './SpaceNebulaCanvas';
 import DualWaveChart from './DualWaveChart';
 import NasaCitationModal from './NasaCitationModal';
 import AiFlightSurgeonDrawer from './AiFlightSurgeonDrawer';
+import { spaceAudio } from './utils/spaceAudio';
 
 export default function App() {
   // Mission & Crew State
@@ -31,6 +35,8 @@ export default function App() {
   const [selectedCitation, setSelectedCitation] = useState(null);
   const [isAiDrawerOpen, setIsAiDrawerOpen] = useState(false);
   const [countermeasureAnimation, setCountermeasureAnimation] = useState(false);
+  const [viewMode, setViewMode] = useState('3d');
+  const [isMuted, setIsMuted] = useState(false);
 
   // Dynamic Telemetry Calculation
   const telemetry = useMemo(() => {
@@ -46,6 +52,8 @@ export default function App() {
 
   // Execute Countermeasure Action
   const handleApplyCountermeasure = () => {
+    spaceAudio.playChirp();
+    spaceAudio.playBeep(1800, 0.15);
     setCountermeasureAnimation(true);
     setCountermeasureApplied(true);
     setTimeout(() => {
@@ -54,11 +62,13 @@ export default function App() {
   };
 
   const handleResetCountermeasure = () => {
+    spaceAudio.playBeep(900, 0.1);
     setCountermeasureApplied(false);
   };
 
   // Presets
   const setMissionPhase = (day, f = 3, s = 3, sl = 8) => {
+    spaceAudio.playChirp();
     setMissionDay(day);
     setFatigue(f);
     setStress(s);
@@ -66,7 +76,14 @@ export default function App() {
     setCountermeasureApplied(false);
   };
 
+  const toggleSound = () => {
+    const muted = spaceAudio.toggleMute();
+    setIsMuted(muted);
+    if (!muted) spaceAudio.playBeep(1500, 0.1);
+  };
+
   const toggleFullScreen = () => {
+    spaceAudio.playBeep(1200, 0.05);
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
     } else {
@@ -79,14 +96,8 @@ export default function App() {
       dir="ltr"
       className="relative w-full h-screen bg-[#060913] text-slate-100 flex flex-col justify-between overflow-hidden select-none font-sans"
     >
-      {/* Background Starfield & Holographic Radial Glow */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-cyan-950/20 blur-[140px] rounded-full" />
-        <div className="absolute bottom-10 left-10 w-96 h-96 bg-blue-950/15 blur-[120px] rounded-full" />
-        <div className="absolute top-10 right-10 w-96 h-96 bg-purple-950/10 blur-[120px] rounded-full" />
-        {/* Subtle Cockpit Grid */}
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(0,240,255,0.03)_1px,transparent_1px)] [background-size:24px_24px]" />
-      </div>
+      {/* Animated Deep-Space Background with Planets and Warp Stars */}
+      <SpaceNebulaCanvas missionDay={missionDay} />
 
       {/* ─────────────────────────────────────────────────────────────
           1. TOP TELEMETRY BAR (Height: 56px)
@@ -164,7 +175,15 @@ export default function App() {
         <div className="flex items-center gap-2.5">
           {/* Comm Blackout Button */}
           <button
-            onClick={() => setIsCommBlackout(!isCommBlackout)}
+            onClick={() => {
+              const nextState = !isCommBlackout;
+              setIsCommBlackout(nextState);
+              if (nextState) {
+                spaceAudio.playEmergencyAlarm();
+              } else {
+                spaceAudio.playBeep(1200, 0.1);
+              }
+            }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all border ${
               isCommBlackout
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/60 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
@@ -189,11 +208,27 @@ export default function App() {
 
           {/* AI Surgeon Button */}
           <button
-            onClick={() => setIsAiDrawerOpen(true)}
+            onClick={() => {
+              spaceAudio.playChirp();
+              setIsAiDrawerOpen(true);
+            }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:scale-105"
           >
             <Bot size={14} />
             <span className="hidden sm:inline">AI Flight Surgeon</span>
+          </button>
+
+          {/* Sound Toggle Button */}
+          <button
+            onClick={toggleSound}
+            className={`p-1.5 rounded-xl border text-xs font-mono transition-all ${
+              !isMuted
+                ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-[0_0_10px_rgba(0,240,255,0.2)]'
+                : 'bg-slate-900 text-slate-500 border-slate-800'
+            }`}
+            title={isMuted ? "Unmute Audio Synthesizer" : "Mute Audio Synthesizer"}
+          >
+            {!isMuted ? <Volume2 size={16} className="text-cyan-400" /> : <VolumeX size={16} />}
           </button>
 
           {/* Fullscreen Button */}
@@ -314,18 +349,62 @@ export default function App() {
           </div>
         </section>
 
-        {/* ── CENTER STAGE (5 Columns): Holographic SVG Bio-Twin ── */}
+        {/* ── CENTER STAGE (5 Columns): 3D Volumetric Three.js Bio-Twin / 2D X-Ray ── */}
         <section className="col-span-12 lg:col-span-5 flex flex-col items-center justify-between bg-slate-900/40 border border-cyan-500/20 rounded-2xl backdrop-blur-md p-3 relative overflow-hidden shadow-2xl">
-          <BioTwinVisualizer
-            telemetry={telemetry}
-            selectedSystem={selectedSystem}
-            setSelectedSystem={setSelectedSystem}
-            onOrganClick={(systemId) => {
-              setSelectedSystem(systemId);
-              const ref = NASA_REFERENCES.find((r) => r.system === systemId);
-              if (ref) setSelectedCitation(ref);
-            }}
-          />
+          {/* Top Switcher: 3D Hologram vs 2D Schematic */}
+          <div className="absolute top-3 right-3 z-30 flex items-center bg-slate-950/80 p-0.5 rounded-lg border border-cyan-500/30 text-[10px] font-mono shadow-lg">
+            <button
+              onClick={() => {
+                spaceAudio.playChirp();
+                setViewMode('3d');
+              }}
+              className={`px-2 py-0.5 rounded font-bold transition-all flex items-center gap-1 ${
+                viewMode === '3d'
+                  ? 'bg-cyan-500 text-slate-950 shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Box size={10} />
+              <span>3D WebGL</span>
+            </button>
+            <button
+              onClick={() => {
+                spaceAudio.playChirp();
+                setViewMode('2d');
+              }}
+              className={`px-2 py-0.5 rounded font-bold transition-all ${
+                viewMode === '2d'
+                  ? 'bg-cyan-500 text-slate-950 shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              2D X-Ray
+            </button>
+          </div>
+
+          {viewMode === '3d' ? (
+            <ThreeBioTwin3D
+              telemetry={telemetry}
+              selectedSystem={selectedSystem}
+              setSelectedSystem={setSelectedSystem}
+              onOrganClick={(systemId) => {
+                setSelectedSystem(systemId);
+                const ref = NASA_REFERENCES.find((r) => r.system === systemId);
+                if (ref) setSelectedCitation(ref);
+              }}
+            />
+          ) : (
+            <BioTwinVisualizer
+              telemetry={telemetry}
+              selectedSystem={selectedSystem}
+              setSelectedSystem={setSelectedSystem}
+              onOrganClick={(systemId) => {
+                setSelectedSystem(systemId);
+                const ref = NASA_REFERENCES.find((r) => r.system === systemId);
+                if (ref) setSelectedCitation(ref);
+              }}
+            />
+          )}
         </section>
 
         {/* ── RIGHT PANEL (4 Columns): Behavioral Check-In + Countermeasures ── */}
@@ -537,7 +616,11 @@ export default function App() {
             min="1"
             max="500"
             value={missionDay}
-            onChange={(e) => setMissionDay(Number(e.target.value))}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setMissionDay(val);
+              if (val % 10 === 0) spaceAudio.playChirp();
+            }}
             className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400 shadow-inner"
           />
         </div>
