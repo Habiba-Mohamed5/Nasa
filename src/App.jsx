@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import {
   Maximize2, Volume2, VolumeX, Compass, Sliders,
-  Sparkles, Bot, Rocket, ShieldCheck, Radio, WifiOff
+  Sparkles, Bot, Rocket, ShieldCheck, Radio, WifiOff, ShieldAlert
 } from 'lucide-react';
 
 import {
@@ -13,6 +13,7 @@ import Astronaut3D from './Astronaut3D';
 import SpaceNebulaCanvas from './SpaceNebulaCanvas';
 import CleanCockpitHUD from './CleanCockpitHUD';
 import AiFlightSurgeonDrawer from './AiFlightSurgeonDrawer';
+import NasaRiskScenariosModal from './NasaRiskScenariosModal';
 import { spaceAudio } from './utils/spaceAudio';
 
 export default function App() {
@@ -23,10 +24,12 @@ export default function App() {
   const [scanMode, setScanMode] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isAiDrawerOpen, setIsAiDrawerOpen] = useState(false);
+  const [isScenariosOpen, setIsScenariosOpen] = useState(false);
+  const [activeScenario, setActiveScenario] = useState(null);
 
   // Dynamic Telemetry Calculation
   const telemetry = useMemo(() => {
-    return calculateSpacePhysiology({
+    const base = calculateSpacePhysiology({
       missionDay,
       fatigue: 5,
       stress: 5,
@@ -34,7 +37,20 @@ export default function App() {
       countermeasureApplied,
       crew: selectedCrew
     });
-  }, [missionDay, countermeasureApplied, selectedCrew]);
+
+    if (activeScenario && !countermeasureApplied) {
+      return {
+        ...base,
+        currentHR: activeScenario.telemetryImpact.currentHR,
+        currentHRV: activeScenario.telemetryImpact.currentHRV,
+        bmdRetention: activeScenario.telemetryImpact.bmdRetention,
+        fluidShiftIndex: activeScenario.telemetryImpact.fluidShiftIndex,
+        riskLevel: 'CRITICAL',
+        riskColor: '#FF2A55'
+      };
+    }
+    return base;
+  }, [missionDay, countermeasureApplied, selectedCrew, activeScenario]);
 
   const handleApplyCountermeasure = () => {
     spaceAudio.playChirp();
@@ -45,6 +61,7 @@ export default function App() {
   const handleResetCountermeasure = () => {
     spaceAudio.playBeep(900, 0.1);
     setCountermeasureApplied(false);
+    setActiveScenario(null);
   };
 
   const handleToggleBlackout = () => {
@@ -129,6 +146,18 @@ export default function App() {
 
         {/* Right Tools */}
         <div className="flex items-center gap-3">
+          {/* NASA Red Risks & Sensors Button */}
+          <button
+            onClick={() => {
+              spaceAudio.playChirp();
+              setIsScenariosOpen(true);
+            }}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 font-bold text-xs transition-all shadow-[0_0_15px_rgba(245,158,11,0.25)] hover:scale-105"
+          >
+            <ShieldAlert size={16} className="text-amber-400 animate-pulse" />
+            <span className="hidden sm:inline">أخطار ناسا والحساسات (NASA Risks)</span>
+          </button>
+
           {/* AI Surgeon Chat Trigger */}
           <button
             onClick={() => {
@@ -236,6 +265,16 @@ export default function App() {
         onClose={() => setIsAiDrawerOpen(false)}
         telemetry={telemetry}
         isCommBlackout={isCommBlackout}
+      />
+
+      {/* 7. NASA RISK SCENARIOS & SENSOR MATRIX MODAL */}
+      <NasaRiskScenariosModal
+        isOpen={isScenariosOpen}
+        onClose={() => setIsScenariosOpen(false)}
+        onSelectScenario={(sc) => {
+          setActiveScenario(sc);
+          setCountermeasureApplied(false);
+        }}
       />
     </div>
   );
