@@ -72,6 +72,7 @@ export const CREW_MEMBERS = [
     name: "Cmdr. Alex Vance",
     role: "Mission Commander & Pilot",
     mission: "Artemis VII / Mars Transit Alpha",
+    photo: "/astronaut_portrait.jpg",
     age: 41,
     bloodType: "O+",
     baseline: {

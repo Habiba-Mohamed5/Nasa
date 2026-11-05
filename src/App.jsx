@@ -139,11 +139,27 @@ export default function App() {
         </div>
 
         {/* Center Flight Status */}
-        <div className="hidden md:flex items-center gap-6 text-xs font-mono">
+        <div className="hidden lg:flex items-center gap-5 text-xs font-mono">
+          {/* Astronaut Avatar Badge */}
+          <div className="flex items-center gap-2.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-cyan-500/40 shadow-sm">
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+              <img
+                src="/astronaut_portrait.jpg"
+                alt={selectedCrew.name}
+                className="w-full h-full object-cover"
+              />
+              <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 ring-1 ring-slate-950" />
+            </div>
+            <div className="text-left font-mono leading-none">
+              <span className="text-[11px] font-bold text-white block">{selectedCrew.name}</span>
+              <span className="text-[9px] text-cyan-400">{selectedCrew.role}</span>
+            </div>
+          </div>
+
           <div className="text-slate-300 flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
             <span>MISSION:</span>
-            <strong className="text-white">Artemis VII • Mars Transit Alpha</strong>
+            <strong className="text-white">Artemis VII • Mars Transit</strong>
           </div>
           <div className="text-slate-400">
             <span>Distance:</span> <strong className="text-cyan-300">{telemetry.distanceFromEarthKm}M km</strong>

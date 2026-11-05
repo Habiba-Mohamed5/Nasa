@@ -53,7 +53,7 @@ export default function CleanCockpitHUD({
       {/* ─────────────────────────────────────────────────────────────
           LEFT HUD: 3 NASA-SPECIFIC PHYSIOLOGICAL INSTRUMENTS
       ───────────────────────────────────────────────────────────── */}
-      <div className="absolute top-36 left-6 z-30 w-80 flex flex-col gap-3 pointer-events-auto">
+      <div className="absolute top-28 left-6 z-30 w-80 max-h-[calc(100vh-140px)] overflow-y-auto flex flex-col gap-2.5 pointer-events-auto pr-1 scrollbar-thin scrollbar-thumb-cyan-500/20">
         {/* 1. Microgravity Cephalad Fluid Shift & Hemodynamics (No generic heart!) */}
         <HemodynamicFluidWidget telemetry={telemetry} bpm={bpm} hrv={hrv} />
 
@@ -67,7 +67,7 @@ export default function CleanCockpitHUD({
       {/* ─────────────────────────────────────────────────────────────
           RIGHT HUD: NASA COUNTERMEASURE FLIGHT OPERATIONS
       ───────────────────────────────────────────────────────────── */}
-      <div className="absolute top-36 right-6 z-30 w-84 flex flex-col gap-3 pointer-events-auto">
+      <div className="absolute top-28 right-6 z-30 w-84 flex flex-col gap-3 pointer-events-auto">
         {/* NASA HRP Flight Surgeon Prescription Deck */}
         <div className="p-4 bg-slate-950/90 border border-cyan-500/40 rounded-2xl backdrop-blur-xl shadow-2xl">
           <div className="flex items-center justify-between mb-3">
@@ -82,19 +82,20 @@ export default function CleanCockpitHUD({
             </span>
           </div>
 
-          {/* Real Space Hardware Schematic Module */}
-          <div className="p-3.5 bg-gradient-to-br from-slate-900 to-cyan-950/40 border border-slate-800 rounded-xl mb-3 flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center text-cyan-300 shrink-0 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
-              {/* Space Exercise Device Icon */}
-              <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M12 7v10M8 12h8" />
-              </svg>
-            </div>
-            <div>
-              <h5 className="text-xs font-bold text-white font-mono">ARED + CEVIS + LBNP PROTOCOL</h5>
-              <p className="text-[11px] text-slate-300 leading-snug mt-0.5">
-                تعديل حمل مكابس المقاومة الفضائية (+12%) مع سحب سوائل للأطراف السفلية بضغط -30 mmHg.
+          {/* Real ARED Space Exercise Image */}
+          <div className="relative w-full h-28 rounded-xl overflow-hidden border border-cyan-500/30 mb-3 shadow-lg group">
+            <img
+              src="/ared_exercise.jpg"
+              alt="NASA ARED Resistance Exercise Device"
+              className="w-full h-full object-cover filter brightness-105 contrast-110 transition-transform group-hover:scale-105 duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-90" />
+            <div className="absolute bottom-2 right-2 left-2 text-right">
+              <span className="text-[9px] font-mono font-bold text-cyan-300 uppercase block">
+                NASA ARED RESISTIVE EXERCISE POD
+              </span>
+              <p className="text-[10px] text-slate-200 line-clamp-1">
+                تدريب الأثقال الفضائية بالضغط الهيدروليكي لمنع تآكل العظام
               </p>
             </div>
           </div>

@@ -7,8 +7,14 @@ import React from 'react';
 export default function CockpitInteriorFrame({ isAlert = false }) {
   return (
     <div className="absolute inset-0 pointer-events-none z-10 select-none overflow-hidden">
+      {/* 0. Photorealistic Cockpit Interior Backdrop Texture */}
+      <div
+        className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-35 mix-blend-screen"
+        style={{ backgroundImage: "url('/spacecraft_cockpit_mars.jpg')" }}
+      />
+
       {/* 1. Curved Aerospace Glass Window Sheen & Reflections */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-cyan-500/[0.02] to-white/[0.05] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-cyan-500/[0.04] to-white/[0.06] pointer-events-none" />
 
       {/* Diagonal Cockpit Glass Glare Reflection */}
       <div className="absolute -inset-x-20 top-0 h-[120%] bg-gradient-to-r from-transparent via-cyan-400/[0.03] to-transparent rotate-[35deg] pointer-events-none" />
