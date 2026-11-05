@@ -36,7 +36,7 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
 
     // 2. Camera
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 0.2, 5.8);
+    camera.position.set(0, 0.15, 4.8);
     cameraRef.current = camera;
 
     // 3. WebGL Renderer
@@ -444,7 +444,7 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        className="w-full h-[380px] cursor-grab active:cursor-grabbing flex items-center justify-center my-1"
+        className="w-full h-[460px] cursor-grab active:cursor-grabbing flex items-center justify-center my-1"
       />
 
       {/* Quick Organ Focus Pill Bar */}
