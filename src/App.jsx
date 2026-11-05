@@ -13,14 +13,17 @@ import Astronaut3D from './Astronaut3D';
 import SpaceNebulaCanvas from './SpaceNebulaCanvas';
 import CleanCockpitHUD from './CleanCockpitHUD';
 import AiFlightSurgeonDrawer from './AiFlightSurgeonDrawer';
-import NasaRiskScenariosModal from './NasaRiskScenariosModal';
+import NasaRiskScenariosModal, { NASA_SCENARIOS } from './NasaRiskScenariosModal';
+import UserJourneyStepper, { MISSION_PHASES } from './UserJourneyStepper';
+import CockpitInteriorFrame from './CockpitInteriorFrame';
 import { spaceAudio } from './utils/spaceAudio';
 
 export default function App() {
   const [selectedCrew, setSelectedCrew] = useState(CREW_MEMBERS[0]);
+  const [currentPhase, setCurrentPhase] = useState(MISSION_PHASES[1]); // Phase 2: Deep space by default
   const [missionDay, setMissionDay] = useState(180); // Deep Space Cruise
   const [countermeasureApplied, setCountermeasureApplied] = useState(false);
-  const [isCommBlackout, setIsCommBlackout] = useState(true);
+  const [isCommBlackout, setIsCommBlackout] = useState(false);
   const [scanMode, setScanMode] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isAiDrawerOpen, setIsAiDrawerOpen] = useState(false);
@@ -31,9 +34,9 @@ export default function App() {
   const telemetry = useMemo(() => {
     const base = calculateSpacePhysiology({
       missionDay,
-      fatigue: 5,
-      stress: 5,
-      sleepQuality: 7,
+      fatigue: currentPhase.id === 3 ? 9 : 5,
+      stress: currentPhase.id === 3 ? 8 : 4,
+      sleepQuality: currentPhase.id === 3 ? 4 : 7,
       countermeasureApplied,
       crew: selectedCrew
     });
@@ -50,7 +53,21 @@ export default function App() {
       };
     }
     return base;
-  }, [missionDay, countermeasureApplied, selectedCrew, activeScenario]);
+  }, [missionDay, countermeasureApplied, selectedCrew, activeScenario, currentPhase]);
+
+  // Phase Selection (User Journey Step)
+  const handleSelectPhase = (phase) => {
+    setCurrentPhase(phase);
+    setMissionDay(phase.day);
+    if (phase.id === 3) {
+      setIsCommBlackout(true);
+      setActiveScenario(NASA_SCENARIOS[0]);
+    } else {
+      setIsCommBlackout(false);
+      setActiveScenario(null);
+    }
+    setCountermeasureApplied(false);
+  };
 
   const handleApplyCountermeasure = () => {
     spaceAudio.playChirp();
@@ -97,13 +114,8 @@ export default function App() {
       {/* 1. ANIMATED DEEP-SPACE NEBULA & MOVING PLANETS */}
       <SpaceNebulaCanvas missionDay={missionDay} />
 
-      {/* 2. COCKPIT GLASS CUPOLA OVERLAY (Curved Aerospace Horizon Reticle) */}
-      <div className="absolute inset-0 pointer-events-none z-10">
-        {/* Subtle Cockpit Ambient Vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(4,6,13,0.85)_100%)]" />
-        {/* Aerospace Reticle Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,240,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
-      </div>
+      {/* 2. REALISTIC SPACECRAFT COCKPIT INTERIOR & AMBIENT HUD */}
+      <CockpitInteriorFrame isAlert={currentPhase.id === 3 || isCommBlackout} />
 
       {/* 3. TOP TELEMETRY BAR (Clean Sci-Fi Bridge Header) */}
       <header className="relative z-30 h-16 border-b border-cyan-500/20 bg-slate-950/70 backdrop-blur-xl px-6 flex items-center justify-between shrink-0 shadow-lg">
@@ -194,6 +206,12 @@ export default function App() {
         </div>
       </header>
 
+      {/* 3.5. CINEMATIC USER JOURNEY STEPPER (4-Phase Interactive Mission) */}
+      <UserJourneyStepper
+        activePhaseId={currentPhase.id}
+        onSelectPhase={handleSelectPhase}
+      />
+
       {/* 4. MAIN VIEWPORT: 3D ASTRONAUT FLOATING IN ZERO-G (Centerpiece) */}
       <main className="relative z-20 flex-1 flex items-center justify-center overflow-hidden">
         {/* Floating 3D Astronaut Component */}
@@ -208,6 +226,7 @@ export default function App() {
         {/* Clean Glass HUD Overlay (Left Gauges + Right Action) */}
         <CleanCockpitHUD
           telemetry={telemetry}
+          currentPhase={currentPhase}
           onApplyCountermeasure={handleApplyCountermeasure}
           onResetCountermeasure={handleResetCountermeasure}
           countermeasureApplied={countermeasureApplied}
