@@ -3,18 +3,18 @@ import React from 'react';
 export default function CockpitInteriorFrame({ isAlert = false }) {
   return (
     <div className="absolute inset-0 pointer-events-none z-10 select-none overflow-hidden">
-      {/* 1. Cinematic GIF Layer blended with Space Stars */}
-      <div className="absolute inset-0 opacity-25 mix-blend-screen pointer-events-none">
+      {/* 1. Photorealistic NASA Spacecraft Cockpit Bridge Background */}
+      <div className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none">
         <img
-          src="/hero-bg.gif"
-          alt="Space Cinematic Atmosphere"
-          className="w-full h-full object-cover scale-110 filter hue-rotate-15 contrast-125"
+          src="/spacecraft_cockpit_mars.jpg"
+          alt="NASA Deep Space Cockpit Bridge"
+          className="w-full h-full object-cover scale-105 filter contrast-125 brightness-90"
         />
       </div>
 
-      {/* 2. Red Alert Ambient Lighting (when Comm Blackout or Emergency is active) */}
+      {/* 2. Red Alert Ambient Emergency Lighting */}
       {isAlert && (
-        <div className="absolute inset-0 bg-red-600/15 animate-pulse pointer-events-none z-10 mix-blend-overlay" />
+        <div className="absolute inset-0 bg-red-600/20 animate-pulse pointer-events-none z-10 mix-blend-overlay" />
       )}
 
       {/* 3. Spaceship Cupola Window Struts (Titanium Hull Arch) */}
