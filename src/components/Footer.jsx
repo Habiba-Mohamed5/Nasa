@@ -1,0 +1,99 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Rocket, ShieldCheck, Heart, Radio, ExternalLink } from 'lucide-react';
+
+export default function Footer() {
+  return (
+    <footer className="relative z-30 mt-auto border-t border-white/[0.06] bg-[#0D0B0A] px-6 sm:px-10 lg:px-14 py-8 select-none text-xs text-[#808080] font-sans-clean">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        {/* Col 1: Brand & Overview */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-1.5">
+            <span className="font-titan text-base tracking-wider text-[#EBEBEB]">ASTR</span>
+            <div className="relative w-3.5 h-3.5 flex items-center justify-center">
+              <div className="w-2 h-2 rounded-full bg-[#EBEBEB]" />
+              <div className="absolute w-4 h-1 border border-[#EBEBEB] rounded-full rotate-[-26deg]" />
+            </div>
+            <span className="font-titan text-base tracking-wider text-[#EBEBEB]">NAUT</span>
+          </div>
+          <p className="text-[11px] text-[#ACACAC] leading-relaxed">
+            Autonomous Deep Space Medical Platform & Clinical Decision Support System (CDSS) for long-duration crewed missions to Mars.
+          </p>
+          <div className="flex items-center gap-2 pt-1">
+            <span className="px-2 py-0.5 rounded-full bg-[#E4783B]/15 text-[#E4783B] text-[9px] font-mono-tech border border-[#E4783B]/30">
+              NASA SPACE APPS 2026
+            </span>
+            <span className="text-[9px] text-[#808080] font-mono-tech">
+              NASA-STD-3001
+            </span>
+          </div>
+        </div>
+
+        {/* Col 2: Platform Navigation */}
+        <div className="space-y-2">
+          <h4 className="text-xs font-bold text-[#EBEBEB] uppercase tracking-wider font-sans">
+            PLATFORM
+          </h4>
+          <ul className="space-y-1.5 text-[11px]">
+            <li>
+              <Link to="/" className="hover:text-[#EBEBEB] transition-colors">Home Landing</Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-[#EBEBEB] transition-colors">About AstroVitals</Link>
+            </li>
+            <li>
+              <Link to="/features" className="hover:text-[#EBEBEB] transition-colors">Clinical Features</Link>
+            </li>
+            <li>
+              <Link to="/ai-identity" className="hover:text-[#E4783B] transition-colors">AURA AI Flight Surgeon</Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Col 3: Operations & Science */}
+        <div className="space-y-2">
+          <h4 className="text-xs font-bold text-[#EBEBEB] uppercase tracking-wider font-sans">
+            DEEP SPACE OPS
+          </h4>
+          <ul className="space-y-1.5 text-[11px]">
+            <li>
+              <Link to="/how-it-works" className="hover:text-[#EBEBEB] transition-colors">How It Works</Link>
+            </li>
+            <li>
+              <Link to="/workspace" className="hover:text-[#EBEBEB] transition-colors">Mission Control Workspace</Link>
+            </li>
+            <li>
+              <Link to="/planets" className="hover:text-[#EBEBEB] transition-colors">Celestial Targets (Moon, Sun, Mars)</Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-[#EBEBEB] transition-colors">DSN Uplink & Contact</Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Col 4: NASA References & Evidence */}
+        <div className="space-y-2">
+          <h4 className="text-xs font-bold text-[#EBEBEB] uppercase tracking-wider font-sans">
+            DATA ARCHIVES
+          </h4>
+          <p className="text-[10px] text-[#808080] leading-relaxed">
+            Validated against NASA Life Sciences Data Archive (LSDA), Open Science Data Repository (OSDR), and Human Research Program (HRP) Evidence Reports.
+          </p>
+          <div className="pt-1 flex items-center gap-2 text-[10px] text-[#E4783B] font-mono-tech">
+            <Radio size={12} className="animate-pulse" />
+            <span>DEEP SPACE TELEMETRY ACTIVE</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="max-w-7xl mx-auto pt-6 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] font-mono-tech">
+        <span>© 2026 ASTROVITALS • ARTEMIS VII MARS TRANSIT MISSION</span>
+        <div className="flex items-center gap-4 text-[#808080]">
+          <span>ORION / STARSHIP FLIGHT SURGEON CORE</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+        </div>
+      </div>
+    </footer>
+  );
+}

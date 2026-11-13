@@ -1,0 +1,159 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Compass, Rocket, Sun, ShieldAlert, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { MISSION_PHASES } from '../UserJourneyStepper';
+import { spaceAudio } from '../utils/spaceAudio';
+import { assetPath } from '../utils/assetPath';
+
+export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
+  const bodies = [
+    {
+      id: 'moon',
+      title: 'THE MOON',
+      subtitle: 'Earth Departure & Artemis Gateway',
+      quote: 'The First Celestial Body To Be The Object Of Space Exploration',
+      image: assetPath('rocket_launch.jpg'),
+      day: 1,
+      phaseId: 1,
+      stats: {
+        distance: '384,400 km from Earth',
+        gravity: '0.166 G (1/6th Earth)',
+        missionContext: 'Artemis VII SLS Injection & Lunar Flyby. Baseline crew vitals at 100% nominal pre-flight calibration.'
+      },
+      description: 'The Moon serves as humanity’s proving ground for deep space habitation. In the Artemis program, the lunar Gateway station validates long-duration life support systems and autonomous operations before crews embark on the 3-year journey to Mars.'
+    },
+    {
+      id: 'sun',
+      title: 'THE SUN',
+      subtitle: 'Interplanetary Radiation & Solar Storms',
+      quote: 'The Sun Never Been A Major Focus Of Space Exploration',
+      image: assetPath('spacecraft_cockpit_mars.jpg'),
+      day: 180,
+      phaseId: 2,
+      stats: {
+        distance: '1 Astronomical Unit (149.6M km)',
+        hazard: 'Galactic Cosmic Rays (GCR) & Solar Particle Events (SPE)',
+        missionContext: 'Day 180 Deep Space Cruise. Crew experiences cumulative microgravity cephalad fluid shift and bone loss.'
+      },
+      description: 'While unvisited, the Sun governs deep space biology. Solar Particle Events (SPE) from coronal mass ejections present acute radiation sickness threats, requiring storm shelters within the Orion spacecraft and autonomous dosimeter monitoring.'
+    },
+    {
+      id: 'mars',
+      title: 'MARS',
+      subtitle: 'Orbital Insertion & Surface Expedition',
+      quote: 'Mars Has Been An Important Part Of The Space Exploration',
+      image: assetPath('mars_planet.jpg'),
+      day: 500,
+      phaseId: 4,
+      stats: {
+        distance: '55M to 400M km from Earth',
+        gravity: '0.38 G (38% of Earth Gravity)',
+        missionContext: 'Day 500 Mars Orbital Insertion. Autonomous protocols stabilize crew cardiovascular and neuromuscular tone.'
+      },
+      description: 'The primary destination of 21st-century human spaceflight. Reaching Mars requires surviving 500 days of microgravity, isolation, and communication blackout, followed by rapid adaptation to Martian surface gravity.'
+    }
+  ];
+
+  const handleSelectBody = (body) => {
+    spaceAudio.playChirp();
+    if (setMissionDay) setMissionDay(body.day);
+    if (setCurrentPhase) {
+      const match = MISSION_PHASES.find(p => p.id === body.phaseId);
+      if (match) setCurrentPhase(match);
+    }
+  };
+
+  return (
+    <div className="space-y-12 max-w-6xl mx-auto px-4 sm:px-8 py-4">
+      {/* 1. Header Banner */}
+      <section className="p-8 sm:p-12 rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
+        <div className="relative z-10 max-w-2xl space-y-3">
+          <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block">
+            CELESTIAL TARGETS • ARTEMIS VII TRAJECTORY
+          </span>
+          <h1 className="font-titan text-3xl sm:text-4xl lg:text-5xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
+            EXPLORE THE CELESTIAL BODIES
+          </h1>
+          <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed">
+            The landmark celestial structures defining human space exploration from Earth departure to Mars orbital insertion.
+          </p>
+        </div>
+      </section>
+
+      {/* 2. Three Celestial Body Deep Dives */}
+      <section className="space-y-8">
+        {bodies.map((b) => (
+          <div
+            key={b.id}
+            id={b.id}
+            className="p-6 sm:p-8 rounded-[28px] bg-[#171311] border border-white/[0.08] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+          >
+            {/* Image */}
+            <div className="lg:col-span-5 relative rounded-2xl overflow-hidden border border-white/10 shadow-xl h-64 sm:h-72 group">
+              <img
+                src={b.image}
+                alt={b.title}
+                className="w-full h-full object-cover filter brightness-95 contrast-105 group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0B0A] via-transparent to-transparent opacity-85" />
+              <div className="absolute top-3 left-3">
+                <span className="text-[9px] font-mono-tech px-2.5 py-1 rounded-full bg-[#0D0B0A]/90 text-[#E4783B] border border-[#E4783B]/40 font-bold uppercase backdrop-blur-md">
+                  MISSION DAY {b.day}
+                </span>
+              </div>
+            </div>
+
+            {/* Text & Specs */}
+            <div className="lg:col-span-7 space-y-4">
+              <div>
+                <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-wider block mb-1">
+                  {b.subtitle}
+                </span>
+                <h3 className="font-titan text-2xl sm:text-3xl text-[#EBEBEB] uppercase tracking-wide">
+                  {b.title}
+                </h3>
+                <p className="text-xs italic text-[#E4783B] mt-1 font-serif">
+                  "{b.quote}"
+                </p>
+              </div>
+
+              <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed font-sans">
+                {b.description}
+              </p>
+
+              {/* Specs Box */}
+              <div className="p-3.5 rounded-xl bg-[#0D0B0A] border border-white/5 space-y-1.5 text-xs font-mono-tech">
+                <div className="flex items-center justify-between">
+                  <span className="text-[#808080]">DISTANCE:</span>
+                  <span className="text-[#EBEBEB]">{b.stats.distance}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[#808080]">GRAVITATIONAL SPECS:</span>
+                  <span className="text-[#E4783B]">{b.stats.gravity || b.stats.hazard}</span>
+                </div>
+                <div className="pt-1 border-t border-white/5 text-[11px] text-[#ACACAC]">
+                  {b.stats.missionContext}
+                </div>
+              </div>
+
+              <div className="pt-2 flex items-center gap-3">
+                <button
+                  onClick={() => handleSelectBody(b)}
+                  className="px-5 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_15px_rgba(228,120,59,0.3)] hover:scale-105"
+                >
+                  SET TRAJECTORY TO {b.title}
+                </button>
+                <Link
+                  to="/workspace"
+                  className="px-4 py-2.5 rounded-full bg-[#252121] text-[#EBEBEB] border border-white/10 text-xs font-bold transition-all hover:bg-white/5"
+                >
+                  Open in Workspace
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+      </section>
+    </div>
+  );
+}

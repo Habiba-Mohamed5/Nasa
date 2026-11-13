@@ -48,24 +48,24 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
     rendererRef.current = renderer;
     container.replaceChildren(renderer.domElement);
 
-    // 4. Lighting (Dramatic Sci-Fi Cockpit Lighting)
-    const ambientLight = new THREE.AmbientLight(0xddeeff, 1.2);
+    // 4. Lighting (Cinematic Warm Burnt-Orange & Amber Lighting)
+    const ambientLight = new THREE.AmbientLight(0x382c26, 1.4);
     scene.add(ambientLight);
 
-    // Cyan Key Light from Cockpit Displays
-    const cyanLight = new THREE.DirectionalLight(0x00f0ff, 2.5);
-    cyanLight.position.set(3, 4, 4);
-    scene.add(cyanLight);
+    // Warm Burnt-Orange Key Light from the Glowing Planetary Crescent
+    const orangeKeyLight = new THREE.DirectionalLight(0xe4783b, 3.2);
+    orangeKeyLight.position.set(3, 3, 4);
+    scene.add(orangeKeyLight);
 
-    // Warm Gold Rim Light from Space/Sun
-    const sunLight = new THREE.DirectionalLight(0xffb800, 1.8);
-    sunLight.position.set(-4, -2, -3);
-    scene.add(sunLight);
+    // Warm Amber/Gold Rim Light from Space
+    const rimSunLight = new THREE.DirectionalLight(0xffa566, 2.4);
+    rimSunLight.position.set(-4, -1, -3);
+    scene.add(rimSunLight);
 
-    // Blue Fill Light
-    const fillLight = new THREE.PointLight(0x3b82f6, 1.5, 10);
-    fillLight.position.set(0, -3, 3);
-    scene.add(fillLight);
+    // Warm Fill Light
+    const warmFillLight = new THREE.PointLight(0xa64d2d, 1.8, 12);
+    warmFillLight.position.set(0, -3, 3);
+    scene.add(warmFillLight);
 
     // 5. Astronaut Group (The entire floating character)
     const astroGroup = new THREE.Group();
@@ -367,7 +367,7 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
     });
   }, [telemetry.currentHR, telemetry.bmdRetention]);
 
-  // Mouse Drag to Rotate Astronaut
+  // Mouse & Touch Drag to Rotate Astronaut
   const handleMouseDown = (e) => {
     setIsDragging(true);
     setIsRotating(false);
@@ -389,6 +389,25 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
     setIsDragging(false);
   };
 
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 1) {
+      setIsDragging(true);
+      setIsRotating(false);
+      previousMousePosition.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || !astronautGroupRef.current || e.touches.length !== 1) return;
+    const deltaX = e.touches[0].clientX - previousMousePosition.current.x;
+    const deltaY = e.touches[0].clientY - previousMousePosition.current.y;
+
+    astronautGroupRef.current.rotation.y += deltaX * 0.009;
+    astronautGroupRef.current.rotation.x = Math.max(-0.4, Math.min(0.4, astronautGroupRef.current.rotation.x + deltaY * 0.006));
+
+    previousMousePosition.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-between select-none overflow-hidden">
       {/* Top Floating Controls */}
@@ -396,7 +415,7 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
         {/* Astronaut Badge */}
         <div className="flex items-center gap-2 bg-slate-900/80 border border-cyan-500/30 px-3 py-1.5 rounded-xl backdrop-blur-md shadow-lg">
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-          <span className="text-xs font-mono font-bold text-white tracking-wider">
+          <span className="text-[11px] font-orbitron font-bold text-white tracking-wider">
             ZERO-G FLOATING EVA SUIT
           </span>
         </div>
@@ -416,7 +435,7 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
             }`}
           >
             <Eye size={13} />
-            <span>{scanMode ? 'X-Ray Scan: ON' : 'X-Ray Scan Suit'}</span>
+            <span>{scanMode ? 'X-Ray Scan: ON' : 'X-Ray Scan'}</span>
           </button>
 
           {/* 360 Auto-Rotate Toggle */}
@@ -444,13 +463,16 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        className="w-full h-[460px] cursor-grab active:cursor-grabbing flex items-center justify-center my-1"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleMouseUp}
+        className="w-full h-[460px] cursor-grab active:cursor-grabbing flex items-center justify-center my-1 touch-none"
       />
 
       {/* Quick Organ Focus Pill Bar */}
       <div className="relative z-20 flex items-center gap-2 pb-2">
-        <span className="text-[10px] font-mono text-slate-400 bg-slate-950/80 px-2 py-1 rounded-lg border border-slate-800">
-          💡 اسحبي بالماوس لتدوير رائد الفضاء 360° في أي اتجاه
+        <span className="text-[10px] font-mono text-slate-400 bg-slate-950/80 px-2 py-1 rounded-lg border border-slate-800/80">
+          💡 اسحب بالماوس أو اللمس لتدوير رائد الفضاء 360° في أي اتجاه
         </span>
       </div>
     </div>

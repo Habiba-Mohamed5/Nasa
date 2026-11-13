@@ -7,6 +7,8 @@
  * - NASA Integrated Medical Model (IMM)
  */
 
+import { assetPath } from '../utils/assetPath';
+
 export const NASA_REFERENCES = [
   {
     id: "HRP-CV-01",
@@ -72,7 +74,7 @@ export const CREW_MEMBERS = [
     name: "Cmdr. Alex Vance",
     role: "Mission Commander & Pilot",
     mission: "Artemis VII / Mars Transit Alpha",
-    photo: "/astronaut_portrait.jpg",
+    photo: assetPath('astronaut_portrait.jpg'),
     age: 41,
     bloodType: "O+",
     baseline: {
