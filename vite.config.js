@@ -6,7 +6,7 @@ import path from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.VITE_BASE_PATH || (process.env.NODE_ENV === 'production' ? '/Nasa/' : '/'),
+  base: process.env.VERCEL ? '/' : (process.env.VITE_BASE_PATH || (process.env.GITHUB_ACTIONS ? '/Nasa/' : '/')),
   plugins: [
     react(),
     tailwindcss(),
