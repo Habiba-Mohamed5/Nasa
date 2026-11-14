@@ -9,7 +9,11 @@ const METRICS = [
 ];
 const DROPOUT_START_S = 20;
 const DROPOUT_END_S = 30;
-const HEART_RATE_CHANGE_BPM = 2;
+const HEART_RATE_CHANGE_BPM = 3;
+const RECORDINGS = {
+  bidmc_02: 'telemetry/bidmc-recorded.json',
+  bidmc_08: 'telemetry/bidmc_08.json',
+};
 
 function isInDropout(sample) {
   return sample && sample.elapsed_s >= DROPOUT_START_S && sample.elapsed_s < DROPOUT_END_S;
@@ -18,6 +22,8 @@ function isInDropout(sample) {
 export default function RecordedTelemetry() {
   const inputId = useId();
   const [isOpen, setIsOpen] = useState(false);
+  const [recordingId, setRecordingId] = useState('bidmc_02');
+  const selectorId = useId();
   const [record, setRecord] = useState(null);
   const [hasError, setHasError] = useState(false);
   const [sampleIndex, setSampleIndex] = useState(0);
@@ -30,13 +36,13 @@ export default function RecordedTelemetry() {
 
     async function loadRecording() {
       try {
-        const response = await fetch(assetPath('telemetry/bidmc-recorded.json'), {
+        const response = await fetch(assetPath(RECORDINGS[recordingId]), {
           signal: controller.signal,
         });
         if (!response.ok) throw new Error('Recording unavailable');
         const data = await response.json();
         if (data.schema_version !== '1.0.0' || data.data_source !== 'RECORDED' ||
-            !data.samples?.length) {
+            data.stream_id !== recordingId || !data.samples?.length) {
           throw new Error('Unexpected recording');
         }
         if (!controller.signal.aborted) setRecord(data);
@@ -47,7 +53,7 @@ export default function RecordedTelemetry() {
 
     loadRecording();
     return () => controller.abort();
-  }, [isOpen, record]);
+  }, [isOpen, record, recordingId]);
 
   const sample = record?.samples[sampleIndex];
   const previousSample = record?.samples[sampleIndex - 1];
@@ -81,6 +87,25 @@ export default function RecordedTelemetry() {
         <p className="text-xs text-[#C7D2E3]">
           Hospital ICU readings from Earth. This recording is independent of the crew simulation.
         </p>
+        <label htmlFor={selectorId} className="block text-xs text-[#C7D2E3]">Recording</label>
+        <select
+          id={selectorId}
+          value={recordingId}
+          className="min-h-[44px] w-full rounded-lg bg-[#0D1728] px-2 text-sm text-[#F4F7FC]"
+          onChange={(event) => {
+            setRecordingId(event.target.value);
+            setRecord(null);
+            setHasError(false);
+            setSampleIndex(0);
+            setSimulateDropout(false);
+          }}
+        >
+          <option value="bidmc_02">BIDMC 02</option>
+          <option value="bidmc_08">BIDMC 08 · Heart-rate change example</option>
+        </select>
+        {recordingId === 'bidmc_08' && (
+          <p className="text-xs text-[#C7D2E3]">Try 448 s to see a heart-rate change.</p>
+        )}
         {sample ? (
           <>
             <label className="flex min-h-[44px] items-center gap-2 text-xs text-[#C7D2E3]">
@@ -114,7 +139,7 @@ export default function RecordedTelemetry() {
               {showHeartRateChange && (
                 <>
                   <strong>Heart rate changed {heartRateChange > 0 ? '+' : ''}{heartRateChange} beats/min in 1 s.</strong>
-                  {' Demo threshold: 2 beats/min. For recording review only.'}
+                  {' '}Demo threshold: {HEART_RATE_CHANGE_BPM} beats/min. For recording review only.
                 </>
               )}
             </div>
