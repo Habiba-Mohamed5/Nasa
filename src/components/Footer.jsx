@@ -9,16 +9,16 @@ export default function Footer() {
         {/* Col 1: Brand & Overview */}
         <div className="space-y-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex items-center">
-              <span className="font-titan text-2xl tracking-tight text-[#F4F7FC] leading-none">4</span>
-              <div className="relative w-4 h-4 flex items-center justify-center mx-1">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#F4F7FC] shadow-[0_0_10px_rgba(122,215,234,0.8)]" />
-                <div className="absolute w-5 h-2 border-[1.5px] border-[#7AD7EA] rounded-full rotate-[-26deg]" />
+            <div className="flex items-center transform scale-x-110 origin-left">
+              <span className="font-titan text-3xl tracking-wide text-[#F4F7FC] leading-none">4</span>
+              <div className="relative w-5 h-5 flex items-center justify-center mx-1">
+                <div className="w-3 h-3 rounded-full bg-[#F4F7FC] shadow-[0_0_12px_rgba(122,215,234,0.8)]" />
+                <div className="absolute w-6 h-2.5 border-[1.5px] border-[#7AD7EA] rounded-full rotate-[-26deg]" />
               </div>
-              <span className="font-titan text-2xl tracking-tight text-[#F4F7FC] leading-none">4</span>
+              <span className="font-titan text-3xl tracking-wide text-[#F4F7FC] leading-none">4</span>
             </div>
-            <span className="h-5 w-[1px] bg-gradient-to-b from-transparent via-[#7AD7EA]/40 to-transparent mx-0.5" />
-            <span className="font-oxanium font-bold text-xs tracking-[0.32em] text-[#7AD7EA] uppercase leading-none">
+            <span className="h-6 w-[1.5px] bg-gradient-to-b from-transparent via-[#7AD7EA]/40 to-transparent mx-1" />
+            <span className="font-titan text-base tracking-[0.34em] text-[#7AD7EA] uppercase leading-none transform scale-x-105 origin-left">
               IDEAS
             </span>
           </div>

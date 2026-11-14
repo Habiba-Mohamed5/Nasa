@@ -107,7 +107,7 @@ export default function HomePage({
           {/* Center-Right Hero Content: Titan Display Typography & Proportional Balance */}
           <motion.div
             style={{ y: titleParallaxY }}
-            className="relative z-30 ml-auto w-[52%] lg:w-[49%] xl:w-[48%] flex flex-col justify-center pl-4 lg:pl-8 pr-2 lg:pr-6"
+            className="relative z-30 ml-auto w-[52%] lg:w-[50%] xl:w-[49%] flex flex-col justify-center pl-2 lg:pl-6 pr-4 lg:pr-8"
           >
             {/* Mission Category Pill with Live Ping */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#132238]/85 border border-[#7AD7EA]/30 backdrop-blur-md mb-3.5 w-fit shadow-[0_0_18px_rgba(122,215,234,0.12)]">
@@ -117,8 +117,8 @@ export default function HomePage({
               </span>
             </div>
 
-            {/* Display Headline in Oxanium Aerospace Typography with Celestial Back-Glow */}
-            <h1 className="font-oxanium text-5xl lg:text-[62px] xl:text-[76px] 2xl:text-[88px] text-[#F4F7FC] font-extrabold uppercase leading-[0.92] tracking-wide drop-shadow-2xl select-none headline-glow">
+            {/* Display Headline in Titan One (Restored, Bigger & Wider) with Celestial Back-Glow */}
+            <h1 className="font-titan text-5xl sm:text-6xl lg:text-[70px] xl:text-[84px] 2xl:text-[96px] text-[#F4F7FC] uppercase leading-[0.92] tracking-wider drop-shadow-2xl select-none headline-glow transform scale-x-105 origin-left inline-block">
               SPACE<br />
               ASTRONAUT
             </h1>
@@ -262,7 +262,7 @@ export default function HomePage({
                 404 IDEAS // FLIGHT DECK
               </span>
             </div>
-            <h1 className="font-oxanium text-3xl sm:text-4xl md:text-5xl text-[#F4F7FC] font-extrabold uppercase leading-[0.95] tracking-wide drop-shadow-2xl headline-glow">
+            <h1 className="font-titan text-4xl sm:text-5xl md:text-6xl text-[#F4F7FC] uppercase leading-[0.95] tracking-wider drop-shadow-2xl headline-glow transform scale-x-105 inline-block">
               SPACE ASTRONAUT
             </h1>
             <p className="text-[#C7D2E3] text-xs sm:text-sm font-sans leading-relaxed px-2 font-normal">

@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    --font-titan: 'Oxanium', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-titan: 'Titan One', cursive, sans-serif;
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-cairo: 'Cairo', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -33,8 +33,8 @@
 
 /* Custom Typography Utilities */
 .font-titan {
-  font-family: 'Oxanium', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  letter-spacing: 0.03em;
+  font-family: 'Titan One', cursive, sans-serif;
+  letter-spacing: 0.04em;
 }
 .font-space-grotesk {
   font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

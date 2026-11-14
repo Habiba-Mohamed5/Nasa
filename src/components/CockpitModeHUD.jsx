@@ -224,37 +224,37 @@ export default function CockpitModeHUD({
         </div>
       )}
 
-      {/* Mobile-Only On-Screen Steering Arrows (Visible only on touch screens < 1024px) */}
-      <div className="lg:hidden absolute bottom-16 left-3 z-30 pointer-events-auto">
-        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#0D1728]/90 border border-white/10 shadow-lg">
+      {/* Flight Control Directional Arrows (Always accessible for touch & click control) */}
+      <div className="absolute bottom-16 sm:bottom-20 left-3 sm:left-5 z-30 pointer-events-auto">
+        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#0D1728]/95 border border-[rgba(180,210,235,0.2)] backdrop-blur-md shadow-xl">
           <button
             onClick={onSteerLeft}
-            className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
-            title="Previous Target (Left)"
+            className="p-2 sm:p-2.5 rounded-xl bg-[#132238] hover:bg-[#182A44] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA] transition-all"
+            title="Previous Target (Left Arrow ←)"
             aria-label="Previous Target"
           >
             <ArrowLeft size={16} />
           </button>
           <button
             onClick={onThrustForward}
-            className="p-2 rounded-xl bg-[#E4783B] text-[#07111F] font-bold active:scale-95 shadow-md"
-            title="Thrust Forward"
+            className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#F18D4B] hover:from-[#d46a30] hover:to-[#e07b39] text-[#07111F] font-bold active:scale-95 transition-all shadow-[0_0_12px_rgba(228,120,59,0.35)]"
+            title="Thrust Forward (Up Arrow ↑)"
             aria-label="Thrust Forward"
           >
             <ArrowUp size={16} />
           </button>
           <button
             onClick={onThrustReverse}
-            className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
-            title="Decelerate"
+            className="p-2 sm:p-2.5 rounded-xl bg-[#132238] hover:bg-[#182A44] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA] transition-all"
+            title="Decelerate (Down Arrow ↓)"
             aria-label="Decelerate"
           >
             <ArrowDown size={16} />
           </button>
           <button
             onClick={onSteerRight}
-            className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
-            title="Next Target (Right)"
+            className="p-2 sm:p-2.5 rounded-xl bg-[#132238] hover:bg-[#182A44] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA] transition-all"
+            title="Next Target (Right Arrow →)"
             aria-label="Next Target"
           >
             <ArrowRight size={16} />

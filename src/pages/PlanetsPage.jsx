@@ -108,28 +108,19 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
       const tag = e.target.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
-      // Only intercept ArrowUp/ArrowDown when the flight viewport is explicitly hovered/focused
-      // (respects normal page scroll outside active flight mode)
+      // Unconditional Keyboard Arrow & Flight Navigation (Always active)
       if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
-        if (isFlightFocused || e.key === 'w' || e.key === 'W') {
-          e.preventDefault();
-          handleThrustForward();
-        }
+        e.preventDefault();
+        handleThrustForward();
       } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
-        if (isFlightFocused || e.key === 's' || e.key === 'S') {
-          e.preventDefault();
-          handleThrustReverse();
-        }
+        e.preventDefault();
+        handleThrustReverse();
       } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-        if (isFlightFocused || e.key === 'd' || e.key === 'D') {
-          e.preventDefault();
-          handleNextPlanet();
-        }
+        e.preventDefault();
+        handleNextPlanet();
       } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-        if (isFlightFocused || e.key === 'a' || e.key === 'A') {
-          e.preventDefault();
-          handlePrevPlanet();
-        }
+        e.preventDefault();
+        handlePrevPlanet();
       } else if (e.key === 'm' || e.key === 'M') {
         setViewMode(prev => prev === 'overview' ? 'focus' : 'overview');
       } else if (e.key === 'r' || e.key === 'R') {
