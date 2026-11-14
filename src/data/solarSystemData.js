@@ -1,14 +1,53 @@
 /**
- * Solar System Planetary Dataset for 404 IDEAS
- * Scientifically grounded in NASA Planetary Fact Sheets, NASA-STD-3001, and NASA HRP.
+ * Solar System Planetary Dataset for Spaceship 404
+ * Scientifically grounded in NASA Planetary Fact Sheets, NASA-STD-3001 Vol 1 Rev B, and NASA HRP.
  */
 
-export const SOLAR_SYSTEM_PLANETS = [
+export const CELESTIAL_BODIES = [
+  {
+    id: 'sun',
+    name: 'The Sun (Sol)',
+    arabicName: 'الشمس',
+    type: 'Yellow Dwarf Star (G2V)',
+    distanceAU: 0.0,
+    distanceKm: '0 km (Center)',
+    diameterKm: '1,392,700 km',
+    diameterRelative: '109x Earth',
+    gravityG: 27.9,
+    gravityMs: '274.0 m/s²',
+    orbitalPeriod: 'N/A (Galactic Orbit 230M yrs)',
+    rotationPeriod: '25-35 Earth Days (Differential)',
+    temperatureRange: '5,500°C (Surface) / 15,000,000°C (Core)',
+    meanTemp: '5,500°C',
+    atmosphere: 'Hydrogen (73.4%), Helium (25.0%), Oxygen (0.8%), Carbon (0.3%)',
+    moons: 8, // Major planets
+    rings: false,
+    color: '#FF8C00',
+    accentColor: '#FFD700',
+    colorHex: 0xff8c00,
+    radius3D: 3.6,
+    orbitDistance3D: 0,
+    axialTilt: 0.12,
+    rotationSpeed: 0.003,
+    orbitSpeed: 0,
+    textureType: 'sun',
+    nasaRiskLevel: 'LETHAL PROXIMITY',
+    commDelayOneWay: '0.0 ms',
+    astronautHazards: {
+      radiation: 'Massive Coronal Mass Ejections (CMEs) and Solar Particle Events (SPEs); fatal unshielded ionizing dose in minutes',
+      microgravity: 'Immense gravity gradient (27.9G) precludes close human proximity',
+      thermal: 'Extreme thermal radiation requiring active cryogenic heat shields even at 0.3 AU',
+      evaSuitRequirement: 'Human EVA impossible; robotic probes (Parker Solar Probe) with carbon-composite thermal protection only',
+      sansRisk: 'N/A'
+    },
+    missionSummary: 'The gravitational anchor and primary energy powerhouse of the solar system. Monitored continuously by NASA SOHO, SDO, and Parker Solar Probe to forecast deep space space-weather alerts.',
+    simulationDay: 180
+  },
   {
     id: 'mercury',
     name: 'Mercury',
     arabicName: 'عطارد',
-    type: 'Terrestrial / Rocky',
+    type: 'Terrestrial / Rocky World',
     distanceAU: 0.39,
     distanceKm: '57.9M km',
     diameterKm: '4,879 km',
@@ -19,23 +58,28 @@ export const SOLAR_SYSTEM_PLANETS = [
     rotationPeriod: '58.6 Earth Days',
     temperatureRange: '-180°C to +430°C',
     meanTemp: '+167°C',
-    atmosphere: 'Ultra-thin exosphere (Oxygen 42%, Sodium 29%, Hydrogen 22%)',
+    atmosphere: 'Trace exosphere (Oxygen 42%, Sodium 29%, Hydrogen 22%)',
     moons: 0,
     rings: false,
     color: '#A6A29A',
     accentColor: '#D1CCC0',
-    orbitRadiusDesktop: 65,
-    visualSizeDesktop: 14,
-    nasaRiskLevel: 'EXTREME',
+    colorHex: 0xa6a29a,
+    radius3D: 0.75,
+    orbitDistance3D: 9.5,
+    axialTilt: 0.0005,
+    rotationSpeed: 0.006,
+    orbitSpeed: 0.015,
+    textureType: 'mercury',
+    nasaRiskLevel: 'EXTREME ENVIRONMENT',
     commDelayOneWay: '3.2 to 12.3 mins',
     astronautHazards: {
       radiation: 'High (Intense solar wind & unshielded cosmic rays; 10x Earth irradiance)',
-      microgravity: 'Low surface gravity (0.38G) causes chronic bone and muscle loss',
-      thermal: 'Extreme 600°C diurnal swings between night and day',
-      evaSuitRequirement: 'Heavy thermal barrier shielding + active heat dissipation cooling loops',
-      sansRisk: 'Elevated cephalad fluid shift during transit; reduced on surface'
+      microgravity: 'Low surface gravity (0.38G) causes chronic bone demineralization and cardiovascular deconditioning',
+      thermal: 'Extreme 600°C diurnal swings between day (+430°C) and night (-180°C)',
+      evaSuitRequirement: 'Heavy thermal barrier armor + active liquid heat-dissipation cooling loops',
+      sansRisk: 'Elevated cephalad fluid shift during deep transit; persistent intracranial pressure'
     },
-    missionSummary: 'Explored by NASA Mariner 10 and MESSENGER. Human exploration requires subsurface lava tube habitats to shield against lethal solar radiation and thermal swings.',
+    missionSummary: 'Explored by NASA Mariner 10 and MESSENGER; BepiColombo in transit. Human exploration requires subsurface lava tube habitats to shield against lethal solar radiation.',
     simulationDay: 90
   },
   {
@@ -58,18 +102,23 @@ export const SOLAR_SYSTEM_PLANETS = [
     rings: false,
     color: '#E3BB76',
     accentColor: '#F5D79E',
-    orbitRadiusDesktop: 95,
-    visualSizeDesktop: 20,
-    nasaRiskLevel: 'LETHAL SURFACE',
+    colorHex: 0xe3bb76,
+    radius3D: 1.15,
+    orbitDistance3D: 14.5,
+    axialTilt: 3.09, // 177.3 deg retrograde
+    rotationSpeed: -0.003,
+    orbitSpeed: 0.012,
+    textureType: 'venus',
+    nasaRiskLevel: 'LETHAL CRUSH SURFACE',
     commDelayOneWay: '2.3 to 14.4 mins',
     astronautHazards: {
-      radiation: 'Atmosphere shields radiation, but atmospheric pressure (93 bar) crushes standard landers',
+      radiation: 'Atmosphere shields radiation, but atmospheric pressure (93 bar) crushes standard landers like a submarine',
       microgravity: 'Near-Earth gravity (0.91G) preserves bone mineral density and cardiac output',
       thermal: 'Runaway greenhouse heat melts lead, solder, and battery chemistries within minutes',
       evaSuitRequirement: 'Surface EVA impossible; upper atmospheric cloud habitats (50km altitude, 1 bar, 30°C) theoretically viable',
       sansRisk: 'Minimal due to near-1G gravity environment'
     },
-    missionSummary: 'NASA Magellan and upcoming DAVINCI/VERITAS missions investigate atmospheric runaway greenhouse tipping points. Upper cloud deck is solar system’s most Earth-like ambient region.',
+    missionSummary: 'NASA Magellan and upcoming DAVINCI & VERITAS missions investigate runaway greenhouse tipping points. Upper cloud deck (50km) is the solar system’s most Earth-like ambient region.',
     simulationDay: 140
   },
   {
@@ -87,13 +136,21 @@ export const SOLAR_SYSTEM_PLANETS = [
     rotationPeriod: '24.0 Hours',
     temperatureRange: '-88°C to +58°C',
     meanTemp: '+15°C',
-    atmosphere: 'Nitrogen (78%), Oxygen (21%), Argon (0.93%), CO2 (0.04%)',
+    atmosphere: 'Nitrogen (78.08%), Oxygen (20.95%), Argon (0.93%), CO2 (0.04%)',
     moons: 1,
     rings: false,
     color: '#4BA3E3',
     accentColor: '#7AD7EA',
-    orbitRadiusDesktop: 130,
-    visualSizeDesktop: 22,
+    colorHex: 0x4ba3e3,
+    radius3D: 1.25,
+    orbitDistance3D: 20.0,
+    axialTilt: 0.41, // 23.4 deg
+    rotationSpeed: 0.008,
+    orbitSpeed: 0.010,
+    hasMoon: true,
+    moonRadius3D: 0.32,
+    moonDistance3D: 2.4,
+    textureType: 'earth',
     nasaRiskLevel: 'NOMINAL BASELINE',
     commDelayOneWay: '0.000 ms (Ground)',
     astronautHazards: {
@@ -122,20 +179,25 @@ export const SOLAR_SYSTEM_PLANETS = [
     temperatureRange: '-125°C to +20°C',
     meanTemp: '-60°C',
     atmosphere: 'Carbon Dioxide (95.3%), Nitrogen (2.6%), Argon (1.9%) at 0.006 bar (610 Pa)',
-    moons: 2,
+    moons: 2, // Phobos & Deimos
     rings: false,
     color: '#E4783B',
     accentColor: '#FF9457',
-    orbitRadiusDesktop: 170,
-    visualSizeDesktop: 18,
+    colorHex: 0xe4783b,
+    radius3D: 0.95,
+    orbitDistance3D: 26.5,
+    axialTilt: 0.44, // 25.2 deg
+    rotationSpeed: 0.0075,
+    orbitSpeed: 0.008,
+    textureType: 'mars',
     nasaRiskLevel: 'CRITICAL MISSION TARGET',
     commDelayOneWay: '4.3 to 22.4 mins',
     astronautHazards: {
       radiation: 'No global magnetic dipole; cumulative transit dose ~600 mSv approaching NASA 3% REID cancer threshold',
-      microgravity: '0.38G surface gravity induces persistent osteopenia and baroreceptor dysregulation without countermeasures',
+      microgravity: '0.38G surface gravity induces persistent osteopenia (-1.2%/month) and cardiovascular deconditioning',
       thermal: 'Extreme diurnal chills requiring habitat radioisotope thermoelectric power (RTG)',
-      evaSuitRequirement: 'Dust-resistant pressurized suits protecting against abrasive reactive calcium perchlorate',
-      sansRisk: 'High risk of irreversible optic disc swelling during transit; autonomous AURA guidance required'
+      evaSuitRequirement: 'Dust-resistant pressurized suits protecting against toxic reactive calcium perchlorate',
+      sansRisk: 'High risk of irreversible optic disc edema and choroidal folds during transit; autonomous AURA guidance required'
     },
     missionSummary: 'Primary target of 21st century deep space human flight. AstroVitals solves the 22.4-minute communication latency by providing autonomous offline clinical intelligence.',
     simulationDay: 500
@@ -156,13 +218,18 @@ export const SOLAR_SYSTEM_PLANETS = [
     temperatureRange: '-145°C (1 bar level)',
     meanTemp: '-110°C',
     atmosphere: 'Molecular Hydrogen (89.8%), Helium (10.2%), traces of Methane & Ammonia',
-    moons: 95,
+    moons: 95, // Europa, Ganymede, Callisto, Io
     rings: true,
     color: '#C88B58',
     accentColor: '#E8A875',
-    orbitRadiusDesktop: 220,
-    visualSizeDesktop: 34,
-    nasaRiskLevel: 'EXTREME RADIATION',
+    colorHex: 0xc88b58,
+    radius3D: 2.6,
+    orbitDistance3D: 37.0,
+    axialTilt: 0.054, // 3.1 deg
+    rotationSpeed: 0.016, // Rapid rotation
+    orbitSpeed: 0.005,
+    textureType: 'jupiter',
+    nasaRiskLevel: 'EXTREME RADIATION BELT',
     commDelayOneWay: '33 to 53 mins',
     astronautHazards: {
       radiation: 'Massive synchrotron radiation belt delivers fatal ionizing doses within hours inside Europa orbit',
@@ -178,7 +245,7 @@ export const SOLAR_SYSTEM_PLANETS = [
     id: 'saturn',
     name: 'Saturn',
     arabicName: 'زحل',
-    type: 'Gas Giant / Ringed Giant',
+    type: 'Gas Giant / Ringed Jewel',
     distanceAU: 9.58,
     distanceKm: '1.43B km',
     diameterKm: '116,460 km',
@@ -190,12 +257,20 @@ export const SOLAR_SYSTEM_PLANETS = [
     temperatureRange: '-178°C (1 bar level)',
     meanTemp: '-140°C',
     atmosphere: 'Molecular Hydrogen (96.3%), Helium (3.25%), Methane (0.45%)',
-    moons: 146,
+    moons: 146, // Titan, Enceladus
     rings: true,
+    hasRings: true,
+    ringInner3D: 3.2,
+    ringOuter3D: 6.2,
     color: '#E0C895',
     accentColor: '#F7E4B5',
-    orbitRadiusDesktop: 275,
-    visualSizeDesktop: 30,
+    colorHex: 0xe0c895,
+    radius3D: 2.2,
+    orbitDistance3D: 48.0,
+    axialTilt: 0.46, // 26.7 deg
+    rotationSpeed: 0.014,
+    orbitSpeed: 0.0035,
+    textureType: 'saturn',
     nasaRiskLevel: 'DEEP SPACE LATENCY',
     commDelayOneWay: '68 to 88 mins',
     astronautHazards: {
@@ -226,10 +301,18 @@ export const SOLAR_SYSTEM_PLANETS = [
     atmosphere: 'Hydrogen (82.5%), Helium (15.2%), Methane (2.3% giving vibrant aquamarine hue)',
     moons: 28,
     rings: true,
+    hasRings: true,
+    ringInner3D: 2.2,
+    ringOuter3D: 3.4,
     color: '#72D9DD',
     accentColor: '#9BE8EC',
-    orbitRadiusDesktop: 330,
-    visualSizeDesktop: 24,
+    colorHex: 0x72d9dd,
+    radius3D: 1.55,
+    orbitDistance3D: 59.0,
+    axialTilt: 1.71, // 97.8 deg (rolls on its side)
+    rotationSpeed: -0.010,
+    orbitSpeed: 0.0025,
+    textureType: 'uranus',
     nasaRiskLevel: 'CRYOGENIC ISOLATION',
     commDelayOneWay: '2.4 to 2.7 hours',
     astronautHazards: {
@@ -258,12 +341,17 @@ export const SOLAR_SYSTEM_PLANETS = [
     temperatureRange: '-218°C',
     meanTemp: '-214°C',
     atmosphere: 'Hydrogen (80%), Helium (19%), Methane (1.5%) with supersonic dark storm vortices',
-    moons: 16,
+    moons: 16, // Triton
     rings: true,
     color: '#3E66F5',
     accentColor: '#6B8CFF',
-    orbitRadiusDesktop: 385,
-    visualSizeDesktop: 24,
+    colorHex: 0x3e66f5,
+    radius3D: 1.5,
+    orbitDistance3D: 70.0,
+    axialTilt: 0.49, // 28.3 deg
+    rotationSpeed: 0.011,
+    orbitSpeed: 0.0018,
+    textureType: 'neptune',
     nasaRiskLevel: 'BOUNDARY OF INTERSTELLAR SPACE',
     commDelayOneWay: '4.1 to 4.2 hours',
     astronautHazards: {
@@ -277,3 +365,6 @@ export const SOLAR_SYSTEM_PLANETS = [
     simulationDay: 1500
   }
 ];
+
+// Compatibility export alias
+export const SOLAR_SYSTEM_PLANETS = CELESTIAL_BODIES.filter(b => b.id !== 'sun');

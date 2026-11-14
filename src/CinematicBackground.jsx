@@ -1,47 +1,89 @@
 import React from 'react';
+import { assetPath } from './utils/assetPath';
 
 /**
  * Pixel-Accurate Unified Cinematic Hero Cosmic Background
- * Replaces procedural DOM stars with GPU-optimized vector curves and atmospheric gradients:
- * - Planetary crescent arc with warm burnt-orange/rust rim lighting
- * - Dual interplanetary trajectory arcs
- * - Constellation vector lines and focal navigation nodes
- * - Zero CPU/GPU paint bottlenecks, silky smooth 60fps scrolling
+ * Strict 6-Layer Architecture:
+ * - Layer 1: Deep-space blue background base (#07111F / #0D1728)
+ * - Layer 2: Static realistic starfield artwork (cosmic_deep_space_starfield.webp)
+ *            Seamlessly extends fine, realistic pinpoint stars, stellar clusters,
+ *            and interstellar cosmic dust across Left (astronaut), Center, and Right (headline & CTAs).
+ * - Layer 3: Subtle atmospheric nebula gradients (soft cyan #7AD7EA & cosmic purple #7E78C9)
+ * - Layer 4: Decorative orbital lines and planetary crescent with warm rust rim lighting
+ * - Layer 5: (Mounted above in HomePage: Transparent isolated astronaut image)
+ * - Layer 6: (Mounted above in HomePage: Hero headline, buttons, and navigation)
+ *
+ * Performance: 100% hardware-accelerated static imagery and SVG, zero procedural star loops, zero scrolling lag.
  */
 export default function CinematicBackground() {
   return (
-    <div className="absolute inset-0 pointer-events-none select-none overflow-hidden z-0">
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 pointer-events-none select-none overflow-hidden z-0"
+    >
       {/* ─────────────────────────────────────────────────────────────
-          1. Continuous Deep Space Cosmic Gradients (Left to Right)
+          Layer 1: Deep-Space Blue Background Base
       ───────────────────────────────────────────────────────────── */}
-      {/* Primary Radial Cosmic Base */}
+      <div className="absolute inset-0 bg-[#07111F]" />
+
+      {/* ─────────────────────────────────────────────────────────────
+          Layer 2: Subtle Atmospheric Gradients & Nebula Haze
+          Provides cosmic color depth (soft cyan & purple) underneath stars
+      ───────────────────────────────────────────────────────────── */}
+      {/* Primary Radial Cosmic Gradient */}
       <div
-        className="absolute inset-0 bg-radial from-[#7E78C9]/15 via-[#0D1728]/60 to-[#07111F]"
+        className="absolute inset-0 bg-radial from-[#7E78C9]/20 via-[#0D1728]/60 to-[#07111F]"
         style={{ backgroundPosition: '45% 35%', backgroundSize: '110% 110%' }}
       />
 
       {/* Atmospheric Soft Cyan Nebula (Center-Right behind Title) */}
       <div
-        className="absolute w-[680px] h-[550px] rounded-full opacity-[0.12] pointer-events-none"
+        className="absolute w-[680px] h-[550px] rounded-full opacity-[0.16] pointer-events-none"
         style={{
           background: 'radial-gradient(circle, #7AD7EA 0%, rgba(122, 215, 234, 0.20) 45%, transparent 70%)',
-          top: '20%',
+          top: '15%',
           right: '5%',
         }}
       />
 
-      {/* Deep Cosmic Purple Nebula (Upper-Right) */}
+      {/* Deep Cosmic Purple Nebula (Upper-Right behind Nav & Metrics) */}
       <div
-        className="absolute w-[580px] h-[500px] rounded-full opacity-[0.14] pointer-events-none"
+        className="absolute w-[580px] h-[500px] rounded-full opacity-[0.18] pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, #7E78C9 0%, rgba(126, 120, 201, 0.20) 45%, transparent 70%)',
+          background: 'radial-gradient(circle, #7E78C9 0%, rgba(126, 120, 201, 0.25) 45%, transparent 70%)',
           top: '-10%',
           right: '15%',
         }}
       />
 
+      {/* Left Cosmic Glow balancing Astronaut silhouette */}
+      <div
+        className="absolute w-[520px] h-[520px] rounded-full opacity-[0.14] pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, #7AD7EA 0%, rgba(122, 215, 234, 0.15) 40%, transparent 70%)',
+          bottom: '-10%',
+          left: '5%',
+        }}
+      />
+
       {/* ─────────────────────────────────────────────────────────────
-          2. Planetary Crescent & Orbital Trajectory Curves
+          Layer 3: Static Authentic Starfield Artwork (Full-Hero Span)
+          Spans Left, Center, and Right seamlessly behind Astronaut,
+          Headline, CTAs, and Navigation with high visual fidelity.
+      ───────────────────────────────────────────────────────────── */}
+      <picture className="absolute inset-0 w-full h-full pointer-events-none">
+        <source srcSet={assetPath('cosmic_deep_space_starfield.webp')} type="image/webp" />
+        <img
+          src={assetPath('cosmic_deep_space_starfield.jpg')}
+          alt=""
+          className="w-full h-full object-cover object-center opacity-95 mix-blend-screen"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
+
+      {/* ─────────────────────────────────────────────────────────────
+          Layer 4: Decorative Orbital Lines & Planetary Crescent
       ───────────────────────────────────────────────────────────── */}
       <svg
         className="absolute inset-0 w-full h-full opacity-90"
@@ -132,9 +174,7 @@ export default function CinematicBackground() {
         ))}
       </svg>
 
-      {/* ─────────────────────────────────────────────────────────────
-          3. Floating Deep Space Coordinate Markers (Creative Subtle Touch)
-      ───────────────────────────────────────────────────────────── */}
+      {/* Floating Deep Space Navigation Coordinates */}
       <div className="hidden lg:block absolute top-20 right-16 text-[9px] font-mono-tech text-[#7AD7EA]/40 tracking-widest select-none pointer-events-none space-y-1 text-right">
         <div>ORBIT // 28.5721° N, 80.6480° W</div>
         <div>APOGEE: 408 KM • PERIGEE: 402 KM</div>
