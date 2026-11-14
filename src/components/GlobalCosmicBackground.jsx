@@ -23,17 +23,26 @@ export default function GlobalCosmicBackground() {
 
       {/* ─────────────────────────────────────────────────────────────
           2. Static Authentic Space Starfield Image Layer (Hardware Accelerated)
+          Subtle & atmospheric (30% opacity) for high readability across all pages
       ───────────────────────────────────────────────────────────── */}
-      <picture className="absolute inset-0 w-full h-full">
+      <picture className="absolute inset-0 w-full h-full pointer-events-none">
         <source srcSet={assetPath('cosmic_deep_space_starfield.webp')} type="image/webp" />
         <img
           src={assetPath('cosmic_deep_space_starfield.jpg')}
           alt=""
-          className="w-full h-full object-cover object-center opacity-85"
+          className="w-full h-full object-cover object-center opacity-30 mix-blend-screen"
           loading="eager"
           decoding="async"
         />
       </picture>
+
+      {/* Dark Vignette Overlay to ensure deep space negative space & high text readability */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 50% 40%, rgba(7, 17, 31, 0.4) 0%, rgba(7, 17, 31, 0.85) 75%, #07111F 100%)'
+        }}
+      />
 
       {/* ─────────────────────────────────────────────────────────────
           3. Subtle Deep Space Atmospheric Nebulae (Static CSS Radial Glows)

@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   Bot, Activity, Zap, CheckCircle2, Eye, ShieldAlert,
-  ArrowRight, Radio, Compass, Sliders, ChevronRight
+  ArrowRight, Radio, Compass, Sliders, ChevronRight,
+  Orbit, Globe, Sparkles
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import CinematicBackground from '../CinematicBackground';
-import InteractiveSolarSystem from '../components/InteractiveSolarSystem';
 import { MISSION_PHASES } from '../UserJourneyStepper';
 import { spaceAudio } from '../utils/spaceAudio';
 import { assetPath } from '../utils/assetPath';
@@ -508,23 +508,24 @@ export default function HomePage({
       </motion.section>
 
       {/* ─────────────────────────────────────────────────────────────
-          2B. INTERACTIVE SOLAR SYSTEM OBSERVATORY TEASER
+          2B. 404 SPACE VOYAGE: CINEMATIC TRANSITION GATEWAY
+          Seamlessly introduces the 3D Spacecraft Observation Deck
       ───────────────────────────────────────────────────────────── */}
       <motion.section
         id="solar-system"
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 35 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 px-3 sm:px-8 max-w-7xl mx-auto space-y-6 pt-2"
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-[rgba(180,210,235,0.14)] pb-5">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-[rgba(180,210,235,0.14)] pb-4">
           <div>
             <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-widest block mb-1">
-              ORBITAL FLIGHT MECHANICS & DESTINATIONS
+              404 // INTERPLANETARY FLIGHT MECHANICS
             </span>
             <h2 className="font-titan text-2xl sm:text-3xl text-[#F4F7FC] tracking-wide uppercase">
-              INTERACTIVE SOLAR SYSTEM RADAR
+              404 — SPACE VOYAGE: THE SOLAR SYSTEM
             </h2>
           </div>
           <Link
@@ -532,16 +533,67 @@ export default function HomePage({
             onClick={() => spaceAudio.playChirp()}
             className="inline-flex items-center gap-1.5 text-xs text-[#7AD7EA] font-mono-tech hover:underline font-bold"
           >
-            <span>FULL SOLAR SYSTEM OBSERVATORY</span>
+            <span>ENTER OBSERVATION DECK</span>
             <ArrowRight size={14} />
           </Link>
         </div>
 
-        <InteractiveSolarSystem
-          setMissionDay={setMissionDay}
-          setCurrentPhase={setCurrentPhase}
-          onOpenAiDrawer={onOpenAiDrawer}
-        />
+        {/* Cinematic Observation Deck Window Card */}
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[rgba(180,210,235,0.18)] shadow-[0_20px_50px_rgba(0,0,0,0.85)] bg-[#07111F]/90">
+          <div className="relative h-[320px] sm:h-[420px] lg:h-[460px] w-full overflow-hidden">
+            <img
+              src={assetPath('space_voyage_cupola.jpg')}
+              alt="404 Spacecraft Observation Window"
+              className="w-full h-full object-cover object-center filter brightness-90 contrast-105"
+              loading="lazy"
+            />
+            {/* Dark Gradient Vignette for readable contrast */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#07111F] via-[#07111F]/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#07111F]/80 via-transparent to-[#07111F]/70" />
+
+            {/* Overlaid Information & Action */}
+            <div className="absolute inset-0 p-5 sm:p-10 flex flex-col justify-between">
+              {/* Top Watermark */}
+              <div className="flex items-center justify-between text-xs font-mono-tech">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0D1728]/80 backdrop-blur-md border border-white/10 text-[#C7D2E3]">
+                  <span className="w-2 h-2 rounded-full bg-[#7AD7EA] animate-pulse" />
+                  <span>404 CUPOLA // DEEP SPACE OBSERVATION</span>
+                </div>
+                <div className="hidden sm:block text-[10px] text-[#98A7BD]">
+                  REAL-TIME 3D WEBGL SIMULATION
+                </div>
+              </div>
+
+              {/* Bottom Callout & CTA */}
+              <div className="space-y-4 max-w-xl">
+                <div className="space-y-2">
+                  <h3 className="font-titan text-xl sm:text-3xl text-[#F4F7FC] uppercase tracking-wide">
+                    EXPLORE 8 PHYSICAL WORLDS IN REAL-TIME 3D
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#C7D2E3] leading-relaxed font-sans">
+                    Step aboard spacecraft 404. Travel smoothly across the solar system, orbit and inspect authentic NASA-mapped celestial bodies, from the volcanic canyons of Mars to the rings of Saturn.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <Link
+                    to="/planets"
+                    onClick={() => spaceAudio.playChirp()}
+                    className="px-6 py-3 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs sm:text-sm font-mono-tech tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)] hover:scale-105 flex items-center gap-2 min-h-[44px]"
+                  >
+                    <Orbit size={16} />
+                    <span>EMBARK ON 404 SPACE VOYAGE</span>
+                    <ChevronRight size={16} />
+                  </Link>
+
+                  <div className="text-[11px] font-mono-tech text-[#98A7BD] hidden sm:block">
+                    • 360° Planetary Orbit • Realistic Day/Night Illumination
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </motion.section>
 
       {/* ─────────────────────────────────────────────────────────────

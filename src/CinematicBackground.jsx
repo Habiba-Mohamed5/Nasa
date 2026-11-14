@@ -28,148 +28,113 @@ export default function CinematicBackground() {
 
       {/* ─────────────────────────────────────────────────────────────
           Layer 2: Subtle Atmospheric Gradients & Nebula Haze
-          Provides cosmic color depth (soft cyan & purple) underneath stars
+          Provides cosmic depth while keeping negative space calm & dark
       ───────────────────────────────────────────────────────────── */}
       {/* Primary Radial Cosmic Gradient */}
       <div
-        className="absolute inset-0 bg-radial from-[#7E78C9]/20 via-[#0D1728]/60 to-[#07111F]"
+        className="absolute inset-0 bg-radial from-[#7E78C9]/10 via-[#0D1728]/40 to-[#07111F]"
         style={{ backgroundPosition: '45% 35%', backgroundSize: '110% 110%' }}
       />
 
-      {/* Atmospheric Soft Cyan Nebula (Center-Right behind Title) */}
+      {/* Calming Atmospheric Nebula (Upper Center) */}
       <div
-        className="absolute w-[680px] h-[550px] rounded-full opacity-[0.16] pointer-events-none"
+        className="absolute w-[600px] h-[480px] rounded-full opacity-[0.08] pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, #7AD7EA 0%, rgba(122, 215, 234, 0.20) 45%, transparent 70%)',
-          top: '15%',
-          right: '5%',
-        }}
-      />
-
-      {/* Deep Cosmic Purple Nebula (Upper-Right behind Nav & Metrics) */}
-      <div
-        className="absolute w-[580px] h-[500px] rounded-full opacity-[0.18] pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, #7E78C9 0%, rgba(126, 120, 201, 0.25) 45%, transparent 70%)',
-          top: '-10%',
+          background: 'radial-gradient(circle, #7AD7EA 0%, rgba(122, 215, 234, 0.15) 45%, transparent 70%)',
+          top: '10%',
           right: '15%',
         }}
       />
 
-      {/* Left Cosmic Glow balancing Astronaut silhouette */}
+      {/* Deep Cosmic Purple Nebula (Upper Right) */}
       <div
-        className="absolute w-[520px] h-[520px] rounded-full opacity-[0.14] pointer-events-none"
+        className="absolute w-[500px] h-[420px] rounded-full opacity-[0.09] pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, #7AD7EA 0%, rgba(122, 215, 234, 0.15) 40%, transparent 70%)',
+          background: 'radial-gradient(circle, #7E78C9 0%, rgba(126, 120, 201, 0.20) 45%, transparent 70%)',
+          top: '-15%',
+          right: '25%',
+        }}
+      />
+
+      {/* Left Cosmic Glow framing Astronaut silhouette */}
+      <div
+        className="absolute w-[460px] h-[460px] rounded-full opacity-[0.10] pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, #7AD7EA 0%, rgba(122, 215, 234, 0.12) 40%, transparent 70%)',
           bottom: '-10%',
           left: '5%',
         }}
       />
 
       {/* ─────────────────────────────────────────────────────────────
-          Layer 3: Static Authentic Starfield Artwork (Full-Hero Span)
-          Spans Left, Center, and Right seamlessly behind Astronaut,
-          Headline, CTAs, and Navigation with high visual fidelity.
+          Layer 3: Static Authentic Starfield Artwork (Tuned Density)
+          Reduced opacity & contrast for elegant, comfortable readability
       ───────────────────────────────────────────────────────────── */}
       <picture className="absolute inset-0 w-full h-full pointer-events-none">
         <source srcSet={assetPath('cosmic_deep_space_starfield.webp')} type="image/webp" />
         <img
           src={assetPath('cosmic_deep_space_starfield.jpg')}
           alt=""
-          className="w-full h-full object-cover object-center opacity-95 mix-blend-screen"
+          className="w-full h-full object-cover object-center opacity-40 mix-blend-screen"
           loading="eager"
           decoding="async"
         />
       </picture>
 
+      {/* Dark Readability Vignette directly behind Headline and Copy (Center-Right) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at 72% 45%, rgba(7, 17, 31, 0.88) 0%, rgba(7, 17, 31, 0.55) 55%, transparent 85%)',
+        }}
+      />
+
       {/* ─────────────────────────────────────────────────────────────
-          Layer 4: Decorative Orbital Lines & Planetary Crescent
+          Layer 4: Subtle Decorative Accents (Preserving Astronaut separation)
+          Orbital lines stay strictly away from crossing important text
       ───────────────────────────────────────────────────────────── */}
       <svg
-        className="absolute inset-0 w-full h-full opacity-90"
+        className="absolute inset-0 w-full h-full opacity-60"
         viewBox="0 0 1440 900"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          {/* Warm Rust/Orange Crescent Edge Accent for Astronaut Contrast */}
-          <linearGradient id="arcGlow" x1="45%" y1="0%" x2="55%" y2="100%">
-            <stop offset="0%" stopColor="#E4783B" stopOpacity="0.85" />
-            <stop offset="25%" stopColor="#C85A27" stopOpacity="0.70" />
-            <stop offset="65%" stopColor="#7E78C9" stopOpacity="0.30" />
+          {/* Subtle Warm Edge Accent framing Astronaut on the left */}
+          <linearGradient id="arcGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#E4783B" stopOpacity="0.55" />
+            <stop offset="40%" stopColor="#C85A27" stopOpacity="0.35" />
+            <stop offset="85%" stopColor="#7E78C9" stopOpacity="0.10" />
             <stop offset="100%" stopColor="#07111F" stopOpacity="0.0" />
           </linearGradient>
 
-          {/* Secondary Delicate Trajectory Gradient (Connecting Left to Right) */}
-          <linearGradient id="orbitAcross" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#E4783B" stopOpacity="0.25" />
-            <stop offset="40%" stopColor="#7AD7EA" stopOpacity="0.20" />
-            <stop offset="75%" stopColor="#7E78C9" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#7AD7EA" stopOpacity="0.0" />
-          </linearGradient>
-
           {/* Diffuse Atmospheric Halo Gradient */}
-          <radialGradient id="planetGlow" cx="45%" cy="30%" r="55%">
-            <stop offset="0%" stopColor="#7AD7EA" stopOpacity="0.16" />
-            <stop offset="35%" stopColor="#7E78C9" stopOpacity="0.12" />
-            <stop offset="75%" stopColor="#07111F" stopOpacity="0" />
+          <radialGradient id="planetGlow" cx="30%" cy="40%" r="50%">
+            <stop offset="0%" stopColor="#7AD7EA" stopOpacity="0.10" />
+            <stop offset="50%" stopColor="#7E78C9" stopOpacity="0.06" />
+            <stop offset="100%" stopColor="#07111F" stopOpacity="0" />
           </radialGradient>
         </defs>
 
-        {/* Diffuse Atmospheric Glow behind the crescent */}
-        <circle cx="580" cy="420" r="380" fill="url(#planetGlow)" />
+        {/* Diffuse Glow behind astronaut */}
+        <circle cx="320" cy="480" r="320" fill="url(#planetGlow)" />
 
-        {/* Majestic Planetary Crescent Arc */}
+        {/* Gentle Planetary Crescent Arc - positioned strictly behind Astronaut on the left */}
         <path
-          d="M 260 880 C 420 540, 520 280, 840 80"
+          d="M 160 880 C 260 620, 310 380, 480 120"
           stroke="url(#arcGlow)"
-          strokeWidth="3.5"
+          strokeWidth="2.5"
           strokeLinecap="round"
         />
 
-        {/* Secondary Thin Trajectory Line Crossing from Astronaut to Title */}
-        <path
-          d="M 120 720 C 400 480, 820 440, 1380 240"
-          stroke="url(#orbitAcross)"
-          strokeWidth="1.5"
-          strokeDasharray="4 6"
-        />
-
-        {/* Tertiary Distant Orbital Arc */}
-        <path
-          d="M 620 900 C 800 680, 1060 480, 1420 380"
-          stroke="url(#orbitAcross)"
-          strokeWidth="1.0"
-          strokeDasharray="6 8"
-          opacity="0.6"
-        />
-
-        {/* Constellation Cluster 1 (Left behind Astronaut shoulder) */}
-        <g stroke="rgba(199, 210, 227, 0.20)" strokeWidth="0.75">
-          <line x1="720" y1="360" x2="890" y2="330" />
-          <line x1="890" y1="330" x2="980" y2="380" />
-          <line x1="890" y1="330" x2="840" y2="480" />
-          <line x1="720" y1="360" x2="760" y2="440" />
-          <line x1="680" y1="380" x2="720" y2="360" strokeDasharray="3 3" opacity="0.6" />
-        </g>
-
-        {/* Constellation Cluster 2 (Upper-Right behind/above Title) */}
-        <g stroke="rgba(199, 210, 227, 0.18)" strokeWidth="0.75">
-          <line x1="1020" y1="180" x2="1140" y2="150" />
-          <line x1="1140" y1="150" x2="1240" y2="210" />
-          <line x1="1240" y1="210" x2="1320" y2="170" />
-          <line x1="1140" y1="150" x2="1180" y2="90" strokeDasharray="2 3" opacity="0.5" />
-        </g>
-
-        {/* Constellation Star Nodes */}
+        {/* Delicate Constellation Star Nodes in deep background */}
         {[
-          [720, 360, 2.5], [890, 330, 2.0], [980, 380, 2.5], [760, 440, 1.8], [840, 480, 2.2], [680, 380, 1.5],
-          [1020, 180, 2.0], [1140, 150, 2.4], [1240, 210, 2.2], [1320, 170, 2.0], [1180, 90, 1.6]
+          [820, 220, 1.8], [940, 180, 1.5], [1080, 240, 1.8], [1180, 190, 1.4], [1280, 230, 1.6]
         ].map(([cx, cy, r], idx) => (
           <g key={`constel-node-${idx}`}>
-            <circle cx={cx} cy={cy} r={r * 2.0} fill="#7AD7EA" opacity="0.25" />
-            <circle cx={cx} cy={cy} r={r} fill="#F4F7FC" opacity="0.9" />
+            <circle cx={cx} cy={cy} r={r * 1.8} fill="#7AD7EA" opacity="0.15" />
+            <circle cx={cx} cy={cy} r={r} fill="#F4F7FC" opacity="0.7" />
           </g>
         ))}
       </svg>
