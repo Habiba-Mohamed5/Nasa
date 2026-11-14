@@ -9,6 +9,11 @@ const METRICS = [
 ];
 const DROPOUT_START_S = 20;
 const DROPOUT_END_S = 30;
+const HEART_RATE_CHANGE_BPM = 2;
+
+function isInDropout(sample) {
+  return sample && sample.elapsed_s >= DROPOUT_START_S && sample.elapsed_s < DROPOUT_END_S;
+}
 
 export default function RecordedTelemetry() {
   const inputId = useId();
@@ -45,8 +50,18 @@ export default function RecordedTelemetry() {
   }, [isOpen, record]);
 
   const sample = record?.samples[sampleIndex];
-  const dropout = simulateDropout && sample &&
-    sample.elapsed_s >= DROPOUT_START_S && sample.elapsed_s < DROPOUT_END_S;
+  const previousSample = record?.samples[sampleIndex - 1];
+  const dropout = simulateDropout && isInDropout(sample);
+  const heartRate = sample?.values.heart_rate;
+  const previousHeartRate = previousSample?.values.heart_rate;
+  // Compare consecutive observed samples only, including after a simulated gap.
+  const canCompareHeartRate = sample && previousSample &&
+    sample.elapsed_s - previousSample.elapsed_s === 1 &&
+    Number.isFinite(heartRate) && Number.isFinite(previousHeartRate) &&
+    !(simulateDropout && (dropout || isInDropout(previousSample)));
+  const heartRateChange = canCompareHeartRate ? heartRate - previousHeartRate : null;
+  const showHeartRateChange = heartRateChange !== null &&
+    Math.abs(heartRateChange) >= HEART_RATE_CHANGE_BPM;
   const missingCount = sample
     ? METRICS.filter(([metric]) => !Number.isFinite(sample.values[metric])).length
     : 0;
@@ -95,6 +110,14 @@ export default function RecordedTelemetry() {
               className="w-full accent-[#7AD7EA]"
             />
             <div role="status" className="text-xs font-bold text-amber-300">{status}</div>
+            <div role="status" aria-label="Heart rate change" className="text-xs text-[#C7D2E3]">
+              {showHeartRateChange && (
+                <>
+                  <strong>Heart rate changed {heartRateChange > 0 ? '+' : ''}{heartRateChange} beats/min in 1 s.</strong>
+                  {' Demo threshold: 2 beats/min. For recording review only.'}
+                </>
+              )}
+            </div>
             <dl className="grid grid-cols-2 gap-2">
               {METRICS.map(([metric, label]) => (
                 <div key={metric} className="rounded-lg bg-[#0D1728] p-2">
