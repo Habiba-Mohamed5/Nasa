@@ -6,32 +6,40 @@ import {
   getSaturnRingsTexture,
   getUranusRingsTexture
 } from '../utils/planetaryTextures';
+import { createSpaceship404 } from '../utils/spaceship3D';
 import { spaceAudio } from '../utils/spaceAudio';
 
 /**
- * ThreeJsSolarSystem — Persistent 60 FPS Real-Time 3D Viewport
+ * ThreeJsSolarSystem — Persistent 60 FPS Real-Time 3D Viewport with Spaceship 404
  *
- * Architecture:
- * - Mounts WebGL Scene & Renderer ONCE for maximum performance (Zero context recreations)
- * - Uses mutable refs for selectedPlanetId & viewMode for silky smooth continuous camera lerping
- * - Physically modeled 3D planets + Moon with authentic NASA cartography
- * - Saturn 3D rings with Cassini division & translucency
- * - Bounded 360° orbit rotation & zoom controls
+ * Camera & Flight Modes:
+ * 1. 'cockpit': Inside Spaceship 404 looking out through the observation cupola
+ * 2. 'external': 3rd-person view of Spaceship 404 traveling between planets with thrusters firing
+ * 3. 'orbit': 360° close inspection orbit around the selected planet
+ *
+ * Performance:
+ * - Single-mount architecture (0 WebGL context destruction)
  * - Off-screen rendering pause via IntersectionObserver
+ * - Hardware accelerated 60+ FPS
  */
 export default function ThreeJsSolarSystem({
   selectedPlanetId = 'mars',
   onSelectPlanet,
   onHoverPlanet,
   viewMode = 'focus', // 'focus' | 'overview'
-  onViewModeChange
+  cameraMode = 'cockpit', // 'cockpit' | 'external' | 'orbit'
+  onCameraModeChange,
+  isAccelerating = false,
+  flightVelocity = 34.8
 }) {
   const mountRef = useRef(null);
   const isVisibleRef = useRef(true);
 
-  // Mutable prop refs to avoid tearing down the WebGL scene
+  // Mutable prop refs
   const selectedPlanetIdRef = useRef(selectedPlanetId);
   const viewModeRef = useRef(viewMode);
+  const cameraModeRef = useRef(cameraMode);
+  const isAcceleratingRef = useRef(isAccelerating);
   const onSelectPlanetRef = useRef(onSelectPlanet);
   const onHoverPlanetRef = useRef(onHoverPlanet);
 
@@ -42,6 +50,14 @@ export default function ThreeJsSolarSystem({
   useEffect(() => {
     viewModeRef.current = viewMode;
   }, [viewMode]);
+
+  useEffect(() => {
+    cameraModeRef.current = cameraMode;
+  }, [cameraMode]);
+
+  useEffect(() => {
+    isAcceleratingRef.current = isAccelerating;
+  }, [isAccelerating]);
 
   useEffect(() => {
     onSelectPlanetRef.current = onSelectPlanet;
@@ -57,8 +73,15 @@ export default function ThreeJsSolarSystem({
   const earthCloudsRef = useRef(null);
   const moonGroupRef = useRef(null);
   const sunGlowMeshRef = useRef(null);
+  const spaceshipRef = useRef(null);
+  const shipApiRef = useRef(null);
 
-  // Interaction & camera interpolation state
+  // Flight simulation state
+  const shipPositionRef = useRef(new THREE.Vector3(22.0, 1.2, 18.0));
+  const shipVelocityRef = useRef(new THREE.Vector3(0, 0, 0));
+  const shipOrientationRef = useRef(new THREE.Euler(0, 0, 0));
+
+  // Camera interpolation state
   const isDraggingRef = useRef(false);
   const previousPointerPos = useRef({ x: 0, y: 0 });
   const orbitSpherical = useRef({ radius: 3.8, theta: 0.6, phi: 1.25 });
@@ -66,12 +89,15 @@ export default function ThreeJsSolarSystem({
   const cameraLookAtPos = useRef(new THREE.Vector3(0, 0, 0));
   const currentCameraLookAt = useRef(new THREE.Vector3(0, 0, 0));
 
-  // Update target distance when selected planet changes
+  // Target radius adjustment on planet select
   useEffect(() => {
     const body = CELESTIAL_BODIES.find(b => b.id === selectedPlanetId);
     if (body) {
       const baseDist = body.radius3D * (body.hasRings ? 4.2 : 3.4);
       orbitSpherical.current.radius = Math.max(3.0, baseDist);
+
+      // Play thruster burn sound when transitioning to a new planet
+      spaceAudio.playThrusterBurn(1.8);
 
       // Highlight active orbit line
       orbitLinesRef.current.forEach((line, id) => {
@@ -85,7 +111,7 @@ export default function ThreeJsSolarSystem({
     }
   }, [selectedPlanetId]);
 
-  // Main WebGL Scene & Lifecycle (Mounts ONCE)
+  // Main WebGL Lifecycle
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
@@ -98,24 +124,18 @@ export default function ThreeJsSolarSystem({
 
     // 2. Camera
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    // Initialize looking toward Mars or starting planet
+
     const startBody = CELESTIAL_BODIES.find(b => b.id === selectedPlanetIdRef.current) || CELESTIAL_BODIES[4];
     const initialAngle = (CELESTIAL_BODIES.indexOf(startBody) * 0.78) % (Math.PI * 2);
     const startX = Math.cos(initialAngle) * startBody.orbitDistance3D;
     const startZ = Math.sin(initialAngle) * startBody.orbitDistance3D;
 
-    if (viewModeRef.current === 'focus') {
-      const initDist = startBody.radius3D * 3.4;
-      camera.position.set(startX + initDist * 0.6, 2.0, startZ + initDist * 0.8);
-      camera.lookAt(startX, 0, startZ);
-      currentCameraLookAt.current.set(startX, 0, startZ);
-      cameraLookAtPos.current.set(startX, 0, startZ);
-    } else {
-      camera.position.set(0, 52, 75);
-      camera.lookAt(0, 0, 0);
-      currentCameraLookAt.current.set(0, 0, 0);
-      cameraLookAtPos.current.set(0, 0, 0);
-    }
+    shipPositionRef.current.set(startX + 4.5, 1.2, startZ + 3.8);
+
+    camera.position.set(startX + 5.0, 2.5, startZ + 5.5);
+    camera.lookAt(startX, 0, startZ);
+    currentCameraLookAt.current.set(startX, 0, startZ);
+    cameraLookAtPos.current.set(startX, 0, startZ);
 
     // 3. WebGL Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -130,30 +150,32 @@ export default function ThreeJsSolarSystem({
     container.replaceChildren(renderer.domElement);
 
     // 4. Lighting
-    // Central PointLight at Sun (illuminates planets outward with realistic day/night hemispheres)
     const sunPointLight = new THREE.PointLight(0xfff5e6, 4.5, 450, 0.45);
     sunPointLight.position.set(0, 0, 0);
     scene.add(sunPointLight);
 
-    // Deep cosmic ambient illumination for shaded hemispheres
     const ambientLight = new THREE.AmbientLight(0x0c1a2e, 0.55);
     scene.add(ambientLight);
 
-    // Subtle soft fill light from above
-    const fillLight = new THREE.DirectionalLight(0x7ad7ea, 0.25);
+    const fillLight = new THREE.DirectionalLight(0x7ad7ea, 0.3);
     fillLight.position.set(0, 30, 20);
     scene.add(fillLight);
 
-    // 5. Disposable Resources
     const disposableResources = {
       geometries: [],
       materials: [],
       textures: []
     };
 
+    // 5. Build 3D Spaceship 404 Model
+    const ship = createSpaceship404();
+    scene.add(ship.shipGroup);
+    spaceshipRef.current = ship.shipGroup;
+    shipApiRef.current = ship;
+
     // 6. Build Celestial Bodies & Orbit Tracks
     CELESTIAL_BODIES.forEach((body) => {
-      // Orbital Track Line
+      // Orbit Line
       if (body.orbitDistance3D > 0) {
         const segments = 128;
         const orbitPoints = [];
@@ -198,7 +220,7 @@ export default function ThreeJsSolarSystem({
           color: 0xffffff
         });
 
-        // Sun outer atmospheric glow
+        // Sun outer atmospheric corona glow
         const glowGeo = new THREE.SphereGeometry(body.radius3D * 1.15, 32, 32);
         const glowMat = new THREE.MeshBasicMaterial({
           color: 0xff8c00,
@@ -225,7 +247,7 @@ export default function ThreeJsSolarSystem({
       planetMesh.userData = { id: body.id, bodyData: body };
       planetMesh.rotation.z = body.axialTilt || 0;
 
-      // Position along orbit (staggered angles for clear observation)
+      // Staggered orbital position
       const bIndex = CELESTIAL_BODIES.indexOf(body);
       const angle = (bIndex * 0.78) % (Math.PI * 2);
       planetMesh.position.set(
@@ -237,7 +259,7 @@ export default function ThreeJsSolarSystem({
       scene.add(planetMesh);
       planetMeshesRef.current.set(body.id, planetMesh);
 
-      // Earth Clouds & Moon
+      // Earth Cloud Layer & Moon
       if (body.id === 'earth') {
         const cloudGeo = new THREE.SphereGeometry(body.radius3D * 1.02, 40, 40);
         disposableResources.geometries.push(cloudGeo);
@@ -282,7 +304,6 @@ export default function ThreeJsSolarSystem({
         const ringTex = getSaturnRingsTexture();
         disposableResources.textures.push(ringTex);
 
-        // Map radial UV coordinates for ring texture
         const pos = ringGeo.attributes.position;
         const uvs = ringGeo.attributes.uv;
         for (let i = 0; i < pos.count; i++) {
@@ -435,7 +456,7 @@ export default function ThreeJsSolarSystem({
     });
     resizeObserver.observe(container);
 
-    // 10. 60 FPS Render Loop with Smooth Camera Damping
+    // 10. 60 FPS Render Loop
     let clock = new THREE.Clock();
     let animId;
 
@@ -464,38 +485,99 @@ export default function ThreeJsSolarSystem({
         moonGroupRef.current.rotation.y += 0.012;
       }
 
-      // Sun pulse
+      // Sun corona pulse
       if (sunGlowMeshRef.current) {
         const pulse = 1 + Math.sin(clock.getElapsedTime() * 1.5) * 0.025;
         sunGlowMeshRef.current.scale.set(pulse, pulse, pulse);
       }
 
-      // Continuous Camera Lerp (Driven by mutable refs)
+      // Update Spaceship 404 Model
       const targetId = selectedPlanetIdRef.current;
-      const currentMode = viewModeRef.current;
       const currentMesh = planetMeshesRef.current.get(targetId);
+      const isAcc = isAcceleratingRef.current;
 
-      if (currentMode === 'focus' && currentMesh) {
-        // Target is the selected planet
-        cameraLookAtPos.current.copy(currentMesh.position);
+      if (shipApiRef.current) {
+        shipApiRef.current.updateShip(delta, isAcc);
+      }
 
-        const r = orbitSpherical.current.radius;
-        const phi = orbitSpherical.current.phi;
-        const theta = orbitSpherical.current.theta;
+      if (currentMesh && spaceshipRef.current) {
+        // Spaceship smoothly cruises along observation orbit towards current planet
+        const targetPos = currentMesh.position;
+        const offsetDist = Math.max(3.2, currentMesh.geometry.parameters.radius * 3.8);
 
-        const offsetX = r * Math.sin(phi) * Math.sin(theta);
-        const offsetY = r * Math.cos(phi);
-        const offsetZ = r * Math.sin(phi) * Math.cos(theta);
-
-        cameraTargetPos.current.set(
-          currentMesh.position.x + offsetX,
-          currentMesh.position.y + offsetY,
-          currentMesh.position.z + offsetZ
+        // Vector from planet to ship
+        const shipTarget = new THREE.Vector3(
+          targetPos.x + offsetDist * Math.cos(clock.getElapsedTime() * 0.08),
+          targetPos.y + 1.2,
+          targetPos.z + offsetDist * Math.sin(clock.getElapsedTime() * 0.08)
         );
-      } else {
-        // Solar System Overview Mode
+
+        shipPositionRef.current.lerp(shipTarget, 0.04);
+        spaceshipRef.current.position.copy(shipPositionRef.current);
+
+        // Look at the planet
+        spaceshipRef.current.lookAt(targetPos);
+      }
+
+      // ─────────────────────────────────────────────────────────────
+      // CAMERA POSITIONING (Cockpit / External 3D Vessel / Orbit)
+      // ─────────────────────────────────────────────────────────────
+      const mode = cameraModeRef.current;
+      const viewM = viewModeRef.current;
+
+      if (viewM === 'overview') {
+        // Solar System Full System Map
+        if (spaceshipRef.current) spaceshipRef.current.visible = true;
         cameraTargetPos.current.set(0, 52, 75);
         cameraLookAtPos.current.set(0, 0, 0);
+      } else if (currentMesh) {
+        const planetPos = currentMesh.position;
+
+        if (mode === 'cockpit' && spaceshipRef.current) {
+          // Cockpit Observation Mode: The user is INSIDE the pressurized bridge.
+          // Hide external vessel mesh so the panoramic window HUD (CockpitModeHUD) frames the planet cleanly.
+          spaceshipRef.current.visible = false;
+          const shipPos = spaceshipRef.current.position;
+          
+          cameraTargetPos.current.copy(shipPos);
+          cameraLookAtPos.current.copy(planetPos);
+        } else if (mode === 'external' && spaceshipRef.current) {
+          // 3rd-person cinematic chase camera looking at Spaceship 404 (Image 2 & 5 Inspiration)
+          spaceshipRef.current.visible = true;
+          const shipPos = spaceshipRef.current.position;
+
+          const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(spaceshipRef.current.quaternion);
+          const right = new THREE.Vector3(1, 0, 0).applyQuaternion(spaceshipRef.current.quaternion);
+          const up = new THREE.Vector3(0, 1, 0).applyQuaternion(spaceshipRef.current.quaternion);
+
+          // Elevated 3/4 cinematic angle: trailing behind, offset up & to starboard
+          const chaseCam = shipPos.clone()
+            .add(forward.clone().multiplyScalar(-7.2))
+            .add(up.clone().multiplyScalar(3.2))
+            .add(right.clone().multiplyScalar(3.8));
+
+          cameraTargetPos.current.copy(chaseCam);
+          // Frame the vessel cruising towards the planet
+          cameraLookAtPos.current.copy(shipPos.clone().add(forward.clone().multiplyScalar(3.0)));
+        } else {
+          // Planet Orbit Mode (360° close planetary inspection)
+          if (spaceshipRef.current) spaceshipRef.current.visible = true;
+          cameraLookAtPos.current.copy(planetPos);
+
+          const r = orbitSpherical.current.radius;
+          const phi = orbitSpherical.current.phi;
+          const theta = orbitSpherical.current.theta;
+
+          const offsetX = r * Math.sin(phi) * Math.sin(theta);
+          const offsetY = r * Math.cos(phi);
+          const offsetZ = r * Math.sin(phi) * Math.cos(theta);
+
+          cameraTargetPos.current.set(
+            planetPos.x + offsetX,
+            planetPos.y + offsetY,
+            planetPos.z + offsetZ
+          );
+        }
       }
 
       camera.position.lerp(cameraTargetPos.current, 0.06);
@@ -507,7 +589,6 @@ export default function ThreeJsSolarSystem({
 
     animate();
 
-    // 11. Cleanup
     return () => {
       cancelAnimationFrame(animId);
       observer.disconnect();
@@ -518,13 +599,17 @@ export default function ThreeJsSolarSystem({
       window.removeEventListener('pointerup', handlePointerUp);
       domElement.removeEventListener('wheel', handleWheel);
 
+      if (shipApiRef.current) {
+        shipApiRef.current.dispose();
+      }
+
       disposableResources.geometries.forEach(g => g.dispose());
       disposableResources.materials.forEach(m => m.dispose());
       disposableResources.textures.forEach(t => t.dispose());
 
       renderer.dispose();
     };
-  }, []); // Run ONCE on mount
+  }, []); // Single mount
 
   return (
     <div

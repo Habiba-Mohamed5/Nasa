@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   Bot, Activity, Zap, CheckCircle2, Eye, ShieldAlert,
   ArrowRight, Radio, Compass, Sliders, ChevronRight,
-  Orbit, Globe, Sparkles
+  Orbit, Globe, Sparkles, Rocket, User
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import CinematicBackground from '../CinematicBackground';
@@ -27,6 +27,8 @@ export default function HomePage({
   isMuted,
   toggleSound,
   toggleFullScreen,
+  commanderName = 'Commander',
+  onOpenBoarding,
   onOpenAiDrawer,
   onOpenRisksModal
 }) {
@@ -68,6 +70,8 @@ export default function HomePage({
           isMuted={isMuted}
           toggleSound={toggleSound}
           toggleFullScreen={toggleFullScreen}
+          commanderName={commanderName}
+          onOpenBoarding={onOpenBoarding}
           onOpenAiDrawer={onOpenAiDrawer}
           onOpenRisksModal={onOpenRisksModal}
         />
@@ -117,16 +121,80 @@ export default function HomePage({
             </h1>
 
             {/* Editorial Subtitle Paragraph (High Readability) */}
-            <p className="text-[#C7D2E3] text-xs sm:text-sm font-sans max-w-md mt-5 sm:mt-6 leading-relaxed font-normal">
+            <p className="text-[#C7D2E3] text-xs sm:text-sm font-sans max-w-md mt-4 sm:mt-5 leading-relaxed font-normal">
               The Ongoing Discovery And Exploration Of Celestial Structures In Outer Space By Means Of Continuously Evolving And Growing Space Technology.
             </p>
 
-            {/* Actions: Direct Workspace & AURA Access */}
-            <div className="flex flex-wrap items-center gap-3 mt-6 sm:mt-7">
+            {/* Interactive Mission Flight Deck Console / Boarding Beacon */}
+            <div className="mt-5 p-3.5 sm:p-4 rounded-2xl bg-[#0D1728]/85 border border-[#7AD7EA]/25 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.65),0_0_20px_rgba(122,215,234,0.12)] max-w-md">
+              <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-[rgba(180,210,235,0.12)]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#7AD7EA] animate-ping" />
+                  <span className="text-[10px] font-mono-tech text-[#7AD7EA] font-bold tracking-widest uppercase">
+                    SPACESHIP 404 // FLIGHT MANIFEST
+                  </span>
+                </div>
+                <span className="text-[9px] font-mono-tech text-[#33FF66]">
+                  VESSEL READY
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-[11px] mb-3 font-mono-tech">
+                <div className="bg-[#132238]/70 p-2 rounded-xl border border-[rgba(180,210,235,0.1)]">
+                  <div className="text-[9px] text-[#98A7BD] uppercase tracking-wider">Commander</div>
+                  <div className="text-[#F4F7FC] font-bold truncate flex items-center gap-1.5 mt-0.5">
+                    <User size={12} className="text-[#7AD7EA]" />
+                    <span>CMD. {commanderName || 'EXPLORER'}</span>
+                  </div>
+                </div>
+                <div className="bg-[#132238]/70 p-2 rounded-xl border border-[rgba(180,210,235,0.1)]">
+                  <div className="text-[9px] text-[#98A7BD] uppercase tracking-wider">Mission Vector</div>
+                  <div className="text-[#7AD7EA] font-bold truncate flex items-center gap-1.5 mt-0.5">
+                    <Compass size={12} className="text-[#E4783B]" />
+                    <span>SOLAR 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    spaceAudio.playChirp();
+                    if (onOpenBoarding) onOpenBoarding();
+                  }}
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#F18D4B] hover:from-[#d46a30] hover:to-[#e07b39] text-[#07111F] font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(228,120,59,0.35)] hover:scale-[1.02] active:scale-95"
+                >
+                  <Rocket size={14} />
+                  <span>BOARD SPACESHIP 404</span>
+                </button>
+                <button
+                  onClick={() => {
+                    spaceAudio.playChirp();
+                    if (onOpenBoarding) onOpenBoarding();
+                  }}
+                  className="py-2.5 px-3 rounded-xl bg-[#182A44] hover:bg-[#1f3657] text-[#C7D2E3] hover:text-[#F4F7FC] border border-[rgba(180,210,235,0.18)] text-[10px] font-mono-tech transition-colors"
+                  title="Customize Commander Callsign"
+                >
+                  CALLSIGN
+                </button>
+              </div>
+            </div>
+
+            {/* Actions: Direct 3D Planets, Workspace & AURA Access */}
+            <div className="flex flex-wrap items-center gap-3 mt-4">
+              <Link
+                to="/planets"
+                onClick={() => spaceAudio.playChirp()}
+                className="px-5 py-2.5 rounded-full bg-[#182A44] hover:bg-[#1f3657] text-[#F4F7FC] border border-[#7AD7EA]/35 font-bold text-xs tracking-wider transition-all flex items-center gap-1.5 min-h-[44px] shadow-[0_0_15px_rgba(122,215,234,0.1)] hover:scale-105"
+              >
+                <Compass size={14} className="text-[#7AD7EA]" />
+                <span>EXPLORE 3D PLANETS</span>
+              </Link>
+
               <Link
                 to="/workspace"
                 onClick={() => spaceAudio.playChirp()}
-                className="px-6 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs tracking-wider transition-all shadow-[0_0_25px_rgba(228,120,59,0.35)] hover:scale-105 flex items-center gap-1.5 min-h-[44px]"
+                className="px-5 py-2.5 rounded-full bg-[#132238] hover:bg-[#182A44] text-[#C7D2E3] hover:text-[#F4F7FC] border border-[rgba(180,210,235,0.15)] font-bold text-xs tracking-wider transition-all flex items-center gap-1.5 min-h-[44px] hover:scale-105"
               >
                 <span>ENTER WORKSPACE</span>
                 <ChevronRight size={14} />
@@ -137,9 +205,9 @@ export default function HomePage({
                   spaceAudio.playChirp();
                   if (onOpenAiDrawer) onOpenAiDrawer();
                 }}
-                className="px-5 py-2.5 rounded-full bg-[#182A44] hover:bg-[#1f3657] text-[#F4F7FC] border border-[#7AD7EA]/30 font-bold text-xs tracking-wider transition-all flex items-center gap-2 min-h-[44px] shadow-[0_0_15px_rgba(122,215,234,0.1)] hover:scale-105"
+                className="px-4 py-2.5 rounded-full bg-[#132238] hover:bg-[#182A44] text-[#7AD7EA] border border-[#7AD7EA]/25 font-bold text-xs tracking-wider transition-all flex items-center gap-1.5 min-h-[44px] hover:scale-105"
               >
-                <Bot size={14} className="text-[#7AD7EA]" />
+                <Bot size={14} />
                 <span>AURA SURGEON</span>
               </button>
             </div>
@@ -229,26 +297,39 @@ export default function HomePage({
           </div>
 
           {/* Action CTAs Cluster (Touch-friendly minimum 46px) */}
-          <div className="w-full max-w-md mx-auto flex flex-col sm:flex-row items-center justify-center gap-2.5 px-2">
-            <Link
-              to="/workspace"
-              onClick={() => spaceAudio.playChirp()}
-              className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)] flex items-center justify-center gap-1.5 min-h-[46px]"
-            >
-              <span>ENTER WORKSPACE</span>
-              <ChevronRight size={14} />
-            </Link>
-
+          <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center gap-2.5 px-2">
             <button
               onClick={() => {
                 spaceAudio.playChirp();
-                if (onOpenAiDrawer) onOpenAiDrawer();
+                if (onOpenBoarding) onOpenBoarding();
               }}
-              className="w-full sm:w-auto px-5 py-3 rounded-full bg-[#182A44] hover:bg-[#1f3657] text-[#F4F7FC] border border-[#7AD7EA]/30 font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-2 min-h-[46px] shadow-[0_0_15px_rgba(122,215,234,0.1)]"
+              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#E4783B] to-[#F18D4B] hover:from-[#d46a30] hover:to-[#e07b39] text-[#07111F] font-bold text-xs tracking-wider transition-all shadow-[0_0_25px_rgba(228,120,59,0.4)] flex items-center justify-center gap-2 min-h-[48px] active:scale-95"
             >
-              <Bot size={14} className="text-[#7AD7EA]" />
-              <span>AURA SURGEON</span>
+              <Rocket size={16} />
+              <span>BOARD SPACESHIP 404 ({commanderName || 'EXPLORER'})</span>
             </button>
+
+            <div className="w-full grid grid-cols-2 gap-2">
+              <Link
+                to="/workspace"
+                onClick={() => spaceAudio.playChirp()}
+                className="w-full px-4 py-2.5 rounded-xl bg-[#132238] hover:bg-[#182A44] text-[#F4F7FC] border border-[rgba(180,210,235,0.18)] font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-1.5 min-h-[44px]"
+              >
+                <span>WORKSPACE</span>
+                <ChevronRight size={13} />
+              </Link>
+
+              <button
+                onClick={() => {
+                  spaceAudio.playChirp();
+                  if (onOpenAiDrawer) onOpenAiDrawer();
+                }}
+                className="w-full px-4 py-2.5 rounded-xl bg-[#182A44] hover:bg-[#1f3657] text-[#7AD7EA] border border-[#7AD7EA]/30 font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-1.5 min-h-[44px]"
+              >
+                <Bot size={14} />
+                <span>AURA AI</span>
+              </button>
+            </div>
           </div>
 
           {/* Mobile Horizontal Section Indicator */}

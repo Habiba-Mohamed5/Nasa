@@ -4,38 +4,66 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Orbit, Compass, ArrowRightLeft, ZoomIn, ZoomOut,
   RotateCcw, ChevronUp, ChevronDown, ChevronRight,
-  Activity, ShieldAlert, Thermometer, Globe, Info, Sparkles
+  Activity, ShieldAlert, Thermometer, Globe, Info, Sparkles,
+  Heart, Radio, Gauge, User, Volume2, VolumeX, Rocket
 } from 'lucide-react';
 import ThreeJsSolarSystem from '../components/ThreeJsSolarSystem';
+import CockpitModeHUD from '../components/CockpitModeHUD';
 import PlanetComparisonModal from '../components/PlanetComparisonModal';
 import { CELESTIAL_BODIES } from '../data/solarSystemData';
 import { spaceAudio } from '../utils/spaceAudio';
 
 /**
- * 404 — SPACE VOYAGE: Planetary Exploration Experience
+ * PlanetsPage — 404 Space Exploration Vessel Mission Deck
  *
- * Immersive Spacecraft Observation Deck:
- * - Large, dominant 3D real-time viewport (Less Dashboard, More Universe)
- * - Authentic NASA planetary cartography (No flat brown spheres or artificial stripes)
- * - Smooth camera navigation (Overview -> Destination Approach -> 360° Orbit)
- * - Minimal, collapsible information interface (Does not obstruct planetary views)
- * - Non-intrusive keyboard navigation (ArrowLeft/Right, Enter, Esc; preserves vertical scroll)
+ * Implements:
+ * 1. Three distinct Camera Modes:
+ *    - 'cockpit': Inside the pressurized bridge looking out through panoramic observation pillars
+ *    - 'external': 3rd-person view of Spaceship 404 with glowing ion thrusters
+ *    - 'orbit': 360° close planetary inspection orbit
+ * 2. Authentic Interplanetary Navigation & Velocity Control (WASD / Arrow Keys)
+ * 3. Rich Dual-Tabbed Scientific Information & Astronaut Health Telemetry (Image 3 Inspiration)
+ * 4. Realistic Spacecraft Audio (Cabin Hum, Thrusters, Docking Chimes)
+ * 5. Commander Name Personalization
  */
 export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
   const [selectedPlanetId, setSelectedPlanetId] = useState('mars');
   const [hoveredBody, setHoveredBody] = useState(null);
   const [viewMode, setViewMode] = useState('focus'); // 'focus' | 'overview'
+  const [cameraMode, setCameraMode] = useState('cockpit'); // 'cockpit' | 'external' | 'orbit'
   const [isCompareOpen, setIsCompareOpen] = useState(false);
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState('science'); // 'science' | 'health'
+
+  // Flight simulation state
+  const [flightVelocity, setFlightVelocity] = useState(34.8);
+  const [isAccelerating, setIsAccelerating] = useState(false);
+  const [isMuted, setIsMuted] = useState(spaceAudio.isMuted);
+
+  // Commander Personalization
+  const commanderName = localStorage.getItem('spaceship_404_commander_name') || 'Commander';
 
   const activeBody = CELESTIAL_BODIES.find(b => b.id === selectedPlanetId) || CELESTIAL_BODIES[4];
   const currentIndex = CELESTIAL_BODIES.findIndex(b => b.id === selectedPlanetId);
 
+  // Audio mute toggle
+  const handleToggleMute = useCallback(() => {
+    const muted = spaceAudio.toggleMute();
+    setIsMuted(muted);
+  }, []);
+
   // Destination Selection
   const handleSelectPlanet = useCallback((id) => {
     spaceAudio.playChirp();
+    spaceAudio.playThrusterBurn(1.8);
     setSelectedPlanetId(id);
     setViewMode('focus');
+    setIsAccelerating(true);
+    setFlightVelocity(prev => prev + 4.2);
+    setTimeout(() => {
+      setIsAccelerating(false);
+      spaceAudio.playDockingChime();
+    }, 2000);
   }, []);
 
   const handleReturnToOverview = useCallback(() => {
@@ -46,34 +74,52 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
   const handleNextPlanet = useCallback(() => {
     spaceAudio.playChirp();
     const nextIdx = (currentIndex + 1) % CELESTIAL_BODIES.length;
-    setSelectedPlanetId(CELESTIAL_BODIES[nextIdx].id);
-    setViewMode('focus');
-  }, [currentIndex]);
+    handleSelectPlanet(CELESTIAL_BODIES[nextIdx].id);
+  }, [currentIndex, handleSelectPlanet]);
 
   const handlePrevPlanet = useCallback(() => {
     spaceAudio.playChirp();
     const prevIdx = (currentIndex - 1 + CELESTIAL_BODIES.length) % CELESTIAL_BODIES.length;
-    setSelectedPlanetId(CELESTIAL_BODIES[prevIdx].id);
-    setViewMode('focus');
-  }, [currentIndex]);
+    handleSelectPlanet(CELESTIAL_BODIES[prevIdx].id);
+  }, [currentIndex, handleSelectPlanet]);
 
-  // Non-intrusive Keyboard Navigation
-  // - ArrowLeft / ArrowRight: Switch planet
-  // - Enter: Select / Focus
-  // - Escape: Return to overview / Close details
-  // - ArrowUp / ArrowDown: NORMAL BROWSER SCROLLING (Never intercepted!)
+  // Thrust controls
+  const handleThrustForward = useCallback(() => {
+    spaceAudio.playThrusterBurn(1.2);
+    setIsAccelerating(true);
+    setFlightVelocity(prev => Math.min(68.5, prev + 2.5));
+    setTimeout(() => setIsAccelerating(false), 1200);
+  }, []);
+
+  const handleThrustReverse = useCallback(() => {
+    spaceAudio.playBeep(450, 0.1);
+    setFlightVelocity(prev => Math.max(12.0, prev - 2.5));
+  }, []);
+
+  // Keyboard Navigation: Flight & Planet Switching
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Do not hijack typing in inputs or textareas
       const tag = e.target.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
-      if (e.key === 'ArrowRight') {
+      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+        // Only prevent default if within flight mode
+        e.preventDefault();
+        handleThrustForward();
+      } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+        e.preventDefault();
+        handleThrustReverse();
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
         e.preventDefault();
         handleNextPlanet();
-      } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
         e.preventDefault();
         handlePrevPlanet();
+      } else if (e.key === 'm' || e.key === 'M') {
+        setViewMode(prev => prev === 'overview' ? 'focus' : 'overview');
+      } else if (e.key === 'r' || e.key === 'R') {
+        setCameraMode('cockpit');
+        setViewMode('focus');
       } else if (e.key === 'Escape') {
         if (isDetailsExpanded) {
           setIsDetailsExpanded(false);
@@ -85,79 +131,55 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNextPlanet, handlePrevPlanet, handleReturnToOverview, isDetailsExpanded, viewMode]);
+  }, [handleNextPlanet, handlePrevPlanet, handleReturnToOverview, handleThrustForward, handleThrustReverse, isDetailsExpanded, viewMode]);
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-2 select-none font-sans space-y-3">
+    <div className="relative w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-2 select-none font-sans space-y-4">
 
       {/* ─────────────────────────────────────────────────────────────
-          1. 404 SPACE VOYAGE OBSERVATION DECK FRAME
-          Large immersive 3D space window occupying almost the entire screen
+          1. SPACESHEEP 404 MISSION STATUS STRIP
+          Personalized Commander Greeting & Audio Status
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-[#07111F]/90 border border-[rgba(180,210,235,0.18)] shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col justify-between min-h-[580px] lg:h-[82vh] lg:min-h-[640px]">
-
-        {/* ─── Top Floating Flight Instrument Bar ─── */}
-        <div className="absolute top-0 inset-x-0 z-20 p-3 sm:p-5 flex items-center justify-between gap-3 pointer-events-none">
-          {/* Top-Left: 404 Space Voyage Identity */}
-          <div className="pointer-events-auto flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0D1728]/85 backdrop-blur-md border border-[rgba(180,210,235,0.16)] shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-[#7AD7EA] animate-pulse" />
-            <span className="font-titan text-sm sm:text-base text-[#F4F7FC] tracking-wider">
-              404
-            </span>
-            <span className="text-[10px] font-oxanium text-[#7AD7EA] font-bold tracking-widest hidden sm:inline">
-              // SPACE VOYAGE
-            </span>
-            <span className="text-[9px] font-mono-tech text-[#98A7BD] hidden md:inline">
-              OBSERVATION DECK
-            </span>
+      <div className="px-4 py-2 rounded-2xl bg-[#0D1728]/85 border border-[rgba(180,210,235,0.18)] shadow-lg backdrop-blur-md flex flex-wrap items-center justify-between gap-3 text-xs font-mono-tech">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-[#7AD7EA]/15 border border-[#7AD7EA]/30 flex items-center justify-center text-[#7AD7EA]">
+            <Rocket size={14} />
           </div>
-
-          {/* Top-Center: Target Status Indicator */}
-          <div className="pointer-events-auto hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0D1728]/85 backdrop-blur-md border border-[rgba(180,210,235,0.16)] text-xs font-mono-tech text-[#C7D2E3] shadow-lg">
-            {viewMode === 'focus' ? (
-              <>
-                <span className="text-[#98A7BD]">DESTINATION:</span>
-                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: activeBody.color }} />
-                <strong className="text-[#F4F7FC] uppercase">{activeBody.name}</strong>
-                <span className="text-[#7AD7EA]">({activeBody.distanceAU} AU)</span>
-              </>
-            ) : (
-              <>
-                <Orbit size={14} className="text-[#7AD7EA]" />
-                <span className="text-[#F4F7FC] uppercase font-bold">SOLAR SYSTEM OVERVIEW</span>
-              </>
-            )}
-          </div>
-
-          {/* Top-Right: Discreet Overview & Comparison Controls */}
-          <div className="pointer-events-auto flex items-center gap-2">
-            {viewMode === 'focus' && (
-              <button
-                onClick={handleReturnToOverview}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#182A44]/90 hover:bg-[#1f3657] text-[#7AD7EA] border border-[#7AD7EA]/35 text-xs font-mono-tech font-bold transition-all shadow-md hover:scale-105"
-                title="Return to Solar System Overview (Esc)"
-              >
-                <Orbit size={13} />
-                <span className="hidden sm:inline">SOLAR SYSTEM OVERVIEW</span>
-                <span className="sm:hidden">OVERVIEW</span>
-              </button>
-            )}
-
-            <button
-              onClick={() => {
-                spaceAudio.playChirp();
-                setIsCompareOpen(true);
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#132238]/90 hover:bg-[#182A44] text-[#C7D2E3] hover:text-[#F4F7FC] border border-white/10 text-xs font-mono-tech font-bold transition-all shadow-md hover:scale-105"
-              title="Compare Planets Side-by-Side"
-            >
-              <ArrowRightLeft size={13} />
-              <span className="hidden sm:inline">COMPARE</span>
-            </button>
+          <div>
+            <span className="text-[#F4F7FC] font-bold">
+              WELCOME ABOARD, {commanderName.toUpperCase()}
+            </span>
+            <span className="text-[10px] text-[#7AD7EA] block">
+              SPACESHIP 404 // INTERPLANETARY NAVIGATION ACTIVE
+            </span>
           </div>
         </div>
 
-        {/* ─── Center 3D Space Viewport (Real-Time WebGL) ─── */}
+        {/* Center Mission Stage Indicator */}
+        <div className="hidden md:flex items-center gap-2 text-[11px] text-[#C7D2E3]">
+          <span className="w-2 h-2 rounded-full bg-[#33FF66] animate-pulse" />
+          <span>MISSION STAGE: <strong className="text-[#F4F7FC]">{activeBody.missionStage}</strong></span>
+        </div>
+
+        {/* Quick Link to AI Medical Center */}
+        <Link
+          to="/workspace"
+          onClick={() => spaceAudio.playChirp()}
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#182A44] hover:bg-[#1f3657] text-[#7AD7EA] border border-[#7AD7EA]/30 text-[10px] font-bold transition-all shadow-sm"
+        >
+          <Activity size={12} />
+          <span>ZERO-G MEDICAL SIMULATOR</span>
+          <ChevronRight size={12} />
+        </Link>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          2. MAIN 3D SPACESHIP 404 OBSERVATION DECK VIEWPORT
+          Dominates the screen (82vh) with HUD pillars and console
+      ───────────────────────────────────────────────────────────── */}
+      <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-[#07111F]/90 border border-[rgba(180,210,235,0.20)] shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col justify-between min-h-[580px] lg:h-[82vh] lg:min-h-[640px]">
+
+        {/* ─── 3D WebGL Canvas ─── */}
         <div className="relative w-full h-full flex-1">
           <ThreeJsSolarSystem
             selectedPlanetId={selectedPlanetId}
@@ -165,21 +187,31 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
             onHoverPlanet={setHoveredBody}
             viewMode={viewMode}
             onViewModeChange={setViewMode}
+            cameraMode={cameraMode}
+            onCameraModeChange={setCameraMode}
+            isAccelerating={isAccelerating}
+            flightVelocity={flightVelocity}
           />
-
-          {/* Subtle Viewport Watermark & Camera Prompt */}
-          <div className="absolute top-16 left-5 text-[9px] font-mono-tech text-[#7AD7EA]/40 tracking-widest pointer-events-none select-none hidden sm:block">
-            {viewMode === 'focus' ? (
-              <span>OBSERVING // {activeBody.name.toUpperCase()} (DRAG TO ROTATE 360° • SCROLL TO ZOOM)</span>
-            ) : (
-              <span>SOLAR SYSTEM TRANSIT // SELECT ANY PLANET TO EMBARK</span>
-            )}
-          </div>
         </div>
 
-        {/* ─── Floating Collapsible Planet Information Panel (Bottom-Right) ─── */}
+        {/* ─── Cockpit HUD Instruments & Window Pillars Overlay ─── */}
+        <CockpitModeHUD
+          cameraMode={cameraMode}
+          onCameraModeChange={setCameraMode}
+          targetBody={activeBody}
+          flightVelocity={flightVelocity}
+          isAccelerating={isAccelerating}
+          isMuted={isMuted}
+          onToggleMute={handleToggleMute}
+          onThrustForward={handleThrustForward}
+          onThrustReverse={handleThrustReverse}
+          onSteerLeft={handlePrevPlanet}
+          onSteerRight={handleNextPlanet}
+        />
+
+        {/* ─── Floating Collapsible Scientific & Medical Telemetry Deck ─── */}
         {viewMode === 'focus' && (
-          <div className="absolute bottom-16 sm:bottom-18 right-2 sm:right-5 z-20 max-w-sm w-[calc(100%-1rem)] sm:w-auto">
+          <div className="absolute bottom-16 sm:bottom-18 right-2 sm:right-5 z-20 max-w-md w-[calc(100%-1rem)] sm:w-auto pointer-events-auto">
             <AnimatePresence mode="wait">
               {!isDetailsExpanded ? (
                 /* Collapsed Minimal State (Takes virtually no screen space) */
@@ -188,7 +220,7 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 15 }}
-                  className="p-3 sm:p-3.5 rounded-2xl bg-[#0D1728]/90 backdrop-blur-xl border border-[rgba(180,210,235,0.18)] shadow-2xl flex items-center justify-between gap-3 text-xs font-mono-tech"
+                  className="p-3 sm:p-3.5 rounded-2xl bg-[#0D1728]/95 backdrop-blur-xl border border-[rgba(180,210,235,0.22)] shadow-2xl flex items-center justify-between gap-3 text-xs font-mono-tech"
                 >
                   <div className="flex items-center gap-2.5">
                     <span
@@ -224,21 +256,21 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
                     }}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#182A44] hover:bg-[#1f3657] text-[#7AD7EA] border border-[#7AD7EA]/30 text-[10px] font-bold transition-all shadow-sm"
                   >
-                    <span>DETAILS</span>
+                    <span>EXPLORE DATA</span>
                     <ChevronUp size={13} />
                   </button>
                 </motion.div>
               ) : (
-                /* Expanded Scientifically Grounded Facts Panel */
+                /* Expanded Dual-Tabbed Panel (Scientific Facts + Astronaut Health) */
                 <motion.div
                   key="expanded-panel"
                   initial={{ opacity: 0, y: 20, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20, scale: 0.96 }}
                   transition={{ duration: 0.25 }}
-                  className="p-4 sm:p-5 rounded-3xl bg-[#0D1728]/95 backdrop-blur-2xl border border-[rgba(180,210,235,0.22)] shadow-[0_20px_50px_rgba(0,0,0,0.85)] space-y-3.5 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/15"
+                  className="p-4 sm:p-5 rounded-3xl bg-[#0D1728]/95 backdrop-blur-2xl border border-[rgba(180,210,235,0.25)] shadow-[0_20px_50px_rgba(0,0,0,0.85)] space-y-3.5 max-h-[72vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/15 w-full sm:w-[420px]"
                 >
-                  {/* Panel Header */}
+                  {/* Header: Planet Identity & Close Button */}
                   <div className="flex items-center justify-between pb-2 border-b border-white/10">
                     <div className="flex items-center gap-2">
                       <span
@@ -257,83 +289,194 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
 
                     <button
                       onClick={() => {
-                        spaceAudio.playChirp();
+                        spaceAudio.playBeep(800, 0.05);
                         setIsDetailsExpanded(false);
                       }}
                       className="p-1.5 rounded-xl bg-[#132238] hover:bg-[#182A44] text-[#98A7BD] hover:text-[#F4F7FC] transition-colors"
-                      title="Collapse details panel (Esc)"
+                      title="Collapse details (Esc)"
                     >
                       <ChevronDown size={16} />
                     </button>
                   </div>
 
-                  {/* 4-Metric Scientific Grid */}
-                  <div className="grid grid-cols-2 gap-2 text-xs font-mono-tech">
-                    <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5">
-                      <span className="text-[9px] text-[#98A7BD] uppercase block">Diameter</span>
-                      <strong className="text-[#F4F7FC] text-xs">{activeBody.diameterKm}</strong>
-                      <span className="text-[8px] text-[#7AD7EA] block">{activeBody.diameterRelative}</span>
-                    </div>
+                  {/* Dual Tab Navigation (Science vs Astronaut Health) */}
+                  <div className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-[#132238]/80 text-xs font-mono-tech font-bold">
+                    <button
+                      onClick={() => {
+                        spaceAudio.playBeep(1050, 0.05);
+                        setActiveTab('science');
+                      }}
+                      className={`py-1.5 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                        activeTab === 'science'
+                          ? 'bg-[#182A44] text-[#7AD7EA] border border-[#7AD7EA]/40 shadow-sm'
+                          : 'text-[#98A7BD] hover:text-[#F4F7FC]'
+                      }`}
+                    >
+                      <Globe size={13} />
+                      <span>PLANETARY SCIENCE</span>
+                    </button>
 
-                    <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5">
-                      <span className="text-[9px] text-[#98A7BD] uppercase block">Surface Gravity</span>
-                      <strong className="text-[#F4F7FC] text-xs">{activeBody.gravityG} G</strong>
-                      <span className="text-[8px] text-[#7AD7EA] block">{activeBody.gravityMs}</span>
-                    </div>
-
-                    <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5">
-                      <span className="text-[9px] text-[#98A7BD] uppercase block">Mean Temperature</span>
-                      <strong className="text-[#F4F7FC] text-xs">{activeBody.meanTemp}</strong>
-                    </div>
-
-                    <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5">
-                      <span className="text-[9px] text-[#98A7BD] uppercase block">Orbital Period</span>
-                      <strong className="text-[#F4F7FC] text-xs">{activeBody.orbitalPeriod.split(' ')[0]} {activeBody.orbitalPeriod.split(' ')[1]}</strong>
-                    </div>
+                    <button
+                      onClick={() => {
+                        spaceAudio.playBeep(1050, 0.05);
+                        setActiveTab('health');
+                      }}
+                      className={`py-1.5 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                        activeTab === 'health'
+                          ? 'bg-[#182A44] text-[#E4783B] border border-[#E4783B]/40 shadow-sm'
+                          : 'text-[#98A7BD] hover:text-[#F4F7FC]'
+                      }`}
+                    >
+                      <Activity size={13} />
+                      <span>ASTRONAUT HEALTH</span>
+                    </button>
                   </div>
 
-                  {/* Atmosphere Description */}
-                  <div className="text-[11px] text-[#C7D2E3] leading-relaxed font-sans bg-[#132238]/50 p-2.5 rounded-xl border border-white/5">
-                    <strong className="text-[#7AD7EA] font-mono-tech text-[10px] block mb-0.5">ATMOSPHERIC COMPOSITION:</strong>
-                    <span>{activeBody.atmosphere}</span>
-                  </div>
+                  {/* Tab 1: Planetary Science & Discoveries */}
+                  {activeTab === 'science' && (
+                    <div className="space-y-3">
+                      {/* 4-Metric Scientific Grid */}
+                      <div className="grid grid-cols-2 gap-2 text-xs font-mono-tech">
+                        <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5">
+                          <span className="text-[9px] text-[#98A7BD] uppercase block">Diameter</span>
+                          <strong className="text-[#F4F7FC] text-xs">{activeBody.diameterKm}</strong>
+                          <span className="text-[8px] text-[#7AD7EA] block">{activeBody.diameterRelative}</span>
+                        </div>
 
-                  {/* Human Spaceflight Challenges */}
-                  <div className="p-2.5 rounded-xl bg-[#182A44]/80 border border-[#7AD7EA]/20 space-y-1.5 text-[11px] text-[#C7D2E3]">
-                    <div className="flex items-center gap-1.5">
-                      <ShieldAlert size={13} className="text-[#E4783B]" />
-                      <span className="text-[10px] font-mono-tech font-bold text-[#F4F7FC] uppercase">
-                        Human Exploration Challenges
-                      </span>
-                    </div>
-                    <div>
-                      <strong className="text-[#7AD7EA] font-mono-tech text-[9px]">Radiation: </strong>
-                      <span>{activeBody.astronautHazards.radiation}</span>
-                    </div>
-                    <div>
-                      <strong className="text-[#7AD7EA] font-mono-tech text-[9px]">Microgravity: </strong>
-                      <span>{activeBody.astronautHazards.microgravity}</span>
-                    </div>
-                  </div>
+                        <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5">
+                          <span className="text-[9px] text-[#98A7BD] uppercase block">Surface Gravity</span>
+                          <strong className="text-[#F4F7FC] text-xs">{activeBody.gravityG} G</strong>
+                          <span className="text-[8px] text-[#7AD7EA] block">{activeBody.gravityMs}</span>
+                        </div>
 
-                  {/* Scientific Summary Narrative */}
-                  <p className="text-[11px] text-[#98A7BD] leading-relaxed italic border-l-2 border-[#7AD7EA]/40 pl-2">
-                    "{activeBody.missionSummary}"
-                  </p>
+                        <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5">
+                          <span className="text-[9px] text-[#98A7BD] uppercase block">Mean Temperature</span>
+                          <strong className="text-[#F4F7FC] text-xs">{activeBody.meanTemp}</strong>
+                        </div>
 
-                  {/* Action Link to Workspace Simulation */}
-                  <Link
-                    to="/workspace"
-                    onClick={() => {
-                      spaceAudio.playChirp();
-                      if (setMissionDay) setMissionDay(activeBody.simulationDay);
-                    }}
-                    className="w-full px-4 py-2 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs font-mono-tech tracking-wider transition-all shadow-md hover:scale-[1.02] flex items-center justify-center gap-1.5 min-h-[38px]"
-                  >
-                    <Activity size={13} />
-                    <span>SIMULATE AT {activeBody.name.toUpperCase()}</span>
-                    <ChevronRight size={13} />
-                  </Link>
+                        <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5">
+                          <span className="text-[9px] text-[#98A7BD] uppercase block">Orbital Period</span>
+                          <strong className="text-[#F4F7FC] text-xs">{activeBody.orbitalPeriod.split(' ')[0]} {activeBody.orbitalPeriod.split(' ')[1]}</strong>
+                        </div>
+                      </div>
+
+                      {/* Atmospheric Composition */}
+                      <div className="text-[11px] text-[#C7D2E3] leading-relaxed font-sans bg-[#132238]/50 p-2.5 rounded-xl border border-white/5">
+                        <strong className="text-[#7AD7EA] font-mono-tech text-[10px] block mb-0.5">ATMOSPHERE:</strong>
+                        <span>{activeBody.atmosphere}</span>
+                      </div>
+
+                      {/* NASA Exploration Missions */}
+                      {activeBody.scientificMissions && (
+                        <div className="p-2.5 rounded-xl bg-[#132238]/60 border border-white/5 space-y-1.5">
+                          <span className="text-[10px] font-mono-tech text-[#7AD7EA] font-bold uppercase block">
+                            KEY NASA MISSIONS:
+                          </span>
+                          <ul className="space-y-1 text-[11px] text-[#C7D2E3] list-disc list-inside">
+                            {activeBody.scientificMissions.map((m, i) => (
+                              <li key={`m-${i}`}>{m}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Geological Highlights */}
+                      {activeBody.geologicalHighlights && (
+                        <div className="p-2.5 rounded-xl bg-[#132238]/60 border border-white/5 space-y-1.5">
+                          <span className="text-[10px] font-mono-tech text-[#7AD7EA] font-bold uppercase block">
+                            GEOLOGICAL HIGHLIGHTS:
+                          </span>
+                          <ul className="space-y-1 text-[11px] text-[#C7D2E3] list-disc list-inside">
+                            {activeBody.geologicalHighlights.map((g, i) => (
+                              <li key={`g-${i}`}>{g}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Tab 2: Astronaut Health Telemetry (Image 3 Inspiration) */}
+                  {activeTab === 'health' && (
+                    <div className="space-y-3">
+                      {/* Telemetry Metric Cards (Heart, O2, Temp, Bone Mass) */}
+                      <div className="grid grid-cols-2 gap-2 text-xs font-mono-tech">
+                        {/* Heart Rate & Waveform */}
+                        <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5 space-y-1">
+                          <div className="flex items-center justify-between text-[9px] text-[#98A7BD]">
+                            <span>HEART RATE</span>
+                            <Heart size={11} className="text-[#E4783B] animate-pulse" />
+                          </div>
+                          <div className="flex items-baseline gap-1">
+                            <strong className="text-[#F4F7FC] text-base">{activeBody.crewVitalsSimulation?.heartRate || 72}</strong>
+                            <span className="text-[9px] text-[#98A7BD]">BPM</span>
+                          </div>
+                          {/* Live animated SVG ECG waveform */}
+                          <svg className="w-full h-5 text-[#E4783B]" viewBox="0 0 100 20" fill="none">
+                            <path
+                              d="M 0 10 L 25 10 L 30 3 L 35 17 L 40 7 L 45 13 L 50 10 L 100 10"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                            />
+                          </svg>
+                        </div>
+
+                        {/* Body O2 Saturation */}
+                        <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5 space-y-1">
+                          <span className="text-[9px] text-[#98A7BD] uppercase block">BLOOD OXYGEN (SpO₂)</span>
+                          <strong className="text-[#7AD7EA] text-base">{activeBody.crewVitalsSimulation?.spo2 || '98.4%'}</strong>
+                          <span className="text-[8px] text-[#33FF66] block">NORMOBARIC AIR</span>
+                        </div>
+
+                        {/* Core Temperature */}
+                        <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5 space-y-1">
+                          <span className="text-[9px] text-[#98A7BD] uppercase block">CORE TEMP</span>
+                          <strong className="text-[#F4F7FC] text-base">{activeBody.crewVitalsSimulation?.bodyTemp || '37.0°C'}</strong>
+                          <span className="text-[8px] text-[#98A7BD] block">THERMAL REGULATED</span>
+                        </div>
+
+                        {/* Bone Mass Loss Rate */}
+                        <div className="p-2.5 rounded-xl bg-[#132238]/70 border border-white/5 space-y-1">
+                          <span className="text-[9px] text-[#98A7BD] uppercase block">BONE DENSITY LOSS</span>
+                          <strong className="text-[#E4783B] text-base">{activeBody.crewVitalsSimulation?.boneLossRate || '-1.2%/mo'}</strong>
+                          <span className="text-[8px] text-[#7AD7EA] block">ARED PROTOCOL REQ</span>
+                        </div>
+                      </div>
+
+                      {/* Radiation & NASA-STD-3001 Clinical Assessment */}
+                      <div className="p-2.5 rounded-xl bg-[#182A44]/80 border border-[#7AD7EA]/20 space-y-1.5 text-[11px] text-[#C7D2E3]">
+                        <div className="flex items-center gap-1.5">
+                          <ShieldAlert size={13} className="text-[#E4783B]" />
+                          <span className="text-[10px] font-mono-tech font-bold text-[#F4F7FC] uppercase">
+                            NASA CLINICAL HAZARD MATRIX:
+                          </span>
+                        </div>
+                        <div>
+                          <strong className="text-[#7AD7EA] font-mono-tech text-[9px]">Ionizing Radiation: </strong>
+                          <span>{activeBody.astronautHazards.radiation}</span>
+                        </div>
+                        <div>
+                          <strong className="text-[#7AD7EA] font-mono-tech text-[9px]">Neuro-Ocular (SANS): </strong>
+                          <span>{activeBody.astronautHazards.sansRisk}</span>
+                        </div>
+                      </div>
+
+                      {/* Action Link to Workspace Simulation */}
+                      <Link
+                        to="/workspace"
+                        onClick={() => {
+                          spaceAudio.playChirp();
+                          if (setMissionDay) setMissionDay(activeBody.simulationDay);
+                        }}
+                        className="w-full px-4 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs font-mono-tech tracking-wider transition-all shadow-md hover:scale-[1.02] flex items-center justify-center gap-1.5 min-h-[40px]"
+                      >
+                        <Activity size={13} />
+                        <span>LAUNCH MEDICAL SIMULATION FOR {activeBody.name.toUpperCase()}</span>
+                        <ChevronRight size={13} />
+                      </Link>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -354,7 +497,7 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
               }`}
             >
               <Orbit size={13} />
-              <span className="uppercase text-[11px]">ALL ORBITS</span>
+              <span className="uppercase text-[11px]">SOLAR SYSTEM MAP</span>
             </button>
 
             {/* Planet Destination Pills */}
@@ -380,19 +523,23 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
             })}
           </div>
 
-          {/* Minimal Keyboard Hint (Desktop) */}
+          {/* Minimal Keyboard Hint */}
           <div className="hidden lg:flex items-center gap-3 text-[9px] font-mono-tech text-[#98A7BD]/60">
-            <span>← / → SWITCH DESTINATION</span>
+            <span>← / → DESTINATIONS</span>
+            <span>•</span>
+            <span>↑ / W THRUST ACCELERATION</span>
             <span>•</span>
             <span>DRAG TO ORBIT 360°</span>
             <span>•</span>
-            <span>ESC SOLAR SYSTEM OVERVIEW</span>
+            <span>M MAP OVERVIEW</span>
+            <span>•</span>
+            <span>ESC OVERVIEW</span>
           </div>
         </div>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. COMPARISON MODAL (Discreet on-demand dialog)
+          3. COMPARISON MODAL
       ───────────────────────────────────────────────────────────── */}
       <PlanetComparisonModal
         isOpen={isCompareOpen}

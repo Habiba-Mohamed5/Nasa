@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import {
   Bot, Volume2, VolumeX, Maximize2, Menu, X,
-  Activity, ShieldAlert, Sparkles, ChevronRight
+  Activity, ShieldAlert, Sparkles, ChevronRight, Rocket, User
 } from 'lucide-react';
 import { spaceAudio } from '../utils/spaceAudio';
 
@@ -10,6 +10,8 @@ export default function Navbar({
   isMuted,
   toggleSound,
   toggleFullScreen,
+  commanderName = 'Explorer',
+  onOpenBoarding,
   onOpenAiDrawer,
   onOpenRisksModal
 }) {
@@ -105,6 +107,21 @@ export default function Navbar({
 
       {/* 3. Right Quick Tools Cluster */}
       <div className="flex items-center gap-1.5 sm:gap-2.5">
+        {/* Commander Callsign Badge / Boarding Modal Launcher */}
+        <button
+          onClick={() => {
+            spaceAudio.playChirp();
+            if (onOpenBoarding) onOpenBoarding();
+          }}
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#132238] hover:bg-[#182A44] border border-[rgba(180,210,235,0.2)] hover:border-[#7AD7EA]/40 font-mono-tech text-[10px] text-[#C7D2E3] hover:text-[#F4F7FC] transition-all min-h-[36px] shadow-sm"
+          title="Spaceship 404 Commander Profile"
+          aria-label="Spaceship 404 Commander Profile"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#7AD7EA] animate-pulse" />
+          <span className="text-[#7AD7EA] font-bold">CMD.</span>
+          <span className="truncate max-w-[85px]">{commanderName || 'EXPLORER'}</span>
+        </button>
+
         {/* Quick Launch AURA AI Surgeon */}
         <button
           onClick={() => {
@@ -233,6 +250,23 @@ export default function Navbar({
 
           {/* Quick Action Footer in Mobile Overlay */}
           <div className="pt-4 border-t border-[rgba(180,210,235,0.14)] flex flex-col gap-2.5">
+            <button
+              onClick={() => {
+                spaceAudio.playChirp();
+                setMobileMenuOpen(false);
+                if (onOpenBoarding) onOpenBoarding();
+              }}
+              className="w-full min-h-[46px] py-2.5 px-3 rounded-xl bg-[#132238] border border-[rgba(180,210,235,0.25)] text-[#F4F7FC] font-mono-tech text-xs tracking-wider flex items-center justify-between shadow-sm active:scale-95 transition-all"
+            >
+              <div className="flex items-center gap-2">
+                <Rocket size={15} className="text-[#7AD7EA]" />
+                <span>COMMANDER: <strong className="text-[#7AD7EA]">{commanderName || 'EXPLORER'}</strong></span>
+              </div>
+              <span className="text-[10px] text-[#98A7BD] uppercase font-bold px-2 py-0.5 rounded bg-[#7AD7EA]/10 border border-[#7AD7EA]/30">
+                BOARD 404
+              </span>
+            </button>
+
             <button
               onClick={() => {
                 spaceAudio.playChirp();

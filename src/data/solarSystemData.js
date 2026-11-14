@@ -1,6 +1,11 @@
 /**
  * Solar System Planetary Dataset for Spaceship 404
  * Scientifically grounded in NASA Planetary Fact Sheets, NASA-STD-3001 Vol 1 Rev B, and NASA HRP.
+ *
+ * Includes:
+ * - Precise astronomical dimensions, gravities, orbital/rotational periods, and atmospheres
+ * - Verified NASA exploration missions and geological highlights
+ * - Human spaceflight physiological responses and clinical risk metrics
  */
 
 export const CELESTIAL_BODIES = [
@@ -15,12 +20,12 @@ export const CELESTIAL_BODIES = [
     diameterRelative: '109x Earth',
     gravityG: 27.9,
     gravityMs: '274.0 m/s²',
-    orbitalPeriod: 'N/A (Galactic Orbit 230M yrs)',
+    orbitalPeriod: 'Galactic Orbit (~230M yrs)',
     rotationPeriod: '25-35 Earth Days (Differential)',
     temperatureRange: '5,500°C (Surface) / 15,000,000°C (Core)',
     meanTemp: '5,500°C',
     atmosphere: 'Hydrogen (73.4%), Helium (25.0%), Oxygen (0.8%), Carbon (0.3%)',
-    moons: 8, // Major planets
+    moons: 8,
     rings: false,
     color: '#FF8C00',
     accentColor: '#FFD700',
@@ -33,14 +38,35 @@ export const CELESTIAL_BODIES = [
     textureType: 'sun',
     nasaRiskLevel: 'LETHAL PROXIMITY',
     commDelayOneWay: '0.0 ms',
+    missionStage: 'Solar Monitoring & Space Weather Alert Zone',
+    scientificMissions: [
+      'SOHO (Solar & Heliospheric Observatory, 1995)',
+      'Solar Dynamics Observatory (SDO, 2010)',
+      'Parker Solar Probe (Closest approach 2024 - 6.1M km)'
+    ],
+    geologicalHighlights: [
+      'Photosphere granulation (convection cells ~1,000 km across)',
+      'Coronal Mass Ejections (CMEs) accelerating protons to relativistic speeds',
+      'Solar magnetic field 11-year solar cycle reversal'
+    ],
     astronautHazards: {
-      radiation: 'Massive Coronal Mass Ejections (CMEs) and Solar Particle Events (SPEs); fatal unshielded ionizing dose in minutes',
-      microgravity: 'Immense gravity gradient (27.9G) precludes close human proximity',
-      thermal: 'Extreme thermal radiation requiring active cryogenic heat shields even at 0.3 AU',
-      evaSuitRequirement: 'Human EVA impossible; robotic probes (Parker Solar Probe) with carbon-composite thermal protection only',
+      radiation: 'Massive Coronal Mass Ejections (CMEs) and Solar Particle Events (SPEs); fatal unshielded ionizing dose in minutes (>5,000 mSv).',
+      microgravity: 'Immense gravitational gradient (27.9G) precludes close human proximity.',
+      thermal: 'Extreme thermal radiation requiring active cryogenic heat shields even at 0.3 AU.',
+      evaSuitRequirement: 'Human EVA impossible; robotic carbon-composite thermal protection only.',
       sansRisk: 'N/A'
     },
-    missionSummary: 'The gravitational anchor and primary energy powerhouse of the solar system. Monitored continuously by NASA SOHO, SDO, and Parker Solar Probe to forecast deep space space-weather alerts.',
+    crewVitalsSimulation: {
+      heartRate: 98,
+      ecgStatus: 'Tachycardia Alert (Thermal Stress)',
+      spo2: '97.2%',
+      bodyTemp: '38.4°C',
+      radiationRate: '124.0 mSv/hr',
+      boneLossRate: 'N/A',
+      cabinPressure: '14.7 psi',
+      suitPressure: 'N/A'
+    },
+    missionSummary: 'The gravitational anchor and primary energy powerhouse of the solar system. Monitored continuously to forecast deep space space-weather alerts.',
     simulationDay: 180
   },
   {
@@ -55,8 +81,8 @@ export const CELESTIAL_BODIES = [
     gravityG: 0.38,
     gravityMs: '3.70 m/s²',
     orbitalPeriod: '88 Earth Days',
-    rotationPeriod: '58.6 Earth Days',
-    temperatureRange: '-180°C to +430°C',
+    rotationPeriod: '58.6 Earth Days (3:2 spin-orbit resonance)',
+    temperatureRange: '-180°C (Night) to +430°C (Day)',
     meanTemp: '+167°C',
     atmosphere: 'Trace exosphere (Oxygen 42%, Sodium 29%, Hydrogen 22%)',
     moons: 0,
@@ -72,21 +98,42 @@ export const CELESTIAL_BODIES = [
     textureType: 'mercury',
     nasaRiskLevel: 'EXTREME ENVIRONMENT',
     commDelayOneWay: '3.2 to 12.3 mins',
+    missionStage: 'Inner Solar System Exploration',
+    scientificMissions: [
+      'Mariner 10 (First flybys 1974-1975)',
+      'MESSENGER (Orbiter 2011-2015, confirmed water ice in polar craters)',
+      'BepiColombo (ESA/JAXA, orbital insertion expected 2026)'
+    ],
+    geologicalHighlights: [
+      'Caloris Basin (1,550 km impact basin formed ~3.8 billion years ago)',
+      'Lobate scarps (cliffs up to 3 km high caused by planetary thermal contraction)',
+      'Permanently shadowed polar craters containing pure water ice'
+    ],
     astronautHazards: {
-      radiation: 'High (Intense solar wind & unshielded cosmic rays; 10x Earth irradiance)',
-      microgravity: 'Low surface gravity (0.38G) causes chronic bone demineralization and cardiovascular deconditioning',
-      thermal: 'Extreme 600°C diurnal swings between day (+430°C) and night (-180°C)',
-      evaSuitRequirement: 'Heavy thermal barrier armor + active liquid heat-dissipation cooling loops',
-      sansRisk: 'Elevated cephalad fluid shift during deep transit; persistent intracranial pressure'
+      radiation: 'High (Intense solar wind & unshielded cosmic rays; 10x Earth irradiance).',
+      microgravity: 'Low surface gravity (0.38G) causes chronic bone demineralization (-1.2%/month) and cardiovascular deconditioning.',
+      thermal: 'Extreme 610°C diurnal swings between day (+430°C) and night (-180°C).',
+      evaSuitRequirement: 'Heavy thermal barrier armor + active liquid heat-dissipation cooling loops.',
+      sansRisk: 'Elevated cephalad fluid shift during deep transit; persistent intracranial pressure.'
     },
-    missionSummary: 'Explored by NASA Mariner 10 and MESSENGER; BepiColombo in transit. Human exploration requires subsurface lava tube habitats to shield against lethal solar radiation.',
+    crewVitalsSimulation: {
+      heartRate: 74,
+      ecgStatus: 'Normal Sinus Rhythm',
+      spo2: '98.5%',
+      bodyTemp: '37.1°C',
+      radiationRate: '1.82 mSv/day',
+      boneLossRate: '-1.18%/month',
+      cabinPressure: '14.7 psi',
+      suitPressure: '4.3 psi'
+    },
+    missionSummary: 'Explored by NASA Mariner 10 and MESSENGER. Human exploration requires subsurface lava tube habitats to shield against lethal solar radiation.',
     simulationDay: 90
   },
   {
     id: 'venus',
     name: 'Venus',
     arabicName: 'الزهرة',
-    type: 'Terrestrial / Super-Dense',
+    type: 'Terrestrial / Super-Dense Atmosphere',
     distanceAU: 0.72,
     distanceKm: '108.2M km',
     diameterKm: '12,104 km',
@@ -95,39 +142,60 @@ export const CELESTIAL_BODIES = [
     gravityMs: '8.87 m/s²',
     orbitalPeriod: '224.7 Earth Days',
     rotationPeriod: '243 Earth Days (Retrograde)',
-    temperatureRange: '+465°C constant',
+    temperatureRange: '+465°C constant (Runaway greenhouse effect)',
     meanTemp: '+465°C',
     atmosphere: 'Dense CO2 (96.5%), Nitrogen (3.5%), Sulfuric Acid aerosol clouds (93 bar pressure)',
     moons: 0,
     rings: false,
-    color: '#E3BB76',
-    accentColor: '#F5D79E',
-    colorHex: 0xe3bb76,
+    color: '#D4A373',
+    accentColor: '#E9C46A',
+    colorHex: 0xd4a373,
     radius3D: 1.15,
     orbitDistance3D: 14.5,
-    axialTilt: 3.09, // 177.3 deg retrograde
-    rotationSpeed: -0.003,
+    axialTilt: 3.10, // 177.3 deg
+    rotationSpeed: -0.002,
     orbitSpeed: 0.012,
     textureType: 'venus',
-    nasaRiskLevel: 'LETHAL CRUSH SURFACE',
+    nasaRiskLevel: 'CRITICAL HAZARD (SURFACE)',
     commDelayOneWay: '2.3 to 14.4 mins',
+    missionStage: 'Upper Atmospheric Cloud-Level Exploration',
+    scientificMissions: [
+      'Pioneer Venus & Magellan (Radar surface mapping 1990-1994)',
+      'Venus Express (ESA atmospheric dynamics 2006-2014)',
+      'DAVINCI & VERITAS (NASA upcoming atmospheric probe missions)'
+    ],
+    geologicalHighlights: [
+      'Maxwell Montes (Mountain massif rising 11 km above planetary datum)',
+      'Arachnoids & Coronae (circular volcanic-tectonic collapse structures)',
+      'Super-rotating cloud deck circling the planet every 4 Earth days'
+    ],
     astronautHazards: {
-      radiation: 'Atmosphere shields radiation, but atmospheric pressure (93 bar) crushes standard landers like a submarine',
-      microgravity: 'Near-Earth gravity (0.91G) preserves bone mineral density and cardiac output',
-      thermal: 'Runaway greenhouse heat melts lead, solder, and battery chemistries within minutes',
-      evaSuitRequirement: 'Surface EVA impossible; upper atmospheric cloud habitats (50km altitude, 1 bar, 30°C) theoretically viable',
-      sansRisk: 'Minimal due to near-1G gravity environment'
+      radiation: 'Atmosphere blocks GCR, but upper cloud layer has high UV irradiance.',
+      microgravity: '0.91G gravity prevents severe deconditioning; closest to Earth standard.',
+      thermal: 'Surface is +465°C; cloud tops at 55 km altitude maintain habitable 25°C and 1 bar pressure.',
+      evaSuitRequirement: 'Surface EVA impossible; cloud-layer aerostat habitats require sulfuric-acid-resistant Teflon/PTFE membranes.',
+      sansRisk: 'Minimal SANS risk due to near-Earth gravity gradient.'
     },
-    missionSummary: 'NASA Magellan and upcoming DAVINCI & VERITAS missions investigate runaway greenhouse tipping points. Upper cloud deck (50km) is the solar system’s most Earth-like ambient region.',
-    simulationDay: 140
+    crewVitalsSimulation: {
+      heartRate: 70,
+      ecgStatus: 'Normal Sinus Rhythm',
+      spo2: '99.0%',
+      bodyTemp: '36.9°C',
+      radiationRate: '0.62 mSv/day',
+      boneLossRate: '-0.15%/month',
+      cabinPressure: '14.7 psi',
+      suitPressure: '4.3 psi'
+    },
+    missionSummary: 'Explored by NASA Magellan radar mapping. NASA HAVOC studies propose manned lighter-than-air cloud cities in the temperate upper atmosphere.',
+    simulationDay: 120
   },
   {
     id: 'earth',
-    name: 'Earth & Moon',
-    arabicName: 'الأرض والقمر',
-    type: 'Terrestrial / Habitable Biosphere',
+    name: 'Earth',
+    arabicName: 'الأرض',
+    type: 'Terrestrial / Hydrosphere & Biosphere',
     distanceAU: 1.0,
-    distanceKm: '149.6M km (Base)',
+    distanceKm: '149.6M km (Baseline)',
     diameterKm: '12,742 km',
     diameterRelative: '1.00x Earth (Baseline)',
     gravityG: 1.00,
@@ -153,12 +221,33 @@ export const CELESTIAL_BODIES = [
     textureType: 'earth',
     nasaRiskLevel: 'NOMINAL BASELINE',
     commDelayOneWay: '0.000 ms (Ground)',
+    missionStage: 'Baseline Physiological Standard & Launch Origin',
+    scientificMissions: [
+      'Apollo Program (1969-1972 Lunar landings)',
+      'International Space Station (ISS, continuous crewed habitation since 2000)',
+      'Artemis Program (Deep-space transit architecture)'
+    ],
+    geologicalHighlights: [
+      'Active plate tectonics and mantle convection driving continental drift',
+      'Global protective magnetosphere deflecting solar wind & cosmic radiation',
+      'Vast liquid surface oceans covering 70.8% of planetary surface'
+    ],
     astronautHazards: {
-      radiation: 'Protected by magnetosphere Van Allen belts; ISS crew receives ~0.5 mSv/day',
-      microgravity: '1.0G Earth standard; provides physiological baseline for all NASA-STD-3001 calibrations',
-      thermal: 'Regulated by atmospheric convective and radiative balance',
-      evaSuitRequirement: 'Standard NASA EMU / xEMU for Low Earth Orbit and Artemis lunar surface operations',
-      sansRisk: 'Zero on Earth ground; reference standard for optical coherence tomography (OCT)'
+      radiation: 'Protected by magnetosphere Van Allen belts; ISS crew receives ~0.5 mSv/day.',
+      microgravity: '1.0G Earth standard; provides physiological baseline for all NASA-STD-3001 calibrations.',
+      thermal: 'Regulated by atmospheric greenhouse balance and oceanic heat sinks.',
+      evaSuitRequirement: 'Standard NASA EMU / xEMU for Low Earth Orbit and Artemis lunar operations.',
+      sansRisk: 'Zero on Earth ground; reference standard for optical coherence tomography (OCT).'
+    },
+    crewVitalsSimulation: {
+      heartRate: 68,
+      ecgStatus: 'Normal Baseline Sinus Rhythm',
+      spo2: '99.5%',
+      bodyTemp: '36.8°C',
+      radiationRate: '0.003 mSv/day',
+      boneLossRate: '0.00%/month',
+      cabinPressure: '14.7 psi',
+      suitPressure: '4.3 psi'
     },
     missionSummary: 'Human home world and baseline standard for all bio-digital twin telemetry. Artemis Program launches from Kennedy Space Center toward Lunar Gateway and Mars.',
     simulationDay: 1
@@ -178,29 +267,51 @@ export const CELESTIAL_BODIES = [
     rotationPeriod: '24h 37m (Sol)',
     temperatureRange: '-125°C to +20°C',
     meanTemp: '-60°C',
-    atmosphere: 'Carbon Dioxide (95.3%), Nitrogen (2.6%), Argon (1.9%) at 0.006 bar (610 Pa)',
-    moons: 2, // Phobos & Deimos
+    atmosphere: 'Carbon Dioxide (95.3%), Nitrogen (2.6%), Argon (1.9%), Oxygen (0.16%) at 0.006 bar',
+    moons: 2,
     rings: false,
     color: '#E4783B',
-    accentColor: '#FF9457',
+    accentColor: '#FF8C00',
     colorHex: 0xe4783b,
     radius3D: 0.95,
     orbitDistance3D: 26.5,
     axialTilt: 0.44, // 25.2 deg
-    rotationSpeed: 0.0075,
+    rotationSpeed: 0.007,
     orbitSpeed: 0.008,
     textureType: 'mars',
     nasaRiskLevel: 'CRITICAL MISSION TARGET',
-    commDelayOneWay: '4.3 to 22.4 mins',
+    commDelayOneWay: '4.3 to 22.4 mins (DSN Latency)',
+    missionStage: 'Primary Deep Space Crewed Transit & Surface Operations',
+    scientificMissions: [
+      'Viking 1 & 2 (1976 First successful soft landings & biology experiments)',
+      'Mars Reconnaissance Orbiter (MRO, 2006 High-resolution surface cartography)',
+      'Curiosity (2012 Gale Crater ancient lake bed exploration)',
+      'Perseverance & Ingenuity (2021 Jezero Crater biosignature search & first helicopter flights)'
+    ],
+    geologicalHighlights: [
+      'Olympus Mons (21.9 km shield volcano, tallest in solar system, 2.5x Mount Everest)',
+      'Valles Marineris (4,000 km grand canyon rift system, 7 km deep)',
+      'Permafrost regolith rich in toxic reactive calcium perchlorates (0.5-1.0%)'
+    ],
     astronautHazards: {
-      radiation: 'No global magnetic dipole; cumulative transit dose ~600 mSv approaching NASA 3% REID cancer threshold',
-      microgravity: '0.38G surface gravity induces persistent osteopenia (-1.2%/month) and cardiovascular deconditioning',
-      thermal: 'Extreme diurnal chills requiring habitat radioisotope thermoelectric power (RTG)',
-      evaSuitRequirement: 'Dust-resistant pressurized suits protecting against toxic reactive calcium perchlorate',
-      sansRisk: 'High risk of irreversible optic disc edema and choroidal folds during transit; autonomous AURA guidance required'
+      radiation: 'No global magnetic dipole; cumulative transit dose ~600 mSv approaching NASA 3% REID lifetime cancer limit.',
+      microgravity: '0.38G surface gravity induces persistent osteopenia (-1.2%/month) and cardiovascular deconditioning.',
+      thermal: 'Daily diurnal swings from -125°C to +20°C requiring multi-layer insulation (MLI).',
+      evaSuitRequirement: 'Dust-resistant pressurized suits protecting against toxic reactive calcium perchlorates.',
+      sansRisk: 'High risk: continuous intracranial pressure elevation and optic disc edema during the 6-month transit.'
+    },
+    crewVitalsSimulation: {
+      heartRate: 72,
+      ecgStatus: 'Normal Sinus Rhythm (Telemetry Monitored)',
+      spo2: '98.4%',
+      bodyTemp: '37.0°C',
+      radiationRate: '1.64 mSv/day',
+      boneLossRate: '-1.22%/month',
+      cabinPressure: '14.7 psi',
+      suitPressure: '4.3 psi'
     },
     missionSummary: 'Primary target of 21st century deep space human flight. AstroVitals solves the 22.4-minute communication latency by providing autonomous offline clinical intelligence.',
-    simulationDay: 500
+    simulationDay: 180
   },
   {
     id: 'jupiter',
@@ -208,44 +319,66 @@ export const CELESTIAL_BODIES = [
     arabicName: 'المشتري',
     type: 'Gas Giant / Jovian System',
     distanceAU: 5.20,
-    distanceKm: '778.6M km',
+    distanceKm: '778.5M km',
     diameterKm: '139,820 km',
     diameterRelative: '11.0x Earth',
     gravityG: 2.53,
     gravityMs: '24.79 m/s²',
     orbitalPeriod: '11.86 Earth Years',
-    rotationPeriod: '9h 56m',
-    temperatureRange: '-145°C (1 bar level)',
+    rotationPeriod: '9h 56m (Fastest in Solar System)',
+    temperatureRange: '-145°C (Cloud tops) to +24,000°C (Core)',
     meanTemp: '-110°C',
-    atmosphere: 'Molecular Hydrogen (89.8%), Helium (10.2%), traces of Methane & Ammonia',
-    moons: 95, // Europa, Ganymede, Callisto, Io
+    atmosphere: 'Hydrogen (89.8%), Helium (10.2%), Methane (0.3%), Ammonia (0.026%)',
+    moons: 95,
     rings: true,
-    color: '#C88B58',
-    accentColor: '#E8A875',
-    colorHex: 0xc88b58,
-    radius3D: 2.6,
-    orbitDistance3D: 37.0,
-    axialTilt: 0.054, // 3.1 deg
-    rotationSpeed: 0.016, // Rapid rotation
+    color: '#D4A373',
+    accentColor: '#C89D7C',
+    colorHex: 0xd4a373,
+    radius3D: 2.8,
+    orbitDistance3D: 35.0,
+    axialTilt: 0.05,
+    rotationSpeed: 0.016,
     orbitSpeed: 0.005,
     textureType: 'jupiter',
-    nasaRiskLevel: 'EXTREME RADIATION BELT',
-    commDelayOneWay: '33 to 53 mins',
+    nasaRiskLevel: 'EXTREME RADIATION BELTS',
+    commDelayOneWay: '33.2 to 53.2 mins',
+    missionStage: 'Outer Solar System Flagship Mission (Europa / Ganymede)',
+    scientificMissions: [
+      'Voyager 1 & 2 (1979 Discovered active volcanism on Io and thin ring system)',
+      'Galileo (1995-2003 First Jovian orbiter & atmospheric entry probe)',
+      'Juno (2016-present Polar orbiter mapping deep interior structure)',
+      'Europa Clipper (NASA 2024 launch to investigate subsurface ocean habitability)'
+    ],
+    geologicalHighlights: [
+      'Great Red Spot (Centuries-old anticyclonic storm larger than Earth with 430 km/h winds)',
+      'Liquid metallic hydrogen mantle generating a magnetosphere 20,000x stronger than Earth',
+      'Four Galilean Moons (Io, Europa, Ganymede, Callisto)'
+    ],
     astronautHazards: {
-      radiation: 'Massive synchrotron radiation belt delivers fatal ionizing doses within hours inside Europa orbit',
-      microgravity: 'Excessive surface gravity (2.53G) would overwhelm human musculoskeletal system; no solid surface',
-      thermal: 'Cryogenic cloud deck with immense internal metallic hydrogen heat core (24,000°C)',
-      evaSuitRequirement: 'Human entry into Jovian atmosphere impossible; robotic orbiters (Juno, Europa Clipper) only',
-      sansRisk: 'Extreme cardiovascular workload if exposed to Jovian gravity equivalent'
+      radiation: 'Extreme: Jovian radiation belts trap ultra-relativistic electrons; fatal human dose within hours near Europa.',
+      microgravity: '2.53G surface gravity at 1 bar level; human descent impossible.',
+      thermal: 'Cryogenic cloud deck (-110°C) transitioning to thousands of degrees under extreme pressure.',
+      evaSuitRequirement: 'Heavy bismuth/tantalum radiation vault shielding required on any crewed orbital vessel.',
+      sansRisk: 'Severe during multi-year transit without artificial gravity spin centrifuge.'
     },
-    missionSummary: 'The gravitational anchor of the outer solar system. NASA Juno and Europa Clipper investigate potential subsurface oceanic habitability on Europa.',
-    simulationDay: 750
+    crewVitalsSimulation: {
+      heartRate: 78,
+      ecgStatus: 'Normal Sinus Rhythm (Shielded Cabin)',
+      spo2: '98.1%',
+      bodyTemp: '37.1°C',
+      radiationRate: '3.45 mSv/day (Vault Protected)',
+      boneLossRate: '-1.35%/month',
+      cabinPressure: '14.7 psi',
+      suitPressure: '4.3 psi'
+    },
+    missionSummary: 'King of planets holding 71% of all planetary mass. Explored by NASA Juno; NASA Europa Clipper investigates subsurface ocean habitability.',
+    simulationDay: 300
   },
   {
     id: 'saturn',
     name: 'Saturn',
     arabicName: 'زحل',
-    type: 'Gas Giant / Ringed Jewel',
+    type: 'Gas Giant / Ringed World',
     distanceAU: 9.58,
     distanceKm: '1.43B km',
     diameterKm: '116,460 km',
@@ -254,40 +387,61 @@ export const CELESTIAL_BODIES = [
     gravityMs: '10.44 m/s²',
     orbitalPeriod: '29.45 Earth Years',
     rotationPeriod: '10h 33m',
-    temperatureRange: '-178°C (1 bar level)',
+    temperatureRange: '-178°C (Cloud tops)',
     meanTemp: '-140°C',
-    atmosphere: 'Molecular Hydrogen (96.3%), Helium (3.25%), Methane (0.45%)',
-    moons: 146, // Titan, Enceladus
+    atmosphere: 'Hydrogen (96.3%), Helium (3.25%), Methane (0.45%), Ammonia (0.01%)',
+    moons: 146,
     rings: true,
-    hasRings: true,
     ringInner3D: 3.2,
-    ringOuter3D: 6.2,
-    color: '#E0C895',
-    accentColor: '#F7E4B5',
-    colorHex: 0xe0c895,
-    radius3D: 2.2,
-    orbitDistance3D: 48.0,
-    axialTilt: 0.46, // 26.7 deg
+    ringOuter3D: 5.6,
+    color: '#E2BF7D',
+    accentColor: '#F5E6BE',
+    colorHex: 0xe2bf7d,
+    radius3D: 2.3,
+    orbitDistance3D: 44.0,
+    axialTilt: 0.47, // 26.7 deg
     rotationSpeed: 0.014,
     orbitSpeed: 0.0035,
+    hasRings: true,
     textureType: 'saturn',
-    nasaRiskLevel: 'DEEP SPACE LATENCY',
-    commDelayOneWay: '68 to 88 mins',
+    nasaRiskLevel: 'DEEP COLD / LONG TRANSIT',
+    commDelayOneWay: '68.0 to 90.0 mins',
+    missionStage: 'Kronian System & Titan/Enceladus Exploration',
+    scientificMissions: [
+      'Pioneer 11 & Voyager 1/2 (1979-1981 First detailed ring structure maps)',
+      'Cassini-Huygens (NASA/ESA 2004-2017 Landed Huygens on Titan; discovered Enceladus cryogeysers)',
+      'Dragonfly (NASA New Frontiers mission to fly rotorcraft across Titan)'
+    ],
+    geologicalHighlights: [
+      'Iconic 282,000 km wide ring system made of 99% pure water ice particles from micron to meters',
+      'Cassini Division (4,800 km gap cleared by orbital resonance with moon Mimas)',
+      'Hexagonal jet stream storm system encircling the North Pole'
+    ],
     astronautHazards: {
-      radiation: 'Less intense than Jupiter, but transit through ring plane presents hypervelocity micrometeoroid hazards',
-      microgravity: 'Equivalent to 1.07G near cloud tops, but lack of solid crust precludes landings',
-      thermal: 'Cryogenic outer atmosphere with intense atmospheric shearing winds (1,800 km/h)',
-      evaSuitRequirement: 'Autonomous EVA required for exploration of water-ice plumes on Enceladus or Titan atmosphere',
-      sansRisk: 'Multi-year flight transit causes extreme cumulative neuro-ocular structural changes'
+      radiation: 'Trapped radiation belts absorbed by ring material; lower ionizing environment than Jupiter.',
+      microgravity: '1.07G at 1 bar level; near-Earth equivalent, but multi-year transit requires artificial gravity.',
+      thermal: 'Cryogenic deep freeze (-178°C); solar flux is only 1% of Earth level requiring RTG nuclear power.',
+      evaSuitRequirement: 'Cryogenic thermal management suits with redundant radioisotope thermoelectric heaters.',
+      sansRisk: 'Very high risk of chronic optic sheath expansion over 3+ year voyage.'
     },
-    missionSummary: 'NASA Cassini explored Saturn and discovered water ice plumes erupting from Enceladus. NASA Dragonfly mission launches toward hydrocarbon seas on Titan in 2028.',
-    simulationDay: 920
+    crewVitalsSimulation: {
+      heartRate: 71,
+      ecgStatus: 'Normal Sinus Rhythm',
+      spo2: '98.7%',
+      bodyTemp: '36.9°C',
+      radiationRate: '1.42 mSv/day',
+      boneLossRate: '-1.28%/month',
+      cabinPressure: '14.7 psi',
+      suitPressure: '4.3 psi'
+    },
+    missionSummary: 'Crown jewel of the solar system. Explored for 13 years by NASA Cassini. Moons Titan and Enceladus represent high-priority astrobiology targets.',
+    simulationDay: 400
   },
   {
     id: 'uranus',
     name: 'Uranus',
     arabicName: 'أورانوس',
-    type: 'Ice Giant / Tilted World',
+    type: 'Ice Giant / Tilted Rotator',
     distanceAU: 19.2,
     distanceKm: '2.87B km',
     diameterKm: '50,724 km',
@@ -295,41 +449,62 @@ export const CELESTIAL_BODIES = [
     gravityG: 0.89,
     gravityMs: '8.69 m/s²',
     orbitalPeriod: '84.0 Earth Years',
-    rotationPeriod: '17h 14m (97.8° Axial Tilt)',
-    temperatureRange: '-224°C',
-    meanTemp: '-216°C',
-    atmosphere: 'Hydrogen (82.5%), Helium (15.2%), Methane (2.3% giving vibrant aquamarine hue)',
+    rotationPeriod: '17h 14m (Retrograde)',
+    temperatureRange: '-224°C (Coldest planetary atmosphere in Solar System)',
+    meanTemp: '-195°C',
+    atmosphere: 'Hydrogen (82.5%), Helium (15.2%), Methane (2.3% giving cyan hue)',
     moons: 28,
     rings: true,
-    hasRings: true,
-    ringInner3D: 2.2,
-    ringOuter3D: 3.4,
+    ringInner3D: 2.1,
+    ringOuter3D: 2.9,
     color: '#72D9DD',
-    accentColor: '#9BE8EC',
+    accentColor: '#9BF6FF',
     colorHex: 0x72d9dd,
-    radius3D: 1.55,
-    orbitDistance3D: 59.0,
-    axialTilt: 1.71, // 97.8 deg (rolls on its side)
+    radius3D: 1.6,
+    orbitDistance3D: 53.0,
+    axialTilt: 1.71, // 97.8 deg (Rotates on its side)
     rotationSpeed: -0.010,
     orbitSpeed: 0.0025,
+    hasRings: true,
     textureType: 'uranus',
-    nasaRiskLevel: 'CRYOGENIC ISOLATION',
-    commDelayOneWay: '2.4 to 2.7 hours',
+    nasaRiskLevel: 'EXTREME COMM LATENCY',
+    commDelayOneWay: '2.5 to 3.0 Hours',
+    missionStage: 'Outer Ice Giant System Flyby & Orbital Survey',
+    scientificMissions: [
+      'Voyager 2 (1986 Historic flyby discovering 10 moons and 2 rings)',
+      'James Webb Space Telescope (JWST 2023 Detailed infrared ring system imaging)',
+      'Uranus Orbiter and Probe (UOP, NASA Decadal Survey highest flagship priority)'
+    ],
+    geologicalHighlights: [
+      'Unique 98° axial tilt caused by ancient giant protoplanetary impact',
+      'Complex system of 13 narrow dark rings made of carbonaceous organic boulders',
+      'Chaotic fractured cliff geology of moon Miranda (Verona Rupes 20 km cliff)'
+    ],
     astronautHazards: {
-      radiation: 'Solar wind is diluted, but Galactic Cosmic Rays (GCR) flux is at peak interstellar levels',
-      microgravity: '0.89G at 1-bar atmosphere; multi-decade travel time demands cryogenic stasis or generation vessels',
-      thermal: 'Coldest planetary atmosphere in the Solar System (-224°C)',
-      evaSuitRequirement: 'Next-generation thermal aerogel containment for ultra-cryogenic operations',
-      sansRisk: 'Unprecedented mission duration requires artificial gravity centrifuges'
+      radiation: 'Low GCR shielding in open outer solar system; cosmic ray dose requires thick polyethylene shields.',
+      microgravity: '0.89G equivalent surface gravity; 6-year minimum transit necessitates long-term countermeasures.',
+      thermal: '-224°C record cold; complete reliance on high-density fission reactor power.',
+      evaSuitRequirement: 'Extreme cryogenic protection with heated umbilical life support.',
+      sansRisk: 'Maximum critical tier: requires advanced autonomous CDSS for diagnostic autonomy without Earth contact.'
     },
-    missionSummary: 'Visited once by NASA Voyager 2 in 1986. Priority target for NASA Decadal Survey flagship orbiter to study ice giant interior dynamics and rings.',
-    simulationDay: 1200
+    crewVitalsSimulation: {
+      heartRate: 69,
+      ecgStatus: 'Normal Sinus Rhythm (Autonomous AI CDSS Active)',
+      spo2: '98.8%',
+      bodyTemp: '37.0°C',
+      radiationRate: '1.75 mSv/day',
+      boneLossRate: '-1.30%/month',
+      cabinPressure: '14.7 psi',
+      suitPressure: '4.3 psi'
+    },
+    missionSummary: 'The sideways-spinning Ice Giant. NASA Planetary Decadal Survey ranks a Uranus Orbiter and Probe (UOP) as the highest priority flagship mission.',
+    simulationDay: 480
   },
   {
     id: 'neptune',
     name: 'Neptune',
-    arabicName: 'نبتون',
-    type: 'Ice Giant / Supersonic Frontier',
+    arabicName: 'نيبتون',
+    type: 'Ice Giant / Supersonic Winds',
     distanceAU: 30.1,
     distanceKm: '4.50B km',
     diameterKm: '49,244 km',
@@ -337,34 +512,51 @@ export const CELESTIAL_BODIES = [
     gravityG: 1.14,
     gravityMs: '11.15 m/s²',
     orbitalPeriod: '164.8 Earth Years',
-    rotationPeriod: '16h 06m',
+    rotationPeriod: '16h 6m',
     temperatureRange: '-218°C',
-    meanTemp: '-214°C',
-    atmosphere: 'Hydrogen (80%), Helium (19%), Methane (1.5%) with supersonic dark storm vortices',
-    moons: 16, // Triton
+    meanTemp: '-201°C',
+    atmosphere: 'Hydrogen (80.0%), Helium (19.0%), Methane (1.5% creating deep azure blue)',
+    moons: 16,
     rings: true,
-    color: '#3E66F5',
-    accentColor: '#6B8CFF',
-    colorHex: 0x3e66f5,
-    radius3D: 1.5,
-    orbitDistance3D: 70.0,
+    color: '#274687',
+    accentColor: '#4361EE',
+    colorHex: 0x274687,
+    radius3D: 1.55,
+    orbitDistance3D: 62.0,
     axialTilt: 0.49, // 28.3 deg
     rotationSpeed: 0.011,
     orbitSpeed: 0.0018,
     textureType: 'neptune',
-    nasaRiskLevel: 'BOUNDARY OF INTERSTELLAR SPACE',
-    commDelayOneWay: '4.1 to 4.2 hours',
+    nasaRiskLevel: 'BOUNDARY OF INTERSTELLAR TRANSIT',
+    commDelayOneWay: '4.1 to 4.2 Hours (Each Way)',
+    missionStage: 'Kuiper Belt Frontier & Triton Cryovolcanism Investigation',
+    scientificMissions: [
+      'Voyager 2 (1989 First flyby, discovered Great Dark Spot and geysers on moon Triton)',
+      'Hubble & James Webb (Continuous atmospheric wind tracking and ring imaging)'
+    ],
+    geologicalHighlights: [
+      'Supersonic jet winds reaching 2,160 km/h (fastest atmospheric winds recorded in solar system)',
+      'Captured retrograde Kuiper Belt dwarf planet moon Triton with active nitrogen geysers',
+      'Internal thermal heat source radiating 2.6x more energy than it absorbs from Sun'
+    ],
     astronautHazards: {
-      radiation: 'Deep space cosmic background radiation; zero planetary magnetic shielding',
-      microgravity: '1.14G; communication latency of over 4 hours renders Earth command loops completely useless',
-      thermal: 'Vigorous internal heat core powering 2,100 km/h supersonic methane jet streams',
-      evaSuitRequirement: 'Cryo-hardened pressurized armor suited for nitrogen geyser ops on moon Triton',
-      sansRisk: 'Maximum theoretical exposure to microgravity and deep-space cranial pressure'
+      radiation: 'Completely unshielded from galactic cosmic rays (GCR); 4-hour communication latency.',
+      microgravity: '1.14G provides strong physiological gravity gradient at cloud level.',
+      thermal: 'Cryogenic nitrogen and methane atmosphere (-201°C).',
+      evaSuitRequirement: 'Cryogenic armor suits; EVA operations on Triton nitrogen ice geyser plains.',
+      sansRisk: 'Critical latency: 8.4-hour round-trip radio signal mandates fully autonomous AURA medical interventions.'
     },
-    missionSummary: 'The outermost major planet of the solar system. Voyager 2 revealed dynamic storm systems and cryovolcanism on Triton, which orbits retrograde and is a captured Kuiper Belt object.',
-    simulationDay: 1500
+    crewVitalsSimulation: {
+      heartRate: 70,
+      ecgStatus: 'Normal Sinus Rhythm (Autonomous AI Active)',
+      spo2: '98.6%',
+      bodyTemp: '36.9°C',
+      radiationRate: '1.80 mSv/day',
+      boneLossRate: '-1.32%/month',
+      cabinPressure: '14.7 psi',
+      suitPressure: '4.3 psi'
+    },
+    missionSummary: 'The outermost major planet, shrouded in supersonic methane storms. Gateway to the Kuiper Belt and interstellar space.',
+    simulationDay: 500
   }
 ];
-
-// Compatibility export alias
-export const SOLAR_SYSTEM_PLANETS = CELESTIAL_BODIES.filter(b => b.id !== 'sun');

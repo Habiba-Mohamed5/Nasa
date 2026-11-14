@@ -23,14 +23,14 @@ export default function GlobalCosmicBackground() {
 
       {/* ─────────────────────────────────────────────────────────────
           2. Static Authentic Space Starfield Image Layer (Hardware Accelerated)
-          Subtle & atmospheric (30% opacity) for high readability across all pages
+          Subtle & atmospheric (38% opacity, calibrated +25%) for balanced cosmic depth
       ───────────────────────────────────────────────────────────── */}
       <picture className="absolute inset-0 w-full h-full pointer-events-none">
         <source srcSet={assetPath('cosmic_deep_space_starfield.webp')} type="image/webp" />
         <img
           src={assetPath('cosmic_deep_space_starfield.jpg')}
           alt=""
-          className="w-full h-full object-cover object-center opacity-30 mix-blend-screen"
+          className="w-full h-full object-cover object-center opacity-38 mix-blend-screen"
           loading="eager"
           decoding="async"
         />

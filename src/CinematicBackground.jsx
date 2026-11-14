@@ -67,15 +67,15 @@ export default function CinematicBackground() {
       />
 
       {/* ─────────────────────────────────────────────────────────────
-          Layer 3: Static Authentic Starfield Artwork (Tuned Density)
-          Reduced opacity & contrast for elegant, comfortable readability
+          Layer 3: Static Authentic Starfield Artwork (Tuned Density +25%)
+          Controlled 25% increase in visible star presence for rich astronomical depth
       ───────────────────────────────────────────────────────────── */}
       <picture className="absolute inset-0 w-full h-full pointer-events-none">
         <source srcSet={assetPath('cosmic_deep_space_starfield.webp')} type="image/webp" />
         <img
           src={assetPath('cosmic_deep_space_starfield.jpg')}
           alt=""
-          className="w-full h-full object-cover object-center opacity-40 mix-blend-screen"
+          className="w-full h-full object-cover object-center opacity-52 mix-blend-screen"
           loading="eager"
           decoding="async"
         />

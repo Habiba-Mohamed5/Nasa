@@ -20,6 +20,7 @@ import NotFoundPage from './pages/NotFoundPage';
 
 import AiFlightSurgeonDrawer from './AiFlightSurgeonDrawer';
 import NasaRiskScenariosModal, { NASA_SCENARIOS } from './NasaRiskScenariosModal';
+import BoardingModal from './components/BoardingModal';
 import { MISSION_PHASES } from './UserJourneyStepper';
 import { spaceAudio } from './utils/spaceAudio';
 import GlobalCosmicBackground from './components/GlobalCosmicBackground';
@@ -38,6 +39,15 @@ export default function App() {
   const [isAiDrawerOpen, setIsAiDrawerOpen] = useState(false);
   const [isScenariosOpen, setIsScenariosOpen] = useState(false);
   const [activeScenario, setActiveScenario] = useState(null);
+  const [isBoardingOpen, setIsBoardingOpen] = useState(false);
+  const [commanderName, setCommanderName] = useState(() => {
+    return localStorage.getItem('spaceship_404_commander_name') || 'Commander';
+  });
+
+  // Auto-close boarding modal on route change
+  React.useEffect(() => {
+    setIsBoardingOpen(false);
+  }, [location.pathname]);
 
   // Dynamic Telemetry Calculation
   const telemetry = useMemo(() => {
@@ -121,6 +131,8 @@ export default function App() {
             isMuted={isMuted}
             toggleSound={toggleSound}
             toggleFullScreen={toggleFullScreen}
+            commanderName={commanderName}
+            onOpenBoarding={() => setIsBoardingOpen(true)}
             onOpenAiDrawer={() => setIsAiDrawerOpen(true)}
             onOpenRisksModal={() => setIsScenariosOpen(true)}
           />
@@ -150,6 +162,8 @@ export default function App() {
                 isMuted={isMuted}
                 toggleSound={toggleSound}
                 toggleFullScreen={toggleFullScreen}
+                commanderName={commanderName}
+                onOpenBoarding={() => setIsBoardingOpen(true)}
                 onOpenAiDrawer={() => setIsAiDrawerOpen(true)}
                 onOpenRisksModal={() => setIsScenariosOpen(true)}
               />
@@ -234,6 +248,14 @@ export default function App() {
           setActiveScenario(sc);
           setCountermeasureApplied(false);
         }}
+      />
+
+      {/* Spaceship 404 Boarding Modal */}
+      <BoardingModal
+        isOpen={isBoardingOpen}
+        onClose={() => setIsBoardingOpen(false)}
+        currentName={commanderName}
+        onNameUpdated={(name) => setCommanderName(name)}
       />
     </div>
   );
