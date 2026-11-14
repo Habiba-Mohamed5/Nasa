@@ -100,8 +100,48 @@
   animation: astronautFloat 6s ease-in-out infinite;
 }
 
+@keyframes starTwinkleFast {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 0.95; transform: scale(1.2); }
+}
+
+@keyframes starTwinkleSlow {
+  0%, 100% { opacity: 0.25; transform: scale(0.9); }
+  50% { opacity: 0.85; transform: scale(1.1); }
+}
+
+@keyframes beaconPulse {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes scrollIndicatorBob {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(5px); opacity: 1; }
+}
+
+.animate-twinkle-fast {
+  animation: starTwinkleFast 3s ease-in-out infinite;
+}
+
+.animate-twinkle-slow {
+  animation: starTwinkleSlow 5.5s ease-in-out infinite;
+}
+
+.animate-beacon-pulse {
+  animation: beaconPulse 4s ease-in-out infinite;
+}
+
+.animate-scroll-bob {
+  animation: scrollIndicatorBob 2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-astronaut-float {
+  .animate-astronaut-float,
+  .animate-twinkle-fast,
+  .animate-twinkle-slow,
+  .animate-beacon-pulse,
+  .animate-scroll-bob {
     animation: none !important;
   }
 }

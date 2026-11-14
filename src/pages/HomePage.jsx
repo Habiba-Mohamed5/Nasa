@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   Bot, Activity, Zap, CheckCircle2, Eye, ShieldAlert,
   ArrowRight, Radio, Compass, Sliders, ChevronRight
@@ -34,16 +35,31 @@ export default function HomePage({
   const [activeHeroIndicator, setActiveHeroIndicator] = useState('01');
   const [astronautAsset, setAstronautAsset] = useState('reference');
 
+  // Creative Scroll & Parallax Hooks
+  const { scrollY } = useScroll();
+  const astronautParallaxY = useTransform(scrollY, [0, 500], [0, 50]);
+  const titleParallaxY = useTransform(scrollY, [0, 450], [0, -25]);
+  const heroCardOpacity = useTransform(scrollY, [0, 650], [1, 0.75]);
+
+  const scrollToSection = (id) => {
+    spaceAudio.playChirp();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
-    <div className="space-y-8 sm:space-y-12">
+    <div className="space-y-10 sm:space-y-16">
       {/* ─────────────────────────────────────────────────────────────
           1. MAIN CINEMATIC HERO COMPOSITION
           Responsive Architecture:
           - Desktop (lg:): Exact Dribbble reference composition (Astronaut on left, Title on right, 01/02/03 on far right, 3 columns bottom).
           - Mobile/Tablet (< lg): Vertical, intentional art direction (Title top, Astronaut center stage, Buttons, 3-block grid).
       ───────────────────────────────────────────────────────────── */}
-      <section
+      <motion.section
         id="hero"
+        style={{ opacity: heroCardOpacity }}
         className="relative w-full rounded-2xl sm:rounded-[36px] overflow-hidden cinematic-card-bg border border-[rgba(180,210,235,0.14)] shadow-[0_30px_80px_rgba(0,0,0,0.85)] flex flex-col justify-between min-h-[620px] lg:h-[88vh] lg:min-h-[720px] lg:max-h-[920px]"
       >
         {/* Layer 0: Planetary Crescent & Constellation Lines */}
@@ -63,8 +79,11 @@ export default function HomePage({
         ───────────────────────────────────────────────────────────── */}
         <div className="hidden lg:flex relative z-20 flex-1 items-center justify-between px-8 lg:px-14 overflow-hidden py-4">
           
-          {/* Left Photographic Subject: The Space Astronaut */}
-          <div className="absolute left-0 bottom-0 top-0 w-[48%] max-w-[560px] pointer-events-none select-none flex items-end justify-start animate-astronaut-float">
+          {/* Left Photographic Subject: The Space Astronaut with Parallax Float */}
+          <motion.div
+            style={{ y: astronautParallaxY }}
+            className="absolute left-0 bottom-0 top-0 w-[48%] max-w-[560px] pointer-events-none select-none flex items-end justify-start animate-astronaut-float"
+          >
             {visualMode === 'cinematic' ? (
               <div className="relative w-full h-[95%] flex items-end justify-start">
                 <img
@@ -88,10 +107,13 @@ export default function HomePage({
                 />
               </div>
             )}
-          </div>
+          </motion.div>
 
           {/* Center-Right Hero Content: Titan Display Typography & Copy */}
-          <div className="relative z-30 ml-auto w-[50%] lg:w-[47%] xl:w-[46%] flex flex-col justify-center pl-4 lg:pl-8 pr-3 lg:pr-8">
+          <motion.div
+            style={{ y: titleParallaxY }}
+            className="relative z-30 ml-auto w-[50%] lg:w-[47%] xl:w-[46%] flex flex-col justify-center pl-4 lg:pl-8 pr-3 lg:pr-8"
+          >
             {/* Display Headline in Titan One */}
             <h1 className="font-titan text-5xl lg:text-[60px] xl:text-[76px] 2xl:text-[86px] text-[#F4F7FC] uppercase leading-[0.92] tracking-tight drop-shadow-2xl select-none">
               SPACE<br />
@@ -136,7 +158,7 @@ export default function HomePage({
                 View: {visualMode === 'cinematic' ? 'Photo' : '3D Zero-G'}
               </button>
             </div>
-          </div>
+          </motion.div>
 
           {/* Far Right Edge: Numbered State Indicator (01, 02, 03) */}
           <div className="relative z-30 flex flex-col items-center gap-3 text-xs font-mono-tech pl-4 select-none shrink-0">
@@ -195,7 +217,7 @@ export default function HomePage({
             <h1 className="font-titan text-3xl sm:text-4xl md:text-5xl text-[#F4F7FC] uppercase leading-[0.95] tracking-tight drop-shadow-2xl">
               SPACE ASTRONAUT
             </h1>
-            <p className="text-[11px] sm:text-xs text-[#C7D2E3] font-sans leading-relaxed px-2">
+            <p className="text-[#C7D2E3] text-xs sm:text-sm font-sans leading-relaxed px-2 font-normal">
               The Ongoing Discovery And Exploration Of Celestial Structures In Outer Space By Means Of Continuously Evolving Space Technology.
             </p>
           </div>
@@ -350,13 +372,35 @@ export default function HomePage({
             />
           </div>
         </div>
-      </section>
+
+        {/* ─────────────────────────────────────────────────────────────
+            Layer 4: Creative Floating Scroll Cue (Desktop)
+        ───────────────────────────────────────────────────────────── */}
+        <div
+          onClick={() => scrollToSection('readiness')}
+          className="hidden xl:flex absolute bottom-2 left-1/2 -translate-x-1/2 z-40 items-center gap-2 cursor-pointer group py-1 px-3.5 rounded-full bg-[#07111F]/80 border border-[rgba(180,210,235,0.18)] hover:border-[#7AD7EA]/50 backdrop-blur-md transition-all shadow-lg hover:shadow-[0_0_20px_rgba(122,215,234,0.25)]"
+          title="Scroll down to explore Autonomous Deep Space Healthcare"
+        >
+          <div className="w-1.5 h-1.5 rounded-full bg-[#7AD7EA] animate-ping" />
+          <span className="text-[10px] font-mono-tech text-[#C7D2E3] group-hover:text-[#7AD7EA] tracking-wider transition-colors">
+            SCROLL TO EXPLORE MISSION READINESS
+          </span>
+          <span className="text-xs text-[#7AD7EA] group-hover:translate-y-0.5 transition-transform">↓</span>
+        </div>
+      </motion.section>
 
       {/* ─────────────────────────────────────────────────────────────
           2. PLATFORM OVERVIEW & ARCHITECTURAL HIGHLIGHTS
-          Mobile-friendly 1-col on phone, 2-col on tablet, 4-col on desktop
+          Framer Motion Scroll Entrance + Staggered Feature Cards
       ───────────────────────────────────────────────────────────── */}
-      <section id="readiness" className="px-3 sm:px-8 max-w-7xl mx-auto space-y-6">
+      <motion.section
+        id="readiness"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 px-3 sm:px-8 max-w-7xl mx-auto space-y-6 pt-2"
+      >
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-[rgba(180,210,235,0.14)] pb-5">
           <div>
             <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-widest block mb-1">
@@ -371,11 +415,33 @@ export default function HomePage({
           </p>
         </div>
 
-        {/* 4 Feature Pillar Cards */}
-        <div id="features" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* 4 Feature Pillar Cards with Staggered Entrance & Hover Lift */}
+        <motion.div
+          id="features"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.12,
+                delayChildren: 0.05
+              }
+            }
+          }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        >
           {/* Card 1: AURA */}
-          <div className="p-5 rounded-2xl bg-[#132238]/90 backdrop-blur-md border border-[rgba(180,210,235,0.14)] hover:border-[#7E78C9]/60 hover:shadow-[0_10px_30px_rgba(7,17,31,0.8),0_0_20px_rgba(126,120,201,0.2)] transition-all space-y-3 group">
-            <div className="w-10 h-10 rounded-xl bg-[#7E78C9]/20 border border-[#7E78C9]/40 flex items-center justify-center text-[#7E78C9]">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 30, scale: 0.98 },
+              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="p-5 rounded-2xl bg-[#132238]/85 backdrop-blur-xl border border-[rgba(180,210,235,0.14)] hover:border-[#7E78C9]/60 hover:shadow-[0_15px_35px_rgba(7,17,31,0.85),0_0_25px_rgba(126,120,201,0.25)] hover:-translate-y-1 transition-all duration-300 space-y-3 group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-[#7E78C9]/20 border border-[#7E78C9]/40 flex items-center justify-center text-[#7E78C9] group-hover:scale-110 transition-transform">
               <Bot size={20} />
             </div>
             <h3 className="text-sm font-bold text-[#F4F7FC] group-hover:text-[#7E78C9] transition-colors font-sans">
@@ -388,11 +454,17 @@ export default function HomePage({
               <span>Inspect AI Core</span>
               <ArrowRight size={12} />
             </Link>
-          </div>
+          </motion.div>
 
           {/* Card 2: Bio-Digital Twin */}
-          <div className="p-5 rounded-2xl bg-[#132238]/90 backdrop-blur-md border border-[rgba(180,210,235,0.14)] hover:border-[#7AD7EA]/60 hover:shadow-[0_10px_30px_rgba(7,17,31,0.8),0_0_20px_rgba(122,215,234,0.2)] transition-all space-y-3 group">
-            <div className="w-10 h-10 rounded-xl bg-[#7AD7EA]/15 border border-[#7AD7EA]/30 flex items-center justify-center text-[#7AD7EA]">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 30, scale: 0.98 },
+              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="p-5 rounded-2xl bg-[#132238]/85 backdrop-blur-xl border border-[rgba(180,210,235,0.14)] hover:border-[#7AD7EA]/60 hover:shadow-[0_15px_35px_rgba(7,17,31,0.85),0_0_25px_rgba(122,215,234,0.25)] hover:-translate-y-1 transition-all duration-300 space-y-3 group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-[#7AD7EA]/15 border border-[#7AD7EA]/30 flex items-center justify-center text-[#7AD7EA] group-hover:scale-110 transition-transform">
               <Activity size={20} />
             </div>
             <h3 className="text-sm font-bold text-[#F4F7FC] group-hover:text-[#7AD7EA] transition-colors font-sans">
@@ -405,11 +477,17 @@ export default function HomePage({
               <span>View Live Telemetry</span>
               <ArrowRight size={12} />
             </Link>
-          </div>
+          </motion.div>
 
           {/* Card 3: Countermeasures */}
-          <div className="p-5 rounded-2xl bg-[#132238]/90 backdrop-blur-md border border-[rgba(180,210,235,0.14)] hover:border-[#E4783B]/60 hover:shadow-[0_10px_30px_rgba(7,17,31,0.8),0_0_20px_rgba(228,120,59,0.2)] transition-all space-y-3 group">
-            <div className="w-10 h-10 rounded-xl bg-[#E4783B]/15 border border-[#E4783B]/30 flex items-center justify-center text-[#E4783B]">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 30, scale: 0.98 },
+              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="p-5 rounded-2xl bg-[#132238]/85 backdrop-blur-xl border border-[rgba(180,210,235,0.14)] hover:border-[#E4783B]/60 hover:shadow-[0_15px_35px_rgba(7,17,31,0.85),0_0_25px_rgba(228,120,59,0.25)] hover:-translate-y-1 transition-all duration-300 space-y-3 group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-[#E4783B]/15 border border-[#E4783B]/30 flex items-center justify-center text-[#E4783B] group-hover:scale-110 transition-transform">
               <Zap size={20} />
             </div>
             <h3 className="text-sm font-bold text-[#F4F7FC] group-hover:text-[#E4783B] transition-colors font-sans">
@@ -422,11 +500,17 @@ export default function HomePage({
               <span>Protocol Specs</span>
               <ArrowRight size={12} />
             </Link>
-          </div>
+          </motion.div>
 
           {/* Card 4: DSN Simulation */}
-          <div className="p-5 rounded-2xl bg-[#132238]/90 backdrop-blur-md border border-[rgba(180,210,235,0.14)] hover:border-[#7AD7EA]/60 hover:shadow-[0_10px_30px_rgba(7,17,31,0.8),0_0_20px_rgba(122,215,234,0.2)] transition-all space-y-3 group">
-            <div className="w-10 h-10 rounded-xl bg-[#7AD7EA]/15 border border-[#7AD7EA]/30 flex items-center justify-center text-[#7AD7EA]">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 30, scale: 0.98 },
+              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="p-5 rounded-2xl bg-[#132238]/85 backdrop-blur-xl border border-[rgba(180,210,235,0.14)] hover:border-[#7AD7EA]/60 hover:shadow-[0_15px_35px_rgba(7,17,31,0.85),0_0_25px_rgba(122,215,234,0.25)] hover:-translate-y-1 transition-all duration-300 space-y-3 group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-[#7AD7EA]/15 border border-[#7AD7EA]/30 flex items-center justify-center text-[#7AD7EA] group-hover:scale-110 transition-transform">
               <Radio size={20} />
             </div>
             <h3 className="text-sm font-bold text-[#F4F7FC] group-hover:text-[#7AD7EA] transition-colors font-sans">
@@ -439,15 +523,23 @@ export default function HomePage({
               <span>How It Works</span>
               <ArrowRight size={12} />
             </Link>
-          </div>
-        </div>
-      </section>
+          </motion.div>
+        </motion.div>
+      </motion.section>
 
       {/* ─────────────────────────────────────────────────────────────
           3. CALL TO ACTION: EXPLORE MISSION COCKPIT
+          Smooth Entrance with Luminous Border Treatment
       ───────────────────────────────────────────────────────────── */}
-      <section id="cockpit-cta" className="px-3 sm:px-8 max-w-7xl mx-auto">
-        <div className="p-6 sm:p-10 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#132238] via-[#182A44] to-[#132238] border border-[rgba(180,210,235,0.18)] shadow-2xl flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
+      <motion.section
+        id="cockpit-cta"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 px-3 sm:px-8 max-w-7xl mx-auto pb-4"
+      >
+        <div className="p-6 sm:p-10 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#132238]/90 via-[#182A44]/95 to-[#132238]/90 backdrop-blur-xl border border-[rgba(180,210,235,0.20)] hover:border-[#7AD7EA]/40 shadow-[0_20px_50px_rgba(7,17,31,0.9),0_0_30px_rgba(122,215,234,0.1)] transition-all flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
           <div className="space-y-2">
             <h3 className="font-titan text-lg sm:text-2xl text-[#F4F7FC] uppercase">
               READY TO COMMENCE MISSION READINESS EVALUATION?
@@ -461,7 +553,7 @@ export default function HomePage({
             <Link
               to="/workspace"
               onClick={() => spaceAudio.playChirp()}
-              className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)] min-h-[46px] flex items-center justify-center"
+              className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)] min-h-[46px] flex items-center justify-center hover:scale-105"
             >
               LAUNCH MISSION CONTROL
             </Link>
@@ -473,7 +565,7 @@ export default function HomePage({
             </Link>
           </div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }
