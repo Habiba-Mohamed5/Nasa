@@ -12,6 +12,7 @@ import {
 import { CREW_MEMBERS } from '../data/nasaKnowledgeBase';
 import { spaceAudio } from '../utils/spaceAudio';
 import { assetPath } from '../utils/assetPath';
+import RecordedTelemetry from '../components/RecordedTelemetry';
 
 export default function WorkspacePage({
   telemetry,
@@ -163,6 +164,7 @@ export default function WorkspacePage({
           <NeuroOcularSANSWidget
             telemetry={telemetry}
           />
+          <RecordedTelemetry />
         </div>
 
         {/* Center Column (col-span-5): 3D Zero-G Astronaut Viewport */}

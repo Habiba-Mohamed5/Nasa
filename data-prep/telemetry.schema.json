@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ASTRA Telemetry v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "data_source",
+    "stream_id",
+    "time_basis",
+    "units",
+    "provenance",
+    "samples"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "data_source": {
+      "enum": [
+        "RECORDED",
+        "SIMULATED",
+        "LIVE"
+      ]
+    },
+    "stream_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "time_basis": {
+      "const": "ELAPSED_SECONDS"
+    },
+    "units": {
+      "type": "object",
+      "required": [
+        "heart_rate",
+        "pulse_rate",
+        "respiratory_rate",
+        "spo2"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "heart_rate": {
+          "const": "beats/min"
+        },
+        "pulse_rate": {
+          "const": "beats/min"
+        },
+        "respiratory_rate": {
+          "const": "breaths/min"
+        },
+        "spo2": {
+          "const": "%"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "samples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "elapsed_s",
+          "source_offset_s",
+          "values",
+          "sensor_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "elapsed_s": {
+            "type": "number",
+            "minimum": 0
+          },
+          "source_offset_s": {
+            "type": ["number", "null"]
+          },
+          "values": {
+            "type": "object",
+            "required": [
+              "heart_rate",
+              "pulse_rate",
+              "respiratory_rate",
+              "spo2"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "heart_rate": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "pulse_rate": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "respiratory_rate": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "spo2": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "sensor_status": {
+            "enum": [
+              "UNKNOWN",
+              "SIMULATED_DROPOUT",
+              "CONNECTED",
+              "DISCONNECTED"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "data_source": {
+            "const": "RECORDED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "required": [
+              "source_url",
+              "dataset_version",
+              "cohort",
+              "sha256"
+            ],
+            "properties": {
+              "source_url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "dataset_version": {
+                "type": "string"
+              },
+              "cohort": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "data_source": {
+            "const": "SIMULATED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "required": [
+              "parent_stream_id",
+              "scenario",
+              "scenario_version",
+              "sha256"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "data_source": {
+            "const": "LIVE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "required": [
+              "device_id"
+            ],
+            "properties": {
+              "device_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
