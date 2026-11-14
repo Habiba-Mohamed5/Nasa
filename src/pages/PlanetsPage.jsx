@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Orbit, Compass, ArrowRightLeft, ZoomIn, ZoomOut,
-  RotateCcw, ChevronUp, ChevronDown, ChevronRight,
+  RotateCcw, ChevronUp, ChevronDown, ChevronRight, ChevronLeft,
   Activity, ShieldAlert, Thermometer, Globe, Info, Sparkles,
   Heart, Radio, Gauge, User, Volume2, VolumeX, Rocket
 } from 'lucide-react';
@@ -32,13 +32,16 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
   const [viewMode, setViewMode] = useState('focus'); // 'focus' | 'overview'
   const [cameraMode, setCameraMode] = useState('cockpit'); // 'cockpit' | 'external' | 'orbit'
   const [isCompareOpen, setIsCompareOpen] = useState(false);
-  const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
+  // Expanded Details Dossier (Open by default on desktop ≥ 1024px for immediate scientific immersion, compact on mobile)
+  const [isDetailsExpanded, setIsDetailsExpanded] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 1024);
   const [activeTab, setActiveTab] = useState('science'); // 'science' | 'health'
 
   // Flight simulation state
   const [flightVelocity, setFlightVelocity] = useState(34.8);
   const [isAccelerating, setIsAccelerating] = useState(false);
   const [isMuted, setIsMuted] = useState(spaceAudio.isMuted);
+  const [isFlightFocused, setIsFlightFocused] = useState(false);
+  const [transitMessage, setTransitMessage] = useState(null);
 
   // Commander Personalization
   const commanderName = localStorage.getItem('spaceship_404_commander_name') || 'Commander';
@@ -54,15 +57,18 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
 
   // Destination Selection
   const handleSelectPlanet = useCallback((id) => {
+    const target = CELESTIAL_BODIES.find(b => b.id === id);
     spaceAudio.playChirp();
     spaceAudio.playThrusterBurn(1.8);
     setSelectedPlanetId(id);
     setViewMode('focus');
     setIsAccelerating(true);
     setFlightVelocity(prev => prev + 4.2);
+    setTransitMessage(`INTERPLANETARY TRANSIT // TARGET: ${target?.name?.toUpperCase()}`);
     setTimeout(() => {
       setIsAccelerating(false);
       spaceAudio.playDockingChime();
+      setTimeout(() => setTransitMessage(null), 1800);
     }, 2000);
   }, []);
 
@@ -96,25 +102,34 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
     setFlightVelocity(prev => Math.max(12.0, prev - 2.5));
   }, []);
 
-  // Keyboard Navigation: Flight & Planet Switching
+  // Keyboard Navigation: Non-Hijacking Arrow & Flight Keys
   useEffect(() => {
     const handleKeyDown = (e) => {
       const tag = e.target.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
+      // Only intercept ArrowUp/ArrowDown when the flight viewport is explicitly hovered/focused
+      // (respects normal page scroll outside active flight mode)
       if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
-        // Only prevent default if within flight mode
-        e.preventDefault();
-        handleThrustForward();
+        if (isFlightFocused || e.key === 'w' || e.key === 'W') {
+          e.preventDefault();
+          handleThrustForward();
+        }
       } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
-        e.preventDefault();
-        handleThrustReverse();
+        if (isFlightFocused || e.key === 's' || e.key === 'S') {
+          e.preventDefault();
+          handleThrustReverse();
+        }
       } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-        e.preventDefault();
-        handleNextPlanet();
+        if (isFlightFocused || e.key === 'd' || e.key === 'D') {
+          e.preventDefault();
+          handleNextPlanet();
+        }
       } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-        e.preventDefault();
-        handlePrevPlanet();
+        if (isFlightFocused || e.key === 'a' || e.key === 'A') {
+          e.preventDefault();
+          handlePrevPlanet();
+        }
       } else if (e.key === 'm' || e.key === 'M') {
         setViewMode(prev => prev === 'overview' ? 'focus' : 'overview');
       } else if (e.key === 'r' || e.key === 'R') {
@@ -131,7 +146,7 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNextPlanet, handlePrevPlanet, handleReturnToOverview, handleThrustForward, handleThrustReverse, isDetailsExpanded, viewMode]);
+  }, [handleNextPlanet, handlePrevPlanet, handleReturnToOverview, handleThrustForward, handleThrustReverse, isDetailsExpanded, isFlightFocused, viewMode]);
 
   return (
     <div className="relative w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-2 select-none font-sans space-y-4">
@@ -177,7 +192,28 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
           2. MAIN 3D SPACESHIP 404 OBSERVATION DECK VIEWPORT
           Dominates the screen (82vh) with HUD pillars and console
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-[#07111F]/90 border border-[rgba(180,210,235,0.20)] shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col justify-between min-h-[580px] lg:h-[82vh] lg:min-h-[640px]">
+      <div
+        onMouseEnter={() => setIsFlightFocused(true)}
+        onMouseLeave={() => setIsFlightFocused(false)}
+        className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-[#07111F]/90 border border-[rgba(180,210,235,0.20)] shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col justify-between min-h-[580px] lg:h-[82vh] lg:min-h-[640px]"
+      >
+
+        {/* ─── Interplanetary Transit HUD Notification Banner ─── */}
+        <AnimatePresence>
+          {transitMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.94 }}
+              transition={{ duration: 0.3 }}
+              className="absolute top-16 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-full bg-[#0D1728]/95 border border-[#7AD7EA]/40 text-xs font-mono-tech text-[#7AD7EA] shadow-[0_0_25px_rgba(122,215,234,0.3)] flex items-center gap-2 pointer-events-none select-none backdrop-blur-md"
+            >
+              <Rocket size={14} className="animate-pulse text-[#E4783B]" />
+              <span className="font-bold tracking-wide">{transitMessage}</span>
+              <span className="text-[10px] text-[#33FF66] font-semibold">● VECTOR LOCKED</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* ─── 3D WebGL Canvas ─── */}
         <div className="relative w-full h-full flex-1">
@@ -396,9 +432,40 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
                     </div>
                   )}
 
-                  {/* Tab 2: Astronaut Health Telemetry (Image 3 Inspiration) */}
+                  {/* Tab 2: Astronaut Health Telemetry (NASA EVA HUD & Biometrics) */}
                   {activeTab === 'health' && (
-                    <div className="space-y-3">
+                    <div className="space-y-2.5">
+                      {/* Active Crew Comms Channels (Image 7 Reference: Christina & Thomas) */}
+                      <div className="grid grid-cols-2 gap-2 text-xs font-mono-tech">
+                        <div className="p-2 rounded-xl bg-[#0D1728]/90 border border-white/10 flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#33FF66] animate-pulse" />
+                            <span className="text-[10px] text-[#F4F7FC] font-bold">CDR. Christina</span>
+                          </div>
+                          {/* Animated Voice Equalizer */}
+                          <div className="flex items-end gap-0.5 h-3">
+                            <span className="w-0.5 h-full bg-[#E4783B] animate-pulse" />
+                            <span className="w-0.5 h-2 bg-[#E4783B] animate-pulse delay-75" />
+                            <span className="w-0.5 h-3 bg-[#E4783B] animate-pulse delay-150" />
+                            <span className="w-0.5 h-1 bg-[#E4783B]" />
+                          </div>
+                        </div>
+
+                        <div className="p-2 rounded-xl bg-[#0D1728]/90 border border-white/10 flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#7AD7EA] animate-pulse" />
+                            <span className="text-[10px] text-[#F4F7FC] font-bold">MS. Thomas</span>
+                          </div>
+                          {/* Animated Voice Equalizer */}
+                          <div className="flex items-end gap-0.5 h-3">
+                            <span className="w-0.5 h-2 bg-[#7AD7EA] animate-pulse" />
+                            <span className="w-0.5 h-3 bg-[#7AD7EA] animate-pulse delay-100" />
+                            <span className="w-0.5 h-1.5 bg-[#7AD7EA] animate-pulse delay-200" />
+                            <span className="w-0.5 h-2.5 bg-[#7AD7EA]" />
+                          </div>
+                        </div>
+                      </div>
+
                       {/* Telemetry Metric Cards (Heart, O2, Temp, Bone Mass) */}
                       <div className="grid grid-cols-2 gap-2 text-xs font-mono-tech">
                         {/* Heart Rate & Waveform */}
@@ -412,7 +479,7 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
                             <span className="text-[9px] text-[#98A7BD]">BPM</span>
                           </div>
                           {/* Live animated SVG ECG waveform */}
-                          <svg className="w-full h-5 text-[#E4783B]" viewBox="0 0 100 20" fill="none">
+                          <svg className="w-full h-4 text-[#E4783B]" viewBox="0 0 100 20" fill="none">
                             <path
                               d="M 0 10 L 25 10 L 30 3 L 35 17 L 40 7 L 45 13 L 50 10 L 100 10"
                               stroke="currentColor"
@@ -441,6 +508,22 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
                           <span className="text-[9px] text-[#98A7BD] uppercase block">BONE DENSITY LOSS</span>
                           <strong className="text-[#E4783B] text-base">{activeBody.crewVitalsSimulation?.boneLossRate || '-1.2%/mo'}</strong>
                           <span className="text-[8px] text-[#7AD7EA] block">ARED PROTOCOL REQ</span>
+                        </div>
+                      </div>
+
+                      {/* Suit & Environmental Life Support Specs (Image 7 Reference) */}
+                      <div className="grid grid-cols-3 gap-1.5 text-[10px] font-mono-tech">
+                        <div className="p-2 rounded-lg bg-[#132238]/50 border border-white/5">
+                          <span className="text-[8px] text-[#98A7BD] block">SUIT PRES.</span>
+                          <strong className="text-[#F4F7FC]">4.3 PSI</strong>
+                        </div>
+                        <div className="p-2 rounded-lg bg-[#132238]/50 border border-white/5">
+                          <span className="text-[8px] text-[#98A7BD] block">AZOTE (N₂)</span>
+                          <strong className="text-[#7AD7EA]">5.9 KG</strong>
+                        </div>
+                        <div className="p-2 rounded-lg bg-[#132238]/50 border border-white/5">
+                          <span className="text-[8px] text-[#98A7BD] block">EVA BATTERY</span>
+                          <strong className="text-[#33FF66]">89%</strong>
                         </div>
                       </div>
 
@@ -485,55 +568,78 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
 
         {/* ─── Bottom Minimal Destination Navigation Bar ─── */}
         <div className="absolute bottom-0 inset-x-0 z-20 p-2 sm:p-3 bg-gradient-to-t from-[#07111F] via-[#07111F]/90 to-transparent flex flex-col items-center gap-1.5 pointer-events-auto">
-          {/* Planet Pills Track */}
-          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto max-w-full px-2 py-1 scrollbar-none">
-            {/* Overview Pill */}
+          {/* Planet Pills Track with Directional Arrow Controls */}
+          <div className="flex items-center gap-1.5 sm:gap-2 max-w-full px-2 py-1">
+            {/* Previous Target Arrow */}
             <button
-              onClick={handleReturnToOverview}
-              className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono-tech transition-all min-h-[34px] border ${
-                viewMode === 'overview'
-                  ? 'bg-[#7AD7EA] text-[#07111F] font-bold border-[#7AD7EA] shadow-[0_0_12px_rgba(122,215,234,0.4)]'
-                  : 'bg-[#0D1728]/85 text-[#98A7BD] border-white/10 hover:border-[#7AD7EA]/40 hover:text-[#F4F7FC]'
-              }`}
+              onClick={handlePrevPlanet}
+              className="shrink-0 w-8 h-8 rounded-full bg-[#0D1728]/90 text-[#7AD7EA] hover:bg-[#182A44] border border-white/10 hover:border-[#7AD7EA]/40 transition-all flex items-center justify-center shadow-md active:scale-95"
+              title="Previous Destination (←)"
+              aria-label="Previous Destination"
             >
-              <Orbit size={13} />
-              <span className="uppercase text-[11px]">SOLAR SYSTEM MAP</span>
+              <ChevronLeft size={16} />
             </button>
 
-            {/* Planet Destination Pills */}
-            {CELESTIAL_BODIES.map((body) => {
-              const isSelected = viewMode === 'focus' && body.id === selectedPlanetId;
-              return (
-                <button
-                  key={`pill-${body.id}`}
-                  onClick={() => handleSelectPlanet(body.id)}
-                  className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono-tech transition-all min-h-[34px] border ${
-                    isSelected
-                      ? 'bg-[#182A44] text-[#F4F7FC] font-bold border-[#7AD7EA] shadow-[0_0_15px_rgba(122,215,234,0.35)] scale-105'
-                      : 'bg-[#0D1728]/85 text-[#C7D2E3] border-white/10 hover:border-[#7AD7EA]/40 hover:text-[#F4F7FC]'
-                  }`}
-                >
-                  <span
-                    className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
-                    style={{ backgroundColor: body.color }}
-                  />
-                  <span className="uppercase text-[11px]">{body.name.split(' ')[0]}</span>
-                </button>
-              );
-            })}
+            {/* Scrollable Pills Container */}
+            <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none py-0.5">
+              {/* Overview Pill */}
+              <button
+                onClick={handleReturnToOverview}
+                className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono-tech transition-all min-h-[34px] border ${
+                  viewMode === 'overview'
+                    ? 'bg-[#7AD7EA] text-[#07111F] font-bold border-[#7AD7EA] shadow-[0_0_12px_rgba(122,215,234,0.4)]'
+                    : 'bg-[#0D1728]/85 text-[#98A7BD] border-white/10 hover:border-[#7AD7EA]/40 hover:text-[#F4F7FC]'
+                }`}
+              >
+                <Orbit size={13} />
+                <span className="uppercase text-[11px]">SOLAR SYSTEM MAP</span>
+              </button>
+
+              {/* Planet Destination Pills */}
+              {CELESTIAL_BODIES.map((body) => {
+                const isSelected = viewMode === 'focus' && body.id === selectedPlanetId;
+                return (
+                  <button
+                    key={`pill-${body.id}`}
+                    onClick={() => handleSelectPlanet(body.id)}
+                    className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono-tech transition-all min-h-[34px] border ${
+                      isSelected
+                        ? 'bg-[#182A44] text-[#F4F7FC] font-bold border-[#7AD7EA] shadow-[0_0_15px_rgba(122,215,234,0.35)] scale-105'
+                        : 'bg-[#0D1728]/85 text-[#C7D2E3] border-white/10 hover:border-[#7AD7EA]/40 hover:text-[#F4F7FC]'
+                    }`}
+                  >
+                    <span
+                      className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
+                      style={{ backgroundColor: body.color }}
+                    />
+                    <span className="uppercase text-[11px]">{body.name.split(' ')[0]}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Next Target Arrow */}
+            <button
+              onClick={handleNextPlanet}
+              className="shrink-0 w-8 h-8 rounded-full bg-[#0D1728]/90 text-[#7AD7EA] hover:bg-[#182A44] border border-white/10 hover:border-[#7AD7EA]/40 transition-all flex items-center justify-center shadow-md active:scale-95"
+              title="Next Destination (→)"
+              aria-label="Next Destination"
+            >
+              <ChevronRight size={16} />
+            </button>
           </div>
 
-          {/* Minimal Keyboard Hint */}
-          <div className="hidden lg:flex items-center gap-3 text-[9px] font-mono-tech text-[#98A7BD]/60">
-            <span>← / → DESTINATIONS</span>
+          {/* Meaningful Control Hints Guide */}
+          <div className="hidden lg:flex items-center gap-3 text-[9px] font-mono-tech text-[#98A7BD]/70">
+            <span>← / → CYCLE TARGETS</span>
             <span>•</span>
-            <span>↑ / W THRUST ACCELERATION</span>
+            <span>W / S THRUST VELOCITY</span>
             <span>•</span>
             <span>DRAG TO ORBIT 360°</span>
             <span>•</span>
             <span>M MAP OVERVIEW</span>
             <span>•</span>
-            <span>ESC OVERVIEW</span>
+            <span>ESC RESET</span>
           </div>
         </div>
       </div>

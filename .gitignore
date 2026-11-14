@@ -9,3 +9,4 @@ debug_*.png
 screen_test.png
 capture_*.py
 find_overflow.py
+diag_live.py

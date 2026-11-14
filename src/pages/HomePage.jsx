@@ -91,72 +91,81 @@ export default function HomePage({
                 src={
                   assetPath(
                     astronautAsset === 'reference'
-                      ? 'astronaut_feathered_clean.png'
-                      : 'astronaut_cinema_feathered.png'
+                      ? 'astronaut_feathered_clean.webp'
+                      : 'astronaut_cinema_feathered.webp'
                   )
                 }
                 alt="Cinematic Space Astronaut"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
                 className="w-auto h-full max-h-[580px] lg:max-h-[640px] object-contain object-bottom filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.95)]"
               />
             </div>
           </motion.div>
 
-          {/* Center-Right Hero Content: Titan Display Typography & Copy */}
+          {/* Center-Right Hero Content: Titan Display Typography & Proportional Balance */}
           <motion.div
             style={{ y: titleParallaxY }}
-            className="relative z-30 ml-auto w-[50%] lg:w-[47%] xl:w-[46%] flex flex-col justify-center pl-4 lg:pl-8 pr-3 lg:pr-8"
+            className="relative z-30 ml-auto w-[52%] lg:w-[49%] xl:w-[48%] flex flex-col justify-center pl-4 lg:pl-8 pr-2 lg:pr-6"
           >
-            {/* Creative Deep Space Mission Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#132238]/80 border border-[#7AD7EA]/30 backdrop-blur-md mb-3 sm:mb-4 w-fit shadow-[0_0_15px_rgba(122,215,234,0.15)]">
+            {/* Mission Category Pill with Live Ping */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#132238]/85 border border-[#7AD7EA]/30 backdrop-blur-md mb-3.5 w-fit shadow-[0_0_18px_rgba(122,215,234,0.12)]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#7AD7EA] animate-ping" />
-              <span className="text-[10px] font-mono-tech text-[#7AD7EA] tracking-widest uppercase">
-                404 IDEAS // SPACE FLIGHT DECK
+              <span className="text-[10px] font-mono-tech text-[#7AD7EA] font-semibold tracking-widest uppercase">
+                404 IDEAS // SPACE FLIGHT DECK & BIO-TELEMETRY
               </span>
             </div>
 
-            {/* Display Headline in Titan One with Celestial Back-Glow */}
-            <h1 className="font-titan text-5xl lg:text-[60px] xl:text-[76px] 2xl:text-[86px] text-[#F4F7FC] uppercase leading-[0.92] tracking-tight drop-shadow-2xl select-none headline-glow">
+            {/* Display Headline in Oxanium Aerospace Typography with Celestial Back-Glow */}
+            <h1 className="font-oxanium text-5xl lg:text-[62px] xl:text-[76px] 2xl:text-[88px] text-[#F4F7FC] font-extrabold uppercase leading-[0.92] tracking-wide drop-shadow-2xl select-none headline-glow">
               SPACE<br />
               ASTRONAUT
             </h1>
 
-            {/* Editorial Subtitle Paragraph (High Readability) */}
-            <p className="text-[#C7D2E3] text-xs sm:text-sm font-sans max-w-md mt-4 sm:mt-5 leading-relaxed font-normal">
-              The Ongoing Discovery And Exploration Of Celestial Structures In Outer Space By Means Of Continuously Evolving And Growing Space Technology.
-            </p>
+            {/* High-Concept Editorial Summary: Fills Space with Meaningful Substance */}
+            <div className="space-y-2 mt-4 max-w-xl">
+              <p className="text-[#DDE6F4] text-xs sm:text-sm lg:text-[14.5px] font-sans leading-relaxed font-normal">
+                Continuous interplanetary exploration aboard Spaceship 404 — integrating zero-latency autonomous medical diagnosis, clinical decision intelligence, and real-time deep space telemetry.
+              </p>
+              <div className="flex flex-wrap items-center gap-3 text-[10px] sm:text-[11px] font-mono-tech text-[#98A7BD] pt-0.5">
+                <span className="flex items-center gap-1.5 text-[#33FF66]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#33FF66] animate-pulse" />
+                  <span>ORBIT 28.57° N</span>
+                </span>
+                <span>•</span>
+                <span>NASA-STD-3001 VOL 1</span>
+                <span>•</span>
+                <span className="text-[#7AD7EA]">MISSION DAY {missionDay}/500</span>
+              </div>
+            </div>
 
-            {/* Interactive Mission Flight Deck Console / Boarding Beacon */}
-            <div className="mt-5 p-3.5 sm:p-4 rounded-2xl bg-[#0D1728]/85 border border-[#7AD7EA]/25 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.65),0_0_20px_rgba(122,215,234,0.12)] max-w-md">
-              <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-[rgba(180,210,235,0.12)]">
+            {/* Unified Compact Mission Launch & Boarding Module */}
+            <div className="mt-5 p-4 rounded-2xl bg-[#0D1728]/85 border border-[#7AD7EA]/25 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.65),0_0_25px_rgba(122,215,234,0.1)] max-w-lg space-y-3">
+              {/* Header: Callsign & Flight Status */}
+              <div className="flex items-center justify-between pb-2 border-b border-[rgba(180,210,235,0.12)] text-xs font-mono-tech">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#7AD7EA] animate-ping" />
-                  <span className="text-[10px] font-mono-tech text-[#7AD7EA] font-bold tracking-widest uppercase">
-                    SPACESHIP 404 // FLIGHT MANIFEST
+                  <Rocket size={13} className="text-[#7AD7EA]" />
+                  <span className="text-[#F4F7FC] font-bold tracking-wider">SPACESHIP 404</span>
+                  <span className="text-[10px] text-[#33FF66] font-bold px-2 py-0.5 rounded-full bg-[#33FF66]/10 border border-[#33FF66]/25">
+                    READY
                   </span>
                 </div>
-                <span className="text-[9px] font-mono-tech text-[#33FF66]">
-                  VESSEL READY
-                </span>
+                <button
+                  onClick={() => {
+                    spaceAudio.playChirp();
+                    if (onOpenBoarding) onOpenBoarding();
+                  }}
+                  className="text-[11px] text-[#98A7BD] hover:text-[#7AD7EA] transition-colors flex items-center gap-1.5"
+                  title="Customize Commander Callsign"
+                >
+                  <span>CMD. <strong className="text-[#F4F7FC]">{commanderName || 'EXPLORER'}</strong></span>
+                  <span className="text-[10px] text-[#7AD7EA]">✎</span>
+                </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[11px] mb-3 font-mono-tech">
-                <div className="bg-[#132238]/70 p-2 rounded-xl border border-[rgba(180,210,235,0.1)]">
-                  <div className="text-[9px] text-[#98A7BD] uppercase tracking-wider">Commander</div>
-                  <div className="text-[#F4F7FC] font-bold truncate flex items-center gap-1.5 mt-0.5">
-                    <User size={12} className="text-[#7AD7EA]" />
-                    <span>CMD. {commanderName || 'EXPLORER'}</span>
-                  </div>
-                </div>
-                <div className="bg-[#132238]/70 p-2 rounded-xl border border-[rgba(180,210,235,0.1)]">
-                  <div className="text-[9px] text-[#98A7BD] uppercase tracking-wider">Mission Vector</div>
-                  <div className="text-[#7AD7EA] font-bold truncate flex items-center gap-1.5 mt-0.5">
-                    <Compass size={12} className="text-[#E4783B]" />
-                    <span>SOLAR 2026</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
+              {/* Action Buttons: Clear, uncluttered primary & secondary actions */}
+              <div className="flex items-center gap-2.5">
                 <button
                   onClick={() => {
                     spaceAudio.playChirp();
@@ -167,49 +176,29 @@ export default function HomePage({
                   <Rocket size={14} />
                   <span>BOARD SPACESHIP 404</span>
                 </button>
+
+                <Link
+                  to="/workspace"
+                  onClick={() => spaceAudio.playChirp()}
+                  className="px-4 py-2.5 rounded-xl bg-[#132238] hover:bg-[#182A44] text-[#F4F7FC] border border-[rgba(180,210,235,0.2)] font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-1.5 hover:border-[#7AD7EA]/40"
+                  title="Open Medical Mission Workspace"
+                >
+                  <span>WORKSPACE</span>
+                  <ChevronRight size={13} />
+                </Link>
+
                 <button
                   onClick={() => {
                     spaceAudio.playChirp();
-                    if (onOpenBoarding) onOpenBoarding();
+                    if (onOpenAiDrawer) onOpenAiDrawer();
                   }}
-                  className="py-2.5 px-3 rounded-xl bg-[#182A44] hover:bg-[#1f3657] text-[#C7D2E3] hover:text-[#F4F7FC] border border-[rgba(180,210,235,0.18)] text-[10px] font-mono-tech transition-colors"
-                  title="Customize Commander Callsign"
+                  className="px-3.5 py-2.5 rounded-xl bg-[#132238] hover:bg-[#182A44] text-[#7AD7EA] border border-[#7AD7EA]/25 font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-1.5 hover:border-[#7AD7EA]/50"
+                  title="Launch AURA Flight Surgeon"
                 >
-                  CALLSIGN
+                  <Bot size={14} />
+                  <span>AURA</span>
                 </button>
               </div>
-            </div>
-
-            {/* Actions: Direct 3D Planets, Workspace & AURA Access */}
-            <div className="flex flex-wrap items-center gap-3 mt-4">
-              <Link
-                to="/planets"
-                onClick={() => spaceAudio.playChirp()}
-                className="px-5 py-2.5 rounded-full bg-[#182A44] hover:bg-[#1f3657] text-[#F4F7FC] border border-[#7AD7EA]/35 font-bold text-xs tracking-wider transition-all flex items-center gap-1.5 min-h-[44px] shadow-[0_0_15px_rgba(122,215,234,0.1)] hover:scale-105"
-              >
-                <Compass size={14} className="text-[#7AD7EA]" />
-                <span>EXPLORE 3D PLANETS</span>
-              </Link>
-
-              <Link
-                to="/workspace"
-                onClick={() => spaceAudio.playChirp()}
-                className="px-5 py-2.5 rounded-full bg-[#132238] hover:bg-[#182A44] text-[#C7D2E3] hover:text-[#F4F7FC] border border-[rgba(180,210,235,0.15)] font-bold text-xs tracking-wider transition-all flex items-center gap-1.5 min-h-[44px] hover:scale-105"
-              >
-                <span>ENTER WORKSPACE</span>
-                <ChevronRight size={14} />
-              </Link>
-
-              <button
-                onClick={() => {
-                  spaceAudio.playChirp();
-                  if (onOpenAiDrawer) onOpenAiDrawer();
-                }}
-                className="px-4 py-2.5 rounded-full bg-[#132238] hover:bg-[#182A44] text-[#7AD7EA] border border-[#7AD7EA]/25 font-bold text-xs tracking-wider transition-all flex items-center gap-1.5 min-h-[44px] hover:scale-105"
-              >
-                <Bot size={14} />
-                <span>AURA SURGEON</span>
-              </button>
             </div>
           </motion.div>
 
@@ -273,11 +262,11 @@ export default function HomePage({
                 404 IDEAS // FLIGHT DECK
               </span>
             </div>
-            <h1 className="font-titan text-3xl sm:text-4xl md:text-5xl text-[#F4F7FC] uppercase leading-[0.95] tracking-tight drop-shadow-2xl headline-glow">
+            <h1 className="font-oxanium text-3xl sm:text-4xl md:text-5xl text-[#F4F7FC] font-extrabold uppercase leading-[0.95] tracking-wide drop-shadow-2xl headline-glow">
               SPACE ASTRONAUT
             </h1>
             <p className="text-[#C7D2E3] text-xs sm:text-sm font-sans leading-relaxed px-2 font-normal">
-              The Ongoing Discovery And Exploration Of Celestial Structures In Outer Space By Means Of Continuously Evolving Space Technology.
+              Continuous interplanetary exploration aboard Spaceship 404 — integrating zero-latency autonomous medical diagnosis, clinical decision intelligence, and real-time deep space telemetry.
             </p>
           </div>
 
@@ -287,11 +276,14 @@ export default function HomePage({
               src={
                 assetPath(
                   astronautAsset === 'reference'
-                    ? 'astronaut_feathered_clean.png'
-                    : 'astronaut_cinema_feathered.png'
+                    ? 'astronaut_feathered_clean.webp'
+                    : 'astronaut_cinema_feathered.webp'
                 )
               }
               alt="Cinematic Space Astronaut"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="w-auto h-full max-h-[240px] sm:max-h-[320px] md:max-h-[380px] object-contain object-bottom filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.95)]"
             />
           </div>

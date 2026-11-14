@@ -146,20 +146,20 @@ export default function ThreeJsSolarSystem({
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.0;
     container.replaceChildren(renderer.domElement);
 
-    // 4. Lighting & Illumination
-    const sunPointLight = new THREE.PointLight(0xfff5e6, 4.5, 450, 0.45);
+    // 4. Balanced Cinematic Lighting (Physically credible, prevents washed-out planets like Mercury)
+    const sunPointLight = new THREE.PointLight(0xfff2e0, 2.4, 380, 0.8);
     sunPointLight.position.set(0, 0, 0);
     scene.add(sunPointLight);
 
-    // Balanced cosmic ambient & celestial hemisphere light (prevents pitch-black night side)
-    const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x102035, 0.9);
+    // Balanced cosmic ambient & celestial hemisphere light
+    const hemiLight = new THREE.HemisphereLight(0x8cb4e0, 0x07111f, 0.55);
     scene.add(hemiLight);
 
-    // Soft camera-tracking key light for cinematic planetary illumination
-    const cameraLight = new THREE.DirectionalLight(0xffffff, 0.75);
+    // Soft camera-tracking fill light for clear surface visibility
+    const cameraLight = new THREE.DirectionalLight(0xffffff, 0.45);
     cameraLight.position.set(0, 0, 1);
     camera.add(cameraLight);
     scene.add(camera);
@@ -239,10 +239,11 @@ export default function ThreeJsSolarSystem({
         sunGlowMeshRef.current = glowMesh;
       } else {
         const isGasGiant = ['jupiter', 'saturn', 'uranus', 'neptune'].includes(body.id);
+        const isRockyRegolith = ['mercury', 'moon', 'mars'].includes(body.id);
         material = new THREE.MeshStandardMaterial({
           color: new THREE.Color(body.color),
-          roughness: isGasGiant ? 0.45 : body.id === 'earth' ? 0.6 : 0.85,
-          metalness: 0.02
+          roughness: isRockyRegolith ? 0.95 : isGasGiant ? 0.5 : body.id === 'earth' ? 0.65 : 0.85,
+          metalness: isRockyRegolith ? 0.0 : 0.02
         });
         loadPlanetTexture(body.id, (loadedTex) => {
           material.map = loadedTex;
@@ -561,13 +562,13 @@ export default function ThreeJsSolarSystem({
 
           // Elevated 3/4 cinematic angle: trailing behind, offset up & to starboard
           const chaseCam = shipPos.clone()
-            .add(forward.clone().multiplyScalar(-7.2))
+            .add(forward.clone().multiplyScalar(-8.6))
             .add(up.clone().multiplyScalar(3.2))
-            .add(right.clone().multiplyScalar(3.8));
+            .add(right.clone().multiplyScalar(4.2));
 
           cameraTargetPos.current.copy(chaseCam);
           // Frame the vessel cruising towards the planet
-          cameraLookAtPos.current.copy(shipPos.clone().add(forward.clone().multiplyScalar(3.0)));
+          cameraLookAtPos.current.copy(shipPos.clone().add(forward.clone().multiplyScalar(2.5)));
         } else {
           // Planet Orbit Mode (360° close planetary inspection)
           if (spaceshipRef.current) spaceshipRef.current.visible = true;

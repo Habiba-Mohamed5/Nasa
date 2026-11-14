@@ -170,8 +170,16 @@ export default function CockpitModeHUD({
           </div>
         </div>
 
-        {/* Right: Audio Control & Flight Velocity */}
+        {/* Right: Cabin Status, Audio Control & Flight Velocity */}
         <div className="flex items-center gap-2">
+          {/* Cabin Life Support Status Pill */}
+          <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0D1728]/85 backdrop-blur-md border border-white/10 text-[11px] font-mono-tech text-[#C7D2E3]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#33FF66]" />
+            <span>CABIN: 14.7 PSI</span>
+            <span className="text-[#98A7BD]">•</span>
+            <span className="text-[#7AD7EA]">O₂ 21%</span>
+          </div>
+
           {/* Velocity Badge */}
           <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0D1728]/85 backdrop-blur-md border border-white/10 text-xs font-mono-tech">
             <Gauge size={13} className="text-[#7AD7EA]" />
@@ -216,75 +224,41 @@ export default function CockpitModeHUD({
         </div>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────
-          4. BOTTOM COCKPIT TELEMETRY INSTRUMENTS & FLIGHT CONTROLS
-      ───────────────────────────────────────────────────────────── */}
-      <div className="p-3 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-3 pointer-events-auto">
-        {/* Left: Atmospheric Life Support Telemetry (Image 3 Inspiration) */}
-        <div className="hidden lg:flex items-center gap-4 px-4 py-2 rounded-2xl bg-[#0D1728]/90 backdrop-blur-md border border-[rgba(180,210,235,0.18)] text-[11px] font-mono-tech text-[#C7D2E3]">
-          <div>
-            <span className="text-[#98A7BD] text-[9px] block">CABIN PRESSURE</span>
-            <strong className="text-[#F4F7FC]">14.7 PSI</strong>
-            <span className="text-[#7AD7EA] text-[9px] block">1.01 BAR</span>
-          </div>
-          <div className="border-l border-white/10 pl-3">
-            <span className="text-[#98A7BD] text-[9px] block">ATMOSPHERE</span>
-            <strong className="text-[#7AD7EA]">O₂ 21.2%</strong>
-            <span className="text-[#98A7BD] text-[9px] block">N₂ 78.0%</span>
-          </div>
-          <div className="border-l border-white/10 pl-3">
-            <span className="text-[#98A7BD] text-[9px] block">LIFE SUPPORT</span>
-            <strong className="text-[#33FF66]">100% NOMINAL</strong>
-            <span className="text-[#98A7BD] text-[9px] block">TEMP 21.5°C</span>
-          </div>
-        </div>
-
-        {/* Center: Flight Keyboard & Touch Control Guide */}
-        <div className="flex items-center gap-2">
-          {/* Mobile On-Screen Flight Touch Controls (< 1024px) */}
-          <div className="lg:hidden flex items-center gap-1.5 p-1 rounded-2xl bg-[#0D1728]/90 border border-white/10">
-            <button
-              onClick={onSteerLeft}
-              className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
-              title="Steer Left"
-            >
-              <ArrowLeft size={16} />
-            </button>
-            <button
-              onClick={onThrustForward}
-              className="p-2 rounded-xl bg-[#E4783B] text-[#07111F] font-bold active:scale-95 shadow-md"
-              title="Thrust Forward"
-            >
-              <ArrowUp size={16} />
-            </button>
-            <button
-              onClick={onThrustReverse}
-              className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
-              title="Decelerate"
-            >
-              <ArrowDown size={16} />
-            </button>
-            <button
-              onClick={onSteerRight}
-              className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
-              title="Steer Right"
-            >
-              <ArrowRight size={16} />
-            </button>
-          </div>
-
-          {/* Desktop Keyboard Control Guide Pill */}
-          <div className="hidden lg:flex items-center gap-3 px-3 py-1.5 rounded-full bg-[#0D1728]/80 backdrop-blur-md border border-white/10 text-[9px] font-mono-tech text-[#98A7BD]">
-            <span>↑ / W THRUST</span>
-            <span>•</span>
-            <span>↓ / S REVERSE</span>
-            <span>•</span>
-            <span>← / → STEER</span>
-            <span>•</span>
-            <span>M MAP OVERVIEW</span>
-            <span>•</span>
-            <span>R RESET</span>
-          </div>
+      {/* Mobile-Only On-Screen Steering Arrows (Visible only on touch screens < 1024px) */}
+      <div className="lg:hidden absolute bottom-16 left-3 z-30 pointer-events-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#0D1728]/90 border border-white/10 shadow-lg">
+          <button
+            onClick={onSteerLeft}
+            className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
+            title="Previous Target (Left)"
+            aria-label="Previous Target"
+          >
+            <ArrowLeft size={16} />
+          </button>
+          <button
+            onClick={onThrustForward}
+            className="p-2 rounded-xl bg-[#E4783B] text-[#07111F] font-bold active:scale-95 shadow-md"
+            title="Thrust Forward"
+            aria-label="Thrust Forward"
+          >
+            <ArrowUp size={16} />
+          </button>
+          <button
+            onClick={onThrustReverse}
+            className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
+            title="Decelerate"
+            aria-label="Decelerate"
+          >
+            <ArrowDown size={16} />
+          </button>
+          <button
+            onClick={onSteerRight}
+            className="p-2 rounded-xl bg-[#132238] active:bg-[#7AD7EA] active:text-[#07111F] text-[#7AD7EA]"
+            title="Next Target (Right)"
+            aria-label="Next Target"
+          >
+            <ArrowRight size={16} />
+          </button>
         </div>
       </div>
     </div>
