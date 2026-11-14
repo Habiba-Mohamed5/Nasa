@@ -167,50 +167,15 @@ export default function WorkspacePage({
           <RecordedTelemetry />
         </div>
 
-        {/* Center Column (col-span-5): 3D Zero-G Astronaut Viewport */}
-        <div className={`lg:col-span-5 rounded-3xl bg-[#132238]/90 backdrop-blur-md border border-[rgba(180,210,235,0.14)] shadow-2xl relative overflow-hidden flex-col justify-between min-h-[420px] sm:min-h-[520px] ${
+        {/* Center Column (col-span-5): 3D Zero-G Astronaut & Human Anatomy Explorer */}
+        <div className={`lg:col-span-5 rounded-3xl bg-[#091322]/95 backdrop-blur-xl border border-[rgba(180,210,235,0.18)] shadow-2xl relative overflow-hidden flex flex-col min-h-[560px] sm:min-h-[620px] ${
           activeMobileTab === 'viewport' ? 'flex' : 'hidden lg:flex'
         }`}>
-          <div className="p-3.5 sm:p-4 border-b border-[rgba(180,210,235,0.12)] flex items-center justify-between z-20 relative">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="font-titan text-xs text-[#F4F7FC] uppercase tracking-wider">
-                ZERO-G EVA SUIT VIEWPORT
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => {
-                  spaceAudio.playChirp();
-                  setScanMode(!scanMode);
-                }}
-                className={`px-2.5 py-1 rounded-xl text-[10px] font-mono-tech font-bold border transition-all flex items-center gap-1 min-h-[34px] ${
-                  scanMode
-                    ? 'bg-[#7AD7EA] text-[#07111F] border-[#7AD7EA] shadow-[0_0_15px_rgba(122,215,234,0.35)]'
-                    : 'bg-[#0D1728] text-[#C7D2E3] border-[rgba(180,210,235,0.14)] hover:text-[#F4F7FC]'
-                }`}
-              >
-                <Eye size={12} />
-                <span>{scanMode ? 'X-Ray: ON' : 'X-Ray Bio-Scan'}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* 3D Canvas Container */}
-          <div className="flex-1 w-full flex items-center justify-center p-2">
-            <Astronaut3D
-              telemetry={telemetry}
-              scanMode={scanMode}
-              setScanMode={setScanMode}
-            />
-          </div>
-
-          {/* Bottom helper pill */}
-          <div className="p-3 border-t border-[rgba(180,210,235,0.08)] bg-[#07111F]/80 flex items-center justify-between text-[10px] font-mono-tech text-[#98A7BD] z-20 relative">
-            <span>اسحب أفقياً لتدوير الرائد 360°</span>
-            <span className="text-[#7AD7EA]">DAY {missionDay} SIMULATION</span>
-          </div>
+          <Astronaut3D
+            telemetry={telemetry}
+            scanMode={scanMode}
+            setScanMode={setScanMode}
+          />
         </div>
 
         {/* Right Column (col-span-3): Countermeasures & Flight Operations */}
