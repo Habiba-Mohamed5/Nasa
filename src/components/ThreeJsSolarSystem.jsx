@@ -149,17 +149,20 @@ export default function ThreeJsSolarSystem({
     renderer.toneMappingExposure = 1.2;
     container.replaceChildren(renderer.domElement);
 
-    // 4. Lighting
+    // 4. Lighting & Illumination
     const sunPointLight = new THREE.PointLight(0xfff5e6, 4.5, 450, 0.45);
     sunPointLight.position.set(0, 0, 0);
     scene.add(sunPointLight);
 
-    const ambientLight = new THREE.AmbientLight(0x0c1a2e, 0.55);
-    scene.add(ambientLight);
+    // Balanced cosmic ambient & celestial hemisphere light (prevents pitch-black night side)
+    const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x102035, 0.9);
+    scene.add(hemiLight);
 
-    const fillLight = new THREE.DirectionalLight(0x7ad7ea, 0.3);
-    fillLight.position.set(0, 30, 20);
-    scene.add(fillLight);
+    // Soft camera-tracking key light for cinematic planetary illumination
+    const cameraLight = new THREE.DirectionalLight(0xffffff, 0.75);
+    cameraLight.position.set(0, 0, 1);
+    camera.add(cameraLight);
+    scene.add(camera);
 
     const disposableResources = {
       geometries: [],
