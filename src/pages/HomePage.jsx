@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import CinematicBackground from '../CinematicBackground';
-import Astronaut3D from '../Astronaut3D';
+import InteractiveSolarSystem from '../components/InteractiveSolarSystem';
 import { MISSION_PHASES } from '../UserJourneyStepper';
 import { spaceAudio } from '../utils/spaceAudio';
 import { assetPath } from '../utils/assetPath';
@@ -30,8 +30,6 @@ export default function HomePage({
   onOpenAiDrawer,
   onOpenRisksModal
 }) {
-  // Visual Mode: 'cinematic' (Reference Photo) | '3d' (Interactive Three.js Canvas)
-  const [visualMode, setVisualMode] = useState('cinematic');
   const [activeHeroIndicator, setActiveHeroIndicator] = useState('01');
   const [astronautAsset, setAstronautAsset] = useState('reference');
 
@@ -79,34 +77,24 @@ export default function HomePage({
         ───────────────────────────────────────────────────────────── */}
         <div className="hidden lg:flex relative z-20 flex-1 items-center justify-between px-8 lg:px-14 overflow-hidden py-4">
           
-          {/* Left Photographic Subject: The Space Astronaut with Parallax Float */}
+            {/* Left Photographic Subject: The Space Astronaut with Parallax Float */}
           <motion.div
             style={{ y: astronautParallaxY }}
             className="absolute left-0 bottom-0 top-0 w-[48%] max-w-[560px] pointer-events-none select-none flex items-end justify-start animate-astronaut-float"
           >
-            {visualMode === 'cinematic' ? (
-              <div className="relative w-full h-[95%] flex items-end justify-start">
-                <img
-                  src={
-                    assetPath(
-                      astronautAsset === 'reference'
-                        ? 'astronaut_feathered_clean.png'
-                        : 'astronaut_cinema_feathered.png'
-                    )
-                  }
-                  alt="Cinematic Space Astronaut"
-                  className="w-auto h-full max-h-[580px] lg:max-h-[640px] object-contain object-bottom filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.95)]"
-                />
-              </div>
-            ) : (
-              <div className="w-full h-[520px] pointer-events-auto flex items-center justify-center">
-                <Astronaut3D
-                  telemetry={telemetry}
-                  scanMode={scanMode}
-                  setScanMode={setScanMode}
-                />
-              </div>
-            )}
+            <div className="relative w-full h-[95%] flex items-end justify-start">
+              <img
+                src={
+                  assetPath(
+                    astronautAsset === 'reference'
+                      ? 'astronaut_feathered_clean.png'
+                      : 'astronaut_cinema_feathered.png'
+                  )
+                }
+                alt="Cinematic Space Astronaut"
+                className="w-auto h-full max-h-[580px] lg:max-h-[640px] object-contain object-bottom filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.95)]"
+              />
+            </div>
           </motion.div>
 
           {/* Center-Right Hero Content: Titan Display Typography & Copy */}
@@ -133,7 +121,7 @@ export default function HomePage({
               The Ongoing Discovery And Exploration Of Celestial Structures In Outer Space By Means Of Continuously Evolving And Growing Space Technology.
             </p>
 
-            {/* Actions & View Switcher */}
+            {/* Actions: Direct Workspace & AURA Access */}
             <div className="flex flex-wrap items-center gap-3 mt-6 sm:mt-7">
               <Link
                 to="/workspace"
@@ -153,17 +141,6 @@ export default function HomePage({
               >
                 <Bot size={14} className="text-[#7AD7EA]" />
                 <span>AURA SURGEON</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  spaceAudio.playChirp();
-                  setVisualMode(visualMode === 'cinematic' ? '3d' : 'cinematic');
-                }}
-                className="text-[11px] text-[#98A7BD] hover:text-[#7AD7EA] underline font-mono-tech ml-1"
-                title="Toggle between Photographic and 3D Viewport"
-              >
-                View: {visualMode === 'cinematic' ? 'Photo' : '3D Zero-G'}
               </button>
             </div>
           </motion.div>
@@ -238,27 +215,17 @@ export default function HomePage({
 
           {/* Center Stage: The Space Astronaut (Unobscured & Beautifully Framed) */}
           <div className="relative w-full h-[240px] sm:h-[320px] md:h-[380px] flex items-center justify-center my-2 pointer-events-none animate-astronaut-float">
-            {visualMode === 'cinematic' ? (
-              <img
-                src={
-                  assetPath(
-                    astronautAsset === 'reference'
-                      ? 'astronaut_feathered_clean.png'
-                      : 'astronaut_cinema_feathered.png'
-                  )
-                }
-                alt="Cinematic Space Astronaut"
-                className="w-auto h-full max-h-[240px] sm:max-h-[320px] md:max-h-[380px] object-contain object-bottom filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.95)]"
-              />
-            ) : (
-              <div className="w-full h-full pointer-events-auto flex items-center justify-center">
-                <Astronaut3D
-                  telemetry={telemetry}
-                  scanMode={scanMode}
-                  setScanMode={setScanMode}
-                />
-              </div>
-            )}
+            <img
+              src={
+                assetPath(
+                  astronautAsset === 'reference'
+                    ? 'astronaut_feathered_clean.png'
+                    : 'astronaut_cinema_feathered.png'
+                )
+              }
+              alt="Cinematic Space Astronaut"
+              className="w-auto h-full max-h-[240px] sm:max-h-[320px] md:max-h-[380px] object-contain object-bottom filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.95)]"
+            />
           </div>
 
           {/* Action CTAs Cluster (Touch-friendly minimum 46px) */}
@@ -281,16 +248,6 @@ export default function HomePage({
             >
               <Bot size={14} className="text-[#7AD7EA]" />
               <span>AURA SURGEON</span>
-            </button>
-
-            <button
-              onClick={() => {
-                spaceAudio.playChirp();
-                setVisualMode(visualMode === 'cinematic' ? '3d' : 'cinematic');
-              }}
-              className="text-[10px] text-[#98A7BD] hover:text-[#7AD7EA] underline font-mono-tech py-1"
-            >
-              View: {visualMode === 'cinematic' ? 'Photo' : '3D Zero-G'}
             </button>
           </div>
 
@@ -548,6 +505,43 @@ export default function HomePage({
             </Link>
           </motion.div>
         </motion.div>
+      </motion.section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          2B. INTERACTIVE SOLAR SYSTEM OBSERVATORY TEASER
+      ───────────────────────────────────────────────────────────── */}
+      <motion.section
+        id="solar-system"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 px-3 sm:px-8 max-w-7xl mx-auto space-y-6 pt-2"
+      >
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-[rgba(180,210,235,0.14)] pb-5">
+          <div>
+            <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-widest block mb-1">
+              ORBITAL FLIGHT MECHANICS & DESTINATIONS
+            </span>
+            <h2 className="font-titan text-2xl sm:text-3xl text-[#F4F7FC] tracking-wide uppercase">
+              INTERACTIVE SOLAR SYSTEM RADAR
+            </h2>
+          </div>
+          <Link
+            to="/planets"
+            onClick={() => spaceAudio.playChirp()}
+            className="inline-flex items-center gap-1.5 text-xs text-[#7AD7EA] font-mono-tech hover:underline font-bold"
+          >
+            <span>FULL SOLAR SYSTEM OBSERVATORY</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        <InteractiveSolarSystem
+          setMissionDay={setMissionDay}
+          setCurrentPhase={setCurrentPhase}
+          onOpenAiDrawer={onOpenAiDrawer}
+        />
       </motion.section>
 
       {/* ─────────────────────────────────────────────────────────────

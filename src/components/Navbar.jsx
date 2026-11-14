@@ -55,26 +55,30 @@ export default function Navbar({
 
   return (
     <header className="relative z-40 px-3.5 sm:px-6 lg:px-12 pt-3.5 sm:pt-6 flex items-center justify-between shrink-0 select-none">
-      {/* 1. Brand Logo: 404 IDEAS (Futuristic Space Typographic Identity) */}
+      {/* 1. Brand Logo: 404 IDEAS (Prominent Heavy Display 404 + Futuristic Oxanium IDEAS) */}
       <Link
         to="/"
         onClick={() => {
           spaceAudio.playChirp();
           setMobileMenuOpen(false);
         }}
-        className="flex items-center gap-2 cursor-pointer group shrink-0 min-h-[44px]"
+        className="flex items-center gap-2.5 cursor-pointer group shrink-0 min-h-[46px]"
         aria-label="404 IDEAS Home"
       >
-        <div className="flex items-center gap-0.5">
-          <span className="font-titan text-base sm:text-lg lg:text-xl tracking-tight text-[#F4F7FC]">4</span>
-          <div className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 flex items-center justify-center mx-0.5">
-            <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#F4F7FC] group-hover:bg-[#7AD7EA] transition-colors shadow-[0_0_8px_rgba(122,215,234,0.6)]" />
-            <div className="absolute w-4 sm:w-4.5 h-1.5 border border-[#7AD7EA] group-hover:border-[#F4F7FC] rounded-full rotate-[-26deg] transition-colors shadow-[0_0_6px_rgba(122,215,234,0.4)]" />
+        <div className="flex items-center">
+          <span className="font-titan text-2xl sm:text-3xl lg:text-[32px] tracking-tight text-[#F4F7FC] leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+            4
+          </span>
+          <div className="relative w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center mx-1">
+            <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-[#F4F7FC] group-hover:bg-[#7AD7EA] transition-colors shadow-[0_0_12px_rgba(122,215,234,0.8)]" />
+            <div className="absolute w-5 sm:w-6 h-2 sm:h-2.5 border-[1.5px] border-[#7AD7EA] group-hover:border-[#F4F7FC] rounded-full rotate-[-26deg] transition-colors shadow-[0_0_8px_rgba(122,215,234,0.5)]" />
           </div>
-          <span className="font-titan text-base sm:text-lg lg:text-xl tracking-tight text-[#F4F7FC]">4</span>
+          <span className="font-titan text-2xl sm:text-3xl lg:text-[32px] tracking-tight text-[#F4F7FC] leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+            4
+          </span>
         </div>
-        <span className="h-3.5 w-[1px] bg-white/20 mx-0.5" />
-        <span className="font-sans font-black text-xs sm:text-sm tracking-[0.25em] text-[#7AD7EA] group-hover:text-[#F4F7FC] transition-colors uppercase">
+        <span className="h-5 sm:h-6 w-[1px] bg-gradient-to-b from-transparent via-[#7AD7EA]/40 to-transparent mx-0.5" />
+        <span className="font-oxanium font-bold text-xs sm:text-sm lg:text-[15px] tracking-[0.32em] text-[#7AD7EA] group-hover:text-[#F4F7FC] transition-colors uppercase leading-none">
           IDEAS
         </span>
       </Link>
@@ -164,17 +168,17 @@ export default function Navbar({
         >
           {/* Top Bar inside Overlay */}
           <div className="flex items-center justify-between pb-4 border-b border-[rgba(180,210,235,0.14)]">
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-0.5">
-                <span className="font-titan text-lg tracking-tight text-[#F4F7FC]">4</span>
-                <div className="relative w-3.5 h-3.5 flex items-center justify-center mx-0.5">
-                  <div className="w-2 h-2 rounded-full bg-[#F4F7FC]" />
-                  <div className="absolute w-4 h-1 border border-[#7AD7EA] rounded-full rotate-[-26deg]" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center">
+                <span className="font-titan text-2xl tracking-tight text-[#F4F7FC] leading-none">4</span>
+                <div className="relative w-4 h-4 flex items-center justify-center mx-1">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#F4F7FC] shadow-[0_0_10px_rgba(122,215,234,0.8)]" />
+                  <div className="absolute w-5 h-2 border-[1.5px] border-[#7AD7EA] rounded-full rotate-[-26deg]" />
                 </div>
-                <span className="font-titan text-lg tracking-tight text-[#F4F7FC]">4</span>
+                <span className="font-titan text-2xl tracking-tight text-[#F4F7FC] leading-none">4</span>
               </div>
-              <span className="h-3.5 w-[1px] bg-white/20 mx-0.5" />
-              <span className="font-sans font-black text-xs tracking-[0.22em] text-[#7AD7EA] uppercase">
+              <span className="h-5 w-[1px] bg-gradient-to-b from-transparent via-[#7AD7EA]/40 to-transparent mx-0.5" />
+              <span className="font-oxanium font-bold text-xs tracking-[0.3em] text-[#7AD7EA] uppercase leading-none">
                 IDEAS
               </span>
             </div>

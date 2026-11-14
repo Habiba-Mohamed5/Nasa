@@ -15,23 +15,32 @@ export default function SpaceScrollTelemetryRail() {
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalScroll <= 0) return;
-      const current = window.scrollY;
-      const progress = Math.min(100, Math.max(0, (current / totalScroll) * 100));
-      setScrollProgress(progress);
+    let ticking = false;
 
-      // Determine active section based on scroll position
-      milestones.forEach((m) => {
-        const el = document.getElementById(m.id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= window.innerHeight * 0.4 && rect.bottom >= window.innerHeight * 0.2) {
-            setActiveSection(m.id);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+          if (totalScroll > 0) {
+            const current = window.scrollY;
+            const progress = Math.min(100, Math.max(0, (current / totalScroll) * 100));
+            setScrollProgress(progress);
+
+            // Determine active section based on scroll position
+            milestones.forEach((m) => {
+              const el = document.getElementById(m.id);
+              if (el) {
+                const rect = el.getBoundingClientRect();
+                if (rect.top <= window.innerHeight * 0.4 && rect.bottom >= window.innerHeight * 0.2) {
+                  setActiveSection(m.id);
+                }
+              }
+            });
           }
-        }
-      });
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
