@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Activity, Zap, CheckCircle2, Radio, WifiOff, Eye, RotateCw,
-  Bot, ShieldAlert, Sliders, User, Compass, FileText
+  Bot, ShieldAlert, Sliders, User, Compass, FileText, ChevronRight
 } from 'lucide-react';
 import Astronaut3D from '../Astronaut3D';
 import {
@@ -32,14 +32,15 @@ export default function WorkspacePage({
   onOpenRisksModal
 }) {
   const [packetSent, setPacketSent] = useState(false);
+  const [activeMobileTab, setActiveMobileTab] = useState('telemetry'); // 'telemetry' | 'viewport' | 'countermeasures'
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 py-2 select-none">
+    <div className="space-y-4 sm:space-y-6 max-w-7xl mx-auto px-3 sm:px-6 py-2 select-none">
       {/* 1. Cockpit Header Bar */}
-      <section className="p-4 sm:p-5 rounded-2xl bg-[#171311] border border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <section className="p-3.5 sm:p-5 rounded-2xl bg-[#171311] border border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         {/* Left: Crew Selector */}
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#E4783B] shadow-[0_0_15px_rgba(228,120,59,0.3)]">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#E4783B] shadow-[0_0_15px_rgba(228,120,59,0.3)] shrink-0">
             <img
               src={assetPath('astronaut_portrait.jpg')}
               alt={selectedCrew.name}
@@ -81,10 +82,10 @@ export default function WorkspacePage({
         </div>
 
         {/* Right: Blackout Mode & Risks Button */}
-        <div className="flex items-center gap-2.5 w-full md:w-auto justify-between md:justify-end">
+        <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end">
           <button
             onClick={handleToggleBlackout}
-            className={`px-3 py-1.5 rounded-xl text-[11px] font-mono-tech font-bold transition-all border flex items-center gap-1.5 ${
+            className={`px-3 py-2 rounded-xl text-[11px] font-mono-tech font-bold transition-all border flex items-center gap-1.5 min-h-[40px] ${
               isCommBlackout
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/60 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
                 : 'bg-[#0D0B0A] text-[#808080] border-white/10 hover:text-[#EBEBEB]'
@@ -99,7 +100,7 @@ export default function WorkspacePage({
               spaceAudio.playChirp();
               if (onOpenRisksModal) onOpenRisksModal();
             }}
-            className="px-3 py-1.5 rounded-xl bg-[#252121] hover:bg-[#29201D] text-[#E4783B] border border-[#E4783B]/30 text-[11px] font-mono-tech font-bold transition-all flex items-center gap-1.5"
+            className="px-3 py-2 rounded-xl bg-[#252121] hover:bg-[#29201D] text-[#E4783B] border border-[#E4783B]/30 text-[11px] font-mono-tech font-bold transition-all flex items-center gap-1.5 min-h-[40px]"
           >
             <ShieldAlert size={13} />
             <span>NASA RISKS</span>
@@ -107,11 +108,42 @@ export default function WorkspacePage({
         </div>
       </section>
 
+      {/* Mobile-Only Cockpit View Switcher Tabs (Visible on < lg screens) */}
+      <div className="lg:hidden flex items-center p-1 bg-[#13100E] rounded-2xl border border-white/10 gap-1 text-xs font-mono-tech">
+        <button
+          onClick={() => { spaceAudio.playChirp(); setActiveMobileTab('telemetry'); }}
+          className={`flex-1 py-2.5 rounded-xl text-center font-bold transition-all min-h-[44px] flex items-center justify-center gap-1.5 ${
+            activeMobileTab === 'telemetry' ? 'bg-[#E4783B] text-[#0D0B0A] shadow-md' : 'text-[#808080] hover:text-[#EBEBEB]'
+          }`}
+        >
+          <Activity size={14} />
+          <span>القياسات</span>
+        </button>
+        <button
+          onClick={() => { spaceAudio.playChirp(); setActiveMobileTab('viewport'); }}
+          className={`flex-1 py-2.5 rounded-xl text-center font-bold transition-all min-h-[44px] flex items-center justify-center gap-1.5 ${
+            activeMobileTab === 'viewport' ? 'bg-[#E4783B] text-[#0D0B0A] shadow-md' : 'text-[#808080] hover:text-[#EBEBEB]'
+          }`}
+        >
+          <Eye size={14} />
+          <span>الرائد 3D</span>
+        </button>
+        <button
+          onClick={() => { spaceAudio.playChirp(); setActiveMobileTab('countermeasures'); }}
+          className={`flex-1 py-2.5 rounded-xl text-center font-bold transition-all min-h-[44px] flex items-center justify-center gap-1.5 ${
+            activeMobileTab === 'countermeasures' ? 'bg-[#E4783B] text-[#0D0B0A] shadow-md' : 'text-[#808080] hover:text-[#EBEBEB]'
+          }`}
+        >
+          <Zap size={14} />
+          <span>التدخلات</span>
+        </button>
+      </div>
+
       {/* 2. Cockpit Grid: Left Telemetry + Center 3D Astronaut + Right Countermeasures */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
         {/* Left Column (col-span-4): Real-time Diagnostic Instruments */}
-        <div className="lg:col-span-4 space-y-3">
+        <div className={`lg:col-span-4 space-y-3 ${activeMobileTab === 'telemetry' ? 'block' : 'hidden lg:block'}`}>
           <div className="flex items-center justify-between pb-1">
             <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-wider">
               BIOMEDICAL INSTRUMENTATION
@@ -134,8 +166,10 @@ export default function WorkspacePage({
         </div>
 
         {/* Center Column (col-span-5): 3D Zero-G Astronaut Viewport */}
-        <div className="lg:col-span-5 rounded-3xl bg-[#171311] border border-white/[0.08] shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[520px]">
-          <div className="p-4 border-b border-white/[0.06] flex items-center justify-between z-20 relative">
+        <div className={`lg:col-span-5 rounded-3xl bg-[#171311] border border-white/[0.08] shadow-2xl relative overflow-hidden flex-col justify-between min-h-[420px] sm:min-h-[520px] ${
+          activeMobileTab === 'viewport' ? 'flex' : 'hidden lg:flex'
+        }`}>
+          <div className="p-3.5 sm:p-4 border-b border-white/[0.06] flex items-center justify-between z-20 relative">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span className="font-titan text-xs text-[#EBEBEB] uppercase tracking-wider">
@@ -149,7 +183,7 @@ export default function WorkspacePage({
                   spaceAudio.playChirp();
                   setScanMode(!scanMode);
                 }}
-                className={`px-2.5 py-1 rounded-xl text-[10px] font-mono-tech font-bold border transition-all flex items-center gap-1 ${
+                className={`px-2.5 py-1 rounded-xl text-[10px] font-mono-tech font-bold border transition-all flex items-center gap-1 min-h-[34px] ${
                   scanMode
                     ? 'bg-[#E4783B] text-[#0D0B0A] border-[#E4783B] shadow-[0_0_15px_rgba(228,120,59,0.35)]'
                     : 'bg-[#0D0B0A] text-[#ACACAC] border-white/10 hover:text-[#EBEBEB]'
@@ -172,21 +206,21 @@ export default function WorkspacePage({
 
           {/* Bottom helper pill */}
           <div className="p-3 border-t border-white/[0.04] bg-[#0D0B0A]/80 flex items-center justify-between text-[10px] font-mono-tech text-[#808080] z-20 relative">
-            <span>🖱️ اسحب بالماوس أو اللمس لتدوير الرائد 360°</span>
+            <span>اسحب أفقياً لتدوير الرائد 360°</span>
             <span className="text-[#E4783B]">DAY {missionDay} SIMULATION</span>
           </div>
         </div>
 
         {/* Right Column (col-span-3): Countermeasures & Flight Operations */}
-        <div className="lg:col-span-3 space-y-4">
+        <div className={`lg:col-span-3 space-y-3 ${activeMobileTab === 'countermeasures' ? 'block' : 'hidden lg:block'}`}>
           <div className="flex items-center justify-between pb-1">
             <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-wider">
-              FLIGHT INTERVENTIONS
+              OPERATIONAL PROTOCOLS
             </span>
-            <span className="text-[9px] font-mono-tech text-[#808080]">ARED POD</span>
+            <span className="text-[9px] font-mono-tech text-emerald-400">STATUS: READY</span>
           </div>
 
-          {/* ARED Prescription Deck */}
+          {/* ARED Pod Execution */}
           <div className="p-4 rounded-2xl bg-[#171311] border border-white/[0.08] space-y-3">
             <div className="flex items-center justify-between">
               <span className="font-titan text-xs text-[#EBEBEB] uppercase">ARED RESISTIVE POD</span>
@@ -215,7 +249,7 @@ export default function WorkspacePage({
             {!countermeasureApplied ? (
               <button
                 onClick={handleApplyCountermeasure}
-                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#A64D2D] hover:opacity-95 text-[#0D0B0A] font-black text-xs font-cairo transition-all shadow-[0_0_20px_rgba(228,120,59,0.3)] flex items-center justify-center gap-2"
+                className="w-full min-h-[44px] py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#A64D2D] hover:opacity-95 text-[#0D0B0A] font-black text-xs font-cairo transition-all shadow-[0_0_20px_rgba(228,120,59,0.3)] flex items-center justify-center gap-2"
               >
                 <Zap size={14} />
                 <span>تطبيق بروتوكول التدخل الفضائي</span>
@@ -239,52 +273,38 @@ export default function WorkspacePage({
           {/* DSN Telemetry Uplink Packet */}
           <div className="p-4 rounded-2xl bg-[#171311] border border-white/[0.08] space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="font-titan text-xs text-[#EBEBEB] uppercase">DSN DATA DISPATCH</span>
-              <Radio size={13} className="text-[#E4783B]" />
+              <span className="font-titan text-xs text-[#EBEBEB] uppercase">DSN TELEMETRY PACKET</span>
+              <span className="text-[9px] font-mono-tech text-cyan-400">50 KB ENCODED</span>
             </div>
-            <p className="text-[11px] text-[#808080] leading-relaxed">
-              Compile current vital telemetry and diagnostic images into an encrypted 50KB Deep Space Network payload for Houston Mission Control.
+
+            <p className="text-[11px] text-[#ACACAC] leading-relaxed font-sans">
+              Encrypted biometric diagnostic telemetry ready for Deep Space Network transmission to Houston Ground Control.
             </p>
+
             <button
               onClick={() => {
                 spaceAudio.playChirp();
                 setPacketSent(true);
+                setTimeout(() => setPacketSent(false), 3000);
               }}
-              className="w-full py-2 px-3 rounded-xl bg-[#252121] hover:bg-[#29201D] text-[#EBEBEB] border border-white/10 text-xs font-mono-tech font-bold transition-all flex items-center justify-center gap-1.5"
+              className="w-full min-h-[44px] py-2 rounded-xl bg-[#252121] hover:bg-[#2e2927] text-[#EBEBEB] border border-white/10 text-xs font-mono-tech font-bold transition-all flex items-center justify-center gap-2"
             >
-              <FileText size={13} className="text-[#E4783B]" />
-              <span>{packetSent ? 'ENCRYPTED PACKET SENT (50KB)' : 'DISPATCH DSN PACKET'}</span>
+              <Radio size={13} className="text-[#E4783B]" />
+              <span>{packetSent ? 'PACKET DISPATCHED TO DSN!' : 'TRANSMIT PACKET TO EARTH'}</span>
             </button>
           </div>
-        </div>
-      </section>
 
-      {/* 3. Trajectory Timeline Scrubber */}
-      <section className="p-5 rounded-2xl bg-[#171311] border border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <span className="font-titan text-xs text-[#E4783B] uppercase">
-            MISSION TIMELINE
-          </span>
-          <span className="text-[10px] font-mono-tech text-[#808080]">
-            DAY {missionDay} OF 500 (ARTEMIS VII MARS TRANSIT)
-          </span>
-        </div>
-
-        <div className="w-full md:w-1/2 flex items-center gap-3">
-          <span className="text-[10px] font-mono-tech text-[#808080] shrink-0">DAY 1</span>
-          <input
-            type="range"
-            min="1"
-            max="500"
-            value={missionDay}
-            onChange={(e) => {
-              const val = Number(e.target.value);
-              setMissionDay(val);
-              if (val % 10 === 0) spaceAudio.playChirp();
+          {/* Quick Doctor Consultation Button */}
+          <button
+            onClick={() => {
+              spaceAudio.playChirp();
+              if (onOpenAiDrawer) onOpenAiDrawer();
             }}
-            className="w-full h-1.5 bg-[#0D0B0A] rounded-lg appearance-none cursor-pointer accent-[#E4783B]"
-          />
-          <span className="text-[10px] font-mono-tech text-[#808080] shrink-0">DAY 500</span>
+            className="w-full min-h-[44px] py-3 rounded-2xl bg-[#171311] hover:bg-[#252121] text-[#E4783B] border border-[#E4783B]/40 text-xs font-mono-tech font-bold transition-all shadow-[0_0_15px_rgba(228,120,59,0.2)] flex items-center justify-center gap-2"
+          >
+            <Bot size={15} />
+            <span>CONSULT AURA FLIGHT SURGEON</span>
+          </button>
         </div>
       </section>
     </div>

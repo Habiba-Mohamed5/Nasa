@@ -64,14 +64,14 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
   };
 
   return (
-    <div className="space-y-12 max-w-6xl mx-auto px-4 sm:px-8 py-4">
+    <div className="space-y-8 sm:space-y-12 max-w-6xl mx-auto px-3.5 sm:px-8 py-3 sm:py-4">
       {/* 1. Header Banner */}
-      <section className="p-8 sm:p-12 rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
-        <div className="relative z-10 max-w-2xl space-y-3">
+      <section className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
+        <div className="relative z-10 max-w-2xl space-y-2 sm:space-y-3">
           <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block">
             CELESTIAL TARGETS • ARTEMIS VII TRAJECTORY
           </span>
-          <h1 className="font-titan text-3xl sm:text-4xl lg:text-5xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
+          <h1 className="font-titan text-2xl sm:text-4xl lg:text-5xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
             EXPLORE THE CELESTIAL BODIES
           </h1>
           <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed">
@@ -81,12 +81,12 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
       </section>
 
       {/* 2. Three Celestial Body Deep Dives */}
-      <section className="space-y-8">
+      <section className="space-y-6 sm:space-y-8">
         {bodies.map((b) => (
           <div
             key={b.id}
             id={b.id}
-            className="p-6 sm:p-8 rounded-[28px] bg-[#171311] border border-white/[0.08] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+            className="p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[28px] bg-[#171311] border border-white/[0.08] grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center"
           >
             {/* Image */}
             <div className="lg:col-span-5 relative rounded-2xl overflow-hidden border border-white/10 shadow-xl h-64 sm:h-72 group">

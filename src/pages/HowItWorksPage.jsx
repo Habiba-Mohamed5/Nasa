@@ -75,14 +75,14 @@ export default function HowItWorksPage() {
   ];
 
   return (
-    <div className="space-y-12 max-w-6xl mx-auto px-4 sm:px-8 py-4">
+    <div className="space-y-8 sm:space-y-12 max-w-6xl mx-auto px-3.5 sm:px-8 py-3 sm:py-4">
       {/* 1. Header Banner */}
-      <section className="p-8 sm:p-12 rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
-        <div className="relative z-10 max-w-2xl space-y-3">
+      <section className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
+        <div className="relative z-10 max-w-2xl space-y-2 sm:space-y-3">
           <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block">
             HOW IT WORKS • END-TO-END CLINICAL ARCHITECTURE
           </span>
-          <h1 className="font-titan text-3xl sm:text-4xl lg:text-5xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
+          <h1 className="font-titan text-2xl sm:text-4xl lg:text-5xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
             THE AUTONOMOUS CLINICAL WORKFLOW
           </h1>
           <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed">

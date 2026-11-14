@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bot, Send, Sparkles, X, ShieldAlert, Cpu, ArrowRight, Activity, Zap, CheckCircle2 } from 'lucide-react';
 import { spaceAudio } from './utils/spaceAudio';
 
@@ -86,12 +86,29 @@ export default function AiFlightSurgeonDrawer({
     }, 600);
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-lg bg-[#13100E]/95 border-l border-white/[0.08] backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.9)] flex flex-col justify-between select-none font-sans">
-      {/* 1. Header with Neural Pulse Visualizer */}
-      <div className="p-4 border-b border-white/[0.08] bg-[#171311] flex items-center justify-between">
+    <>
+      {/* Mobile-Friendly Backdrop Overlay */}
+      <div
+        className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      <div className="fixed inset-y-0 right-0 z-50 w-full sm:max-w-md md:max-w-lg bg-[#13100E]/98 border-l border-white/[0.08] backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.9)] flex flex-col justify-between select-none font-sans">
+        {/* 1. Header with Neural Pulse Visualizer */}
+        <div className="p-4 border-b border-white/[0.08] bg-[#171311] flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-2xl bg-[#E4783B]/20 border border-[#E4783B]/40 flex items-center justify-center text-[#E4783B] shadow-[0_0_20px_rgba(228,120,59,0.3)]">
             <Bot size={22} />
@@ -267,5 +284,6 @@ export default function AiFlightSurgeonDrawer({
         </form>
       </div>
     </div>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ShieldAlert, Eye, Bone, Heart, Zap, FileText,
@@ -58,6 +58,15 @@ export const NASA_SCENARIOS = [
 export default function NasaRiskScenariosModal({ isOpen, onClose, onSelectScenario }) {
   const [selectedCase, setSelectedCase] = useState(NASA_SCENARIOS[0]);
   const [packetGenerated, setPacketGenerated] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

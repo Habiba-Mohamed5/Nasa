@@ -34,14 +34,14 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="space-y-12 max-w-4xl mx-auto px-4 sm:px-8 py-4">
+    <div className="space-y-8 sm:space-y-12 max-w-4xl mx-auto px-3.5 sm:px-8 py-3 sm:py-4">
       {/* 1. Header Banner */}
-      <section className="p-8 sm:p-10 rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
-        <div className="relative z-10 space-y-3">
+      <section className="p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
+        <div className="relative z-10 space-y-2 sm:space-y-3">
           <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block">
             DEEP SPACE NETWORK • MISSION UPLINK
           </span>
-          <h1 className="font-titan text-3xl sm:text-4xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
+          <h1 className="font-titan text-2xl sm:text-4xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
             GROUND CONTROL & MISSION CONTACT
           </h1>
           <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed max-w-2xl">
@@ -51,9 +51,9 @@ export default function ContactPage() {
       </section>
 
       {/* 2. Contact Form & Network Status */}
-      <section className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6">
         {/* Left Column: Transmission Form */}
-        <div className="md:col-span-7 p-6 sm:p-8 rounded-[28px] bg-[#171311] border border-white/[0.08] shadow-xl">
+        <div className="md:col-span-7 p-5 sm:p-8 rounded-2xl sm:rounded-[28px] bg-[#171311] border border-white/[0.08] shadow-xl">
           <h2 className="font-titan text-lg text-[#EBEBEB] uppercase mb-4 tracking-wide">
             DISPATCH MISSION TELEMETRY PACKET
           </h2>

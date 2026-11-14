@@ -4,3 +4,8 @@ dist-ssr
 *.local
 .env
 .DS_Store
+screen_*.png
+debug_*.png
+screen_test.png
+capture_*.py
+find_overflow.py

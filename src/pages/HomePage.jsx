@@ -35,19 +35,18 @@ export default function HomePage({
   const [astronautAsset, setAstronautAsset] = useState('reference');
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8 sm:space-y-12">
       {/* ─────────────────────────────────────────────────────────────
-          1. MAIN CINEMATIC HERO COMPOSITION (Matching Reference Image)
-          A single floating card containing:
-          - Top: Integrated Header (Logo & Nav Menu)
-          - Center: Astronaut Subject + Titan Typography + 01/02/03 Indicator
-          - Bottom: Editorial Tri-Column (THE MOON, THE SUN, MARS)
+          1. MAIN CINEMATIC HERO COMPOSITION
+          Responsive Architecture:
+          - Desktop (lg:): Exact Dribbble reference composition (Astronaut on left, Title on right, 01/02/03 on far right, 3 columns bottom).
+          - Mobile/Tablet (< lg): Vertical, intentional art direction (Title top, Astronaut center stage, Buttons, 3-block grid).
       ───────────────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-[720px] lg:h-[88vh] max-h-[920px] rounded-2xl sm:rounded-[36px] overflow-hidden cinematic-card-bg border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.85)] flex flex-col justify-between">
+      <section className="relative w-full rounded-2xl sm:rounded-[36px] overflow-hidden cinematic-card-bg border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.85)] flex flex-col justify-between min-h-[620px] lg:h-[88vh] lg:min-h-[720px] lg:max-h-[920px]">
         {/* Layer 0: Planetary Crescent & Constellation Lines */}
         <CinematicBackground />
 
-        {/* Layer 1: Top Navigation Bar INSIDE the Card (Exact Reference Placement) */}
+        {/* Layer 1: Top Navigation Bar INSIDE the Card */}
         <Navbar
           isMuted={isMuted}
           toggleSound={toggleSound}
@@ -56,14 +55,15 @@ export default function HomePage({
           onOpenRisksModal={onOpenRisksModal}
         />
 
-        {/* Layer 2: Main Hero Viewport */}
-        <div className="relative z-20 flex-1 flex items-center justify-between px-6 sm:px-10 lg:px-14 overflow-hidden py-2 sm:py-4">
+        {/* ─────────────────────────────────────────────────────────────
+            Layer 2A: DESKTOP HERO VIEWPORT (Visible on >= lg screens)
+        ───────────────────────────────────────────────────────────── */}
+        <div className="hidden lg:flex relative z-20 flex-1 items-center justify-between px-8 lg:px-14 overflow-hidden py-4">
           
           {/* Left Photographic Subject: The Space Astronaut */}
-          <div className="absolute left-0 bottom-0 top-0 w-[50%] max-w-[560px] pointer-events-none select-none flex items-end justify-start">
+          <div className="absolute left-0 bottom-0 top-0 w-[48%] max-w-[560px] pointer-events-none select-none flex items-end justify-start">
             {visualMode === 'cinematic' ? (
               <div className="relative w-full h-[95%] flex items-end justify-start">
-                {/* Astronaut Image with Warm Burnt-Orange Highlights */}
                 <img
                   src={
                     assetPath(
@@ -88,9 +88,9 @@ export default function HomePage({
           </div>
 
           {/* Center-Right Hero Content: Titan Display Typography & Copy */}
-          <div className="relative z-30 ml-auto w-full md:w-[54%] lg:w-[48%] flex flex-col justify-center pl-4 sm:pl-8">
+          <div className="relative z-30 ml-auto w-[50%] lg:w-[47%] xl:w-[46%] flex flex-col justify-center pl-4 lg:pl-8 pr-3 lg:pr-8">
             {/* Display Headline in Titan One */}
-            <h1 className="font-titan text-5xl sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[94px] text-[#EBEBEB] uppercase leading-[0.92] tracking-tight drop-shadow-2xl select-none">
+            <h1 className="font-titan text-5xl lg:text-[60px] xl:text-[76px] 2xl:text-[86px] text-[#EBEBEB] uppercase leading-[0.92] tracking-tight drop-shadow-2xl select-none">
               SPACE<br />
               ASTRONAUT
             </h1>
@@ -100,12 +100,12 @@ export default function HomePage({
               The Ongoing Discovery And Exploration Of Celestial Structures In Outer Space By Means Of Continuously Evolving And Growing Space Technology.
             </p>
 
-            {/* Actions & Live Telemetry Pill */}
+            {/* Actions & View Switcher */}
             <div className="flex flex-wrap items-center gap-3 mt-6 sm:mt-7">
               <Link
                 to="/workspace"
                 onClick={() => spaceAudio.playChirp()}
-                className="px-6 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_25px_rgba(228,120,59,0.35)] hover:scale-105 flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_25px_rgba(228,120,59,0.35)] hover:scale-105 flex items-center gap-1.5 min-h-[44px]"
               >
                 <span>ENTER WORKSPACE</span>
                 <ChevronRight size={14} />
@@ -116,19 +116,18 @@ export default function HomePage({
                   spaceAudio.playChirp();
                   if (onOpenAiDrawer) onOpenAiDrawer();
                 }}
-                className="px-5 py-2.5 rounded-full bg-[#171311] hover:bg-[#252121] text-[#EBEBEB] border border-white/10 font-bold text-xs tracking-wider transition-all flex items-center gap-2"
+                className="px-5 py-2.5 rounded-full bg-[#171311] hover:bg-[#252121] text-[#EBEBEB] border border-white/10 font-bold text-xs tracking-wider transition-all flex items-center gap-2 min-h-[44px]"
               >
                 <Bot size={14} className="text-[#E4783B]" />
                 <span>AURA SURGEON</span>
               </button>
 
-              {/* 3D / Photo Mode Switcher */}
               <button
                 onClick={() => {
                   spaceAudio.playChirp();
                   setVisualMode(visualMode === 'cinematic' ? '3d' : 'cinematic');
                 }}
-                className="text-[10px] text-[#808080] hover:text-[#EBEBEB] underline font-mono-tech ml-1"
+                className="text-[11px] text-[#808080] hover:text-[#EBEBEB] underline font-mono-tech ml-1"
                 title="Toggle between Photographic and 3D Viewport"
               >
                 View: {visualMode === 'cinematic' ? 'Photo' : '3D Zero-G'}
@@ -137,9 +136,8 @@ export default function HomePage({
           </div>
 
           {/* Far Right Edge: Numbered State Indicator (01, 02, 03) */}
-          <div className="relative z-30 flex flex-col items-center gap-3 text-xs font-mono-tech pl-4 select-none">
+          <div className="relative z-30 flex flex-col items-center gap-3 text-xs font-mono-tech pl-4 select-none shrink-0">
             <span className="w-3.5 h-[1px] bg-white/20" />
-            
             <button
               onClick={() => {
                 spaceAudio.playChirp();
@@ -153,9 +151,7 @@ export default function HomePage({
             >
               01
             </button>
-
             <span className="w-3.5 h-[1px] bg-white/20" />
-
             <Link
               to="/workspace"
               onClick={() => {
@@ -167,9 +163,7 @@ export default function HomePage({
             >
               02
             </Link>
-
             <span className="w-3.5 h-[1px] bg-white/20" />
-
             <Link
               to="/ai-identity"
               onClick={() => {
@@ -184,61 +178,157 @@ export default function HomePage({
           </div>
         </div>
 
-        {/* Layer 2: Lower Editorial Tri-Column Information Blocks (Exact Reference) */}
-        <div className="relative z-30 px-6 sm:px-10 lg:px-14 pb-6 sm:pb-8 flex flex-col md:flex-row items-start md:items-end justify-between gap-6 shrink-0 pt-4 border-t border-white/[0.04]">
-          {/* Block 1: THE MOON */}
-          <Link
-            to="/planets#moon"
-            onClick={() => {
-              spaceAudio.playChirp();
-              if (setCurrentPhase) setCurrentPhase(MISSION_PHASES[0]);
-            }}
-            className="group text-left"
-          >
-            <h3 className="text-xs font-bold text-[#EBEBEB] group-hover:text-[#E4783B] uppercase tracking-wider font-sans mb-1 transition-colors">
-              THE MOON
-            </h3>
-            <p className="text-[10px] md:text-[11px] text-[#808080] group-hover:text-[#ACACAC] max-w-[210px] leading-relaxed font-sans transition-colors">
-              The First Celestial Body To Be The Object Of Space Exploration
+        {/* ─────────────────────────────────────────────────────────────
+            Layer 2B: MOBILE & TABLET HERO VIEWPORT (Visible on < lg screens)
+            Intentional Vertical Art Direction:
+            - Clear Headline on top
+            - Centered Astronaut in dedicated visual stage
+            - Subtitle & Action CTAs within thumb reach
+        ───────────────────────────────────────────────────────────── */}
+        <div className="lg:hidden relative z-20 flex-1 flex flex-col items-center justify-between px-4 sm:px-6 py-3 overflow-hidden text-center">
+          
+          {/* Top Text Cluster: Headline & Subtitle */}
+          <div className="space-y-2 max-w-md mx-auto pt-1">
+            <h1 className="font-titan text-3xl sm:text-4xl md:text-5xl text-[#EBEBEB] uppercase leading-[0.95] tracking-tight drop-shadow-2xl">
+              SPACE ASTRONAUT
+            </h1>
+            <p className="text-[11px] sm:text-xs text-[#ACACAC] font-sans leading-relaxed px-2">
+              The Ongoing Discovery And Exploration Of Celestial Structures In Outer Space By Means Of Continuously Evolving Space Technology.
             </p>
-          </Link>
+          </div>
 
-          {/* Block 2: THE SUN */}
-          <Link
-            to="/planets#sun"
-            onClick={() => {
-              spaceAudio.playChirp();
-              if (setCurrentPhase) setCurrentPhase(MISSION_PHASES[1]);
-            }}
-            className="group text-left"
-          >
-            <h3 className="text-xs font-bold text-[#EBEBEB] group-hover:text-[#E4783B] uppercase tracking-wider font-sans mb-1 transition-colors">
-              THE SUN
-            </h3>
-            <p className="text-[10px] md:text-[11px] text-[#808080] group-hover:text-[#ACACAC] max-w-[210px] leading-relaxed font-sans transition-colors">
-              The Sun Never Been A Major Focus Of Space Exploration
-            </p>
-          </Link>
+          {/* Center Stage: The Space Astronaut (Unobscured & Beautifully Framed) */}
+          <div className="relative w-full h-[240px] sm:h-[320px] md:h-[380px] flex items-center justify-center my-2 pointer-events-none">
+            {visualMode === 'cinematic' ? (
+              <img
+                src={
+                  assetPath(
+                    astronautAsset === 'reference'
+                      ? 'astronaut_feathered_clean.png'
+                      : 'astronaut_cinema_feathered.png'
+                  )
+                }
+                alt="Cinematic Space Astronaut"
+                className="w-auto h-full max-h-[240px] sm:max-h-[320px] md:max-h-[380px] object-contain object-bottom filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.95)]"
+              />
+            ) : (
+              <div className="w-full h-full pointer-events-auto flex items-center justify-center">
+                <Astronaut3D
+                  telemetry={telemetry}
+                  scanMode={scanMode}
+                  setScanMode={setScanMode}
+                />
+              </div>
+            )}
+          </div>
 
-          {/* Block 3: MARS */}
-          <Link
-            to="/planets#mars"
-            onClick={() => {
-              spaceAudio.playChirp();
-              if (setCurrentPhase) setCurrentPhase(MISSION_PHASES[3]);
-            }}
-            className="group text-left"
-          >
-            <h3 className="text-xs font-bold text-[#EBEBEB] group-hover:text-[#E4783B] uppercase tracking-wider font-sans mb-1 transition-colors">
-              MARS
-            </h3>
-            <p className="text-[10px] md:text-[11px] text-[#808080] group-hover:text-[#ACACAC] max-w-[210px] leading-relaxed font-sans transition-colors">
-              Mars Has Been An Important Part Of The Space Exploration
-            </p>
-          </Link>
+          {/* Action CTAs Cluster (Touch-friendly minimum 46px) */}
+          <div className="w-full max-w-md mx-auto flex flex-col sm:flex-row items-center justify-center gap-2.5 px-2">
+            <Link
+              to="/workspace"
+              onClick={() => spaceAudio.playChirp()}
+              className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)] flex items-center justify-center gap-1.5 min-h-[46px]"
+            >
+              <span>ENTER WORKSPACE</span>
+              <ChevronRight size={14} />
+            </Link>
+
+            <button
+              onClick={() => {
+                spaceAudio.playChirp();
+                if (onOpenAiDrawer) onOpenAiDrawer();
+              }}
+              className="w-full sm:w-auto px-5 py-3 rounded-full bg-[#171311] hover:bg-[#252121] text-[#EBEBEB] border border-white/10 font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-2 min-h-[46px]"
+            >
+              <Bot size={14} className="text-[#E4783B]" />
+              <span>AURA SURGEON</span>
+            </button>
+
+            <button
+              onClick={() => {
+                spaceAudio.playChirp();
+                setVisualMode(visualMode === 'cinematic' ? '3d' : 'cinematic');
+              }}
+              className="text-[10px] text-[#808080] hover:text-[#EBEBEB] underline font-mono-tech py-1"
+            >
+              View: {visualMode === 'cinematic' ? 'Photo' : '3D Zero-G'}
+            </button>
+          </div>
+
+          {/* Mobile Horizontal Section Indicator */}
+          <div className="flex items-center justify-center gap-4 text-xs font-mono-tech pt-3 select-none">
+            <span className="text-[#EBEBEB] font-bold border-b border-[#E4783B] pb-0.5">01 HERO</span>
+            <Link to="/workspace" className="text-[#808080] hover:text-[#EBEBEB]">02 WORKSPACE</Link>
+            <Link to="/ai-identity" className="text-[#808080] hover:text-[#EBEBEB]">03 AURA AI</Link>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            Layer 3: Lower Editorial Tri-Column Information Blocks
+            - On Desktop: Clean row matching Dribbble reference.
+            - On Mobile: Responsive grid with touch-friendly cards.
+        ───────────────────────────────────────────────────────────── */}
+        <div className="relative z-30 px-4 sm:px-8 lg:px-14 pb-4 sm:pb-7 pt-3.5 border-t border-white/[0.06] flex flex-col lg:flex-row items-stretch lg:items-end justify-between gap-4 shrink-0">
+          
+          {/* Celestial 3-Block Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-6 flex-1">
+            {/* Block 1: THE MOON */}
+            <Link
+              to="/planets#moon"
+              onClick={() => {
+                spaceAudio.playChirp();
+                if (setCurrentPhase) setCurrentPhase(MISSION_PHASES[0]);
+              }}
+              className="group text-left p-2.5 sm:p-0 rounded-xl bg-white/[0.02] sm:bg-transparent border border-white/5 sm:border-0 hover:bg-white/[0.05] transition-colors"
+            >
+              <h3 className="text-xs font-bold text-[#EBEBEB] group-hover:text-[#E4783B] uppercase tracking-wider font-sans mb-1 transition-colors flex items-center justify-between sm:block">
+                <span>THE MOON</span>
+                <ChevronRight size={12} className="sm:hidden text-[#808080]" />
+              </h3>
+              <p className="text-[10px] sm:text-[11px] text-[#808080] group-hover:text-[#ACACAC] max-w-[210px] leading-relaxed font-sans transition-colors">
+                The First Celestial Body To Be The Object Of Space Exploration
+              </p>
+            </Link>
+
+            {/* Block 2: THE SUN */}
+            <Link
+              to="/planets#sun"
+              onClick={() => {
+                spaceAudio.playChirp();
+                if (setCurrentPhase) setCurrentPhase(MISSION_PHASES[1]);
+              }}
+              className="group text-left p-2.5 sm:p-0 rounded-xl bg-white/[0.02] sm:bg-transparent border border-white/5 sm:border-0 hover:bg-white/[0.05] transition-colors"
+            >
+              <h3 className="text-xs font-bold text-[#EBEBEB] group-hover:text-[#E4783B] uppercase tracking-wider font-sans mb-1 transition-colors flex items-center justify-between sm:block">
+                <span>THE SUN</span>
+                <ChevronRight size={12} className="sm:hidden text-[#808080]" />
+              </h3>
+              <p className="text-[10px] sm:text-[11px] text-[#808080] group-hover:text-[#ACACAC] max-w-[210px] leading-relaxed font-sans transition-colors">
+                The Sun Never Been A Major Focus Of Space Exploration
+              </p>
+            </Link>
+
+            {/* Block 3: MARS */}
+            <Link
+              to="/planets#mars"
+              onClick={() => {
+                spaceAudio.playChirp();
+                if (setCurrentPhase) setCurrentPhase(MISSION_PHASES[3]);
+              }}
+              className="group text-left p-2.5 sm:p-0 rounded-xl bg-white/[0.02] sm:bg-transparent border border-white/5 sm:border-0 hover:bg-white/[0.05] transition-colors"
+            >
+              <h3 className="text-xs font-bold text-[#EBEBEB] group-hover:text-[#E4783B] uppercase tracking-wider font-sans mb-1 transition-colors flex items-center justify-between sm:block">
+                <span>MARS</span>
+                <ChevronRight size={12} className="sm:hidden text-[#808080]" />
+              </h3>
+              <p className="text-[10px] sm:text-[11px] text-[#808080] group-hover:text-[#ACACAC] max-w-[210px] leading-relaxed font-sans transition-colors">
+                Mars Has Been An Important Part Of The Space Exploration
+              </p>
+            </Link>
+          </div>
 
           {/* Interactive Trajectory Scrub Slider */}
-          <div className="w-full md:w-56 flex flex-col gap-1 items-start md:items-end">
+          <div className="w-full lg:w-56 flex flex-col gap-1 items-start lg:items-end pt-2 lg:pt-0 border-t lg:border-t-0 border-white/5">
             <span className="text-[9px] font-mono-tech text-[#808080] uppercase">
               MISSION TRAJECTORY: DAY {missionDay}/500
             </span>
@@ -252,7 +342,8 @@ export default function HomePage({
                 setMissionDay(val);
                 if (val % 10 === 0) spaceAudio.playChirp();
               }}
-              className="w-full h-1 bg-[#171311] rounded-lg appearance-none cursor-pointer accent-[#E4783B]"
+              className="w-full h-1.5 bg-[#171311] rounded-lg appearance-none cursor-pointer accent-[#E4783B]"
+              aria-label="Mission Trajectory Day Scrub Slider"
             />
           </div>
         </div>
@@ -260,9 +351,10 @@ export default function HomePage({
 
       {/* ─────────────────────────────────────────────────────────────
           2. PLATFORM OVERVIEW & ARCHITECTURAL HIGHLIGHTS
+          Mobile-friendly 1-col on phone, 2-col on tablet, 4-col on desktop
       ───────────────────────────────────────────────────────────── */}
-      <section className="px-4 sm:px-8 max-w-7xl mx-auto space-y-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <section className="px-3 sm:px-8 max-w-7xl mx-auto space-y-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-white/[0.08] pb-5">
           <div>
             <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block mb-1">
               MISSION READINESS & BIO-DIGITAL TWIN
@@ -277,8 +369,8 @@ export default function HomePage({
         </div>
 
         {/* 4 Feature Pillar Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Card 1 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Card 1: AURA */}
           <div className="p-5 rounded-2xl bg-[#171311] border border-white/[0.06] hover:border-[#E4783B]/40 transition-all space-y-3 group">
             <div className="w-10 h-10 rounded-xl bg-[#E4783B]/15 border border-[#E4783B]/30 flex items-center justify-center text-[#E4783B]">
               <Bot size={20} />
@@ -289,13 +381,13 @@ export default function HomePage({
             <p className="text-[11px] text-[#808080] leading-relaxed">
               Autonomous neural clinical copilot calibrated against NASA-STD-3001 and HRP evidence roadmaps for offline edge inference.
             </p>
-            <Link to="/ai-identity" className="inline-flex items-center gap-1 text-[11px] text-[#E4783B] font-bold hover:underline pt-1">
+            <Link to="/ai-identity" className="inline-flex items-center gap-1 text-[11px] text-[#E4783B] font-bold hover:underline pt-1 min-h-[36px]">
               <span>Inspect AI Core</span>
               <ArrowRight size={12} />
             </Link>
           </div>
 
-          {/* Card 2 */}
+          {/* Card 2: Bio-Digital Twin */}
           <div className="p-5 rounded-2xl bg-[#171311] border border-white/[0.06] hover:border-[#E4783B]/40 transition-all space-y-3 group">
             <div className="w-10 h-10 rounded-xl bg-[#E4783B]/15 border border-[#E4783B]/30 flex items-center justify-center text-[#E4783B]">
               <Activity size={20} />
@@ -306,13 +398,13 @@ export default function HomePage({
             <p className="text-[11px] text-[#808080] leading-relaxed">
               Real-time Doppler echocardiogram, trabecular micro-architecture DEXA, and SANS optic sheath ultrasound monitors.
             </p>
-            <Link to="/workspace" className="inline-flex items-center gap-1 text-[11px] text-[#E4783B] font-bold hover:underline pt-1">
+            <Link to="/workspace" className="inline-flex items-center gap-1 text-[11px] text-[#E4783B] font-bold hover:underline pt-1 min-h-[36px]">
               <span>View Live Telemetry</span>
               <ArrowRight size={12} />
             </Link>
           </div>
 
-          {/* Card 3 */}
+          {/* Card 3: Countermeasures */}
           <div className="p-5 rounded-2xl bg-[#171311] border border-white/[0.06] hover:border-[#E4783B]/40 transition-all space-y-3 group">
             <div className="w-10 h-10 rounded-xl bg-[#E4783B]/15 border border-[#E4783B]/30 flex items-center justify-center text-[#E4783B]">
               <Zap size={20} />
@@ -323,13 +415,13 @@ export default function HomePage({
             <p className="text-[11px] text-[#808080] leading-relaxed">
               Closed-loop resistive exercise loading, lower body negative pressure (LBNP), and electrolyte fluid restoration.
             </p>
-            <Link to="/features" className="inline-flex items-center gap-1 text-[11px] text-[#E4783B] font-bold hover:underline pt-1">
+            <Link to="/features" className="inline-flex items-center gap-1 text-[11px] text-[#E4783B] font-bold hover:underline pt-1 min-h-[36px]">
               <span>Protocol Specs</span>
               <ArrowRight size={12} />
             </Link>
           </div>
 
-          {/* Card 4 */}
+          {/* Card 4: DSN Simulation */}
           <div className="p-5 rounded-2xl bg-[#171311] border border-white/[0.06] hover:border-[#E4783B]/40 transition-all space-y-3 group">
             <div className="w-10 h-10 rounded-xl bg-[#E4783B]/15 border border-[#E4783B]/30 flex items-center justify-center text-[#E4783B]">
               <Radio size={20} />
@@ -340,7 +432,7 @@ export default function HomePage({
             <p className="text-[11px] text-[#808080] leading-relaxed">
               High-fidelity simulation of deep space radio latency, autonomous emergency overrides, and encrypted 50KB DSN packets.
             </p>
-            <Link to="/how-it-works" className="inline-flex items-center gap-1 text-[11px] text-[#E4783B] font-bold hover:underline pt-1">
+            <Link to="/how-it-works" className="inline-flex items-center gap-1 text-[11px] text-[#E4783B] font-bold hover:underline pt-1 min-h-[36px]">
               <span>How It Works</span>
               <ArrowRight size={12} />
             </Link>
@@ -351,28 +443,28 @@ export default function HomePage({
       {/* ─────────────────────────────────────────────────────────────
           3. CALL TO ACTION: EXPLORE MISSION COCKPIT
       ───────────────────────────────────────────────────────────── */}
-      <section className="px-4 sm:px-8 max-w-7xl mx-auto">
-        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-[#171311] via-[#252121] to-[#171311] border border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 text-center md:text-left">
-            <h3 className="font-titan text-xl sm:text-2xl text-[#EBEBEB] uppercase">
+      <section className="px-3 sm:px-8 max-w-7xl mx-auto">
+        <div className="p-6 sm:p-10 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#171311] via-[#252121] to-[#171311] border border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
+          <div className="space-y-2">
+            <h3 className="font-titan text-lg sm:text-2xl text-[#EBEBEB] uppercase">
               READY TO COMMENCE MISSION READINESS EVALUATION?
             </h3>
-            <p className="text-xs text-[#ACACAC] max-w-lg">
+            <p className="text-xs text-[#ACACAC] max-w-lg leading-relaxed">
               Launch the full 3D interactive Zero-G cockpit to inspect astronaut vitals, review NASA standard threshold rules, and simulate emergency interventions.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0">
             <Link
               to="/workspace"
               onClick={() => spaceAudio.playChirp()}
-              className="px-6 py-3 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)]"
+              className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)] min-h-[46px] flex items-center justify-center"
             >
               LAUNCH MISSION CONTROL
             </Link>
             <Link
               to="/about"
-              className="px-5 py-3 rounded-full bg-[#0D0B0A] hover:bg-white/5 text-[#EBEBEB] border border-white/10 text-xs font-bold transition-all"
+              className="w-full sm:w-auto px-5 py-3 rounded-full bg-[#0D0B0A] hover:bg-white/5 text-[#EBEBEB] border border-white/10 text-xs font-bold transition-all min-h-[46px] flex items-center justify-center"
             >
               READ MISSION BRIEF
             </Link>

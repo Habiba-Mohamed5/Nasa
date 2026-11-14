@@ -456,7 +456,7 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
         </div>
       </div>
 
-      {/* The Interactive 3D Canvas */}
+      {/* The Interactive 3D Canvas (touch-pan-y allows smooth vertical page scrolling on mobile while horizontal gestures rotate the astronaut) */}
       <div
         ref={mountRef}
         onMouseDown={handleMouseDown}
@@ -466,7 +466,7 @@ export default function Astronaut3D({ telemetry, scanMode, setScanMode }) {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleMouseUp}
-        className="w-full h-[460px] cursor-grab active:cursor-grabbing flex items-center justify-center my-1 touch-none"
+        className="w-full h-[320px] sm:h-[400px] lg:h-[460px] cursor-grab active:cursor-grabbing flex items-center justify-center my-1 touch-pan-y"
       />
 
       {/* Quick Organ Focus Pill Bar */}

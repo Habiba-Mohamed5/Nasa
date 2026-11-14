@@ -1,50 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Bot, Volume2, VolumeX, Maximize2, Menu, X, Activity, ShieldAlert, Sparkles } from 'lucide-react';
+import {
+  Bot, Volume2, VolumeX, Maximize2, Menu, X,
+  Activity, ShieldAlert, Sparkles, ChevronRight
+} from 'lucide-react';
 import { spaceAudio } from '../utils/spaceAudio';
 
-export default function Navbar({ isMuted, toggleSound, toggleFullScreen, onOpenAiDrawer, onOpenRisksModal }) {
+export default function Navbar({
+  isMuted,
+  toggleSound,
+  toggleFullScreen,
+  onOpenAiDrawer,
+  onOpenRisksModal
+}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   const navItems = [
-    { name: 'HOME', path: '/' },
-    { name: 'ABOUT', path: '/about' },
-    { name: 'FEATURES', path: '/features' },
-    { name: 'AI IDENTITY', path: '/ai-identity' },
-    { name: 'HOW IT WORKS', path: '/how-it-works' },
-    { name: 'WORKSPACE', path: '/workspace' },
-    { name: 'PLANETS', path: '/planets' },
-    { name: 'CONTACT', path: '/contact' }
+    { name: 'HOME', path: '/', label: 'الرئيسية' },
+    { name: 'ABOUT', path: '/about', label: 'عن المنصة' },
+    { name: 'FEATURES', path: '/features', label: 'الميزات السريرية' },
+    { name: 'AI IDENTITY', path: '/ai-identity', label: 'طبيب AURA المستقل' },
+    { name: 'HOW IT WORKS', path: '/how-it-works', label: 'آلية العمل' },
+    { name: 'WORKSPACE', path: '/workspace', label: 'قمرة التحكم' },
+    { name: 'PLANETS', path: '/planets', label: 'الأجرام والمسارات' },
+    { name: 'CONTACT', path: '/contact', label: 'الاتصال بالأرض' }
   ];
 
+  // Lock body scroll when mobile menu is open to prevent awkward background scrolling
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [mobileMenuOpen]);
+
+  // Support closing mobile menu via Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
+
   return (
-    <header className="relative z-40 px-6 sm:px-10 lg:px-12 pt-6 sm:pt-7 flex items-center justify-between shrink-0 select-none">
+    <header className="relative z-40 px-3.5 sm:px-6 lg:px-12 pt-3.5 sm:pt-6 flex items-center justify-between shrink-0 select-none">
       {/* 1. Logo: ASTR🪐NAUT (Exact Dribbble Style with orbital ring on O) */}
       <Link
         to="/"
-        onClick={() => spaceAudio.playChirp()}
-        className="flex items-center gap-1.5 cursor-pointer group shrink-0"
+        onClick={() => {
+          spaceAudio.playChirp();
+          setMobileMenuOpen(false);
+        }}
+        className="flex items-center gap-1.5 cursor-pointer group shrink-0 min-h-[44px] items-center"
+        aria-label="AstroVitals Home"
       >
-        <span className="font-titan text-lg sm:text-xl tracking-wider text-[#EBEBEB]">ASTR</span>
-        <div className="relative w-4 h-4 flex items-center justify-center mx-0.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#EBEBEB] group-hover:bg-[#E4783B] transition-colors" />
-          <div className="absolute w-4.5 h-1.5 border border-[#EBEBEB] group-hover:border-[#E4783B] rounded-full rotate-[-26deg] transition-colors" />
+        <span className="font-titan text-base sm:text-lg lg:text-xl tracking-wider text-[#EBEBEB]">ASTR</span>
+        <div className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 flex items-center justify-center mx-0.5">
+          <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#EBEBEB] group-hover:bg-[#E4783B] transition-colors" />
+          <div className="absolute w-4 sm:w-4.5 h-1.5 border border-[#EBEBEB] group-hover:border-[#E4783B] rounded-full rotate-[-26deg] transition-colors" />
         </div>
-        <span className="font-titan text-lg sm:text-xl tracking-wider text-[#EBEBEB]">NAUT</span>
+        <span className="font-titan text-base sm:text-lg lg:text-xl tracking-wider text-[#EBEBEB]">NAUT</span>
       </Link>
 
-      {/* 2. Desktop Navigation Links (Refined Editorial Uppercase Sans) */}
-      <nav className="hidden xl:flex items-center gap-6 lg:gap-8 text-[11px] font-semibold tracking-[0.2em] uppercase">
+      {/* 2. Desktop Navigation Links (Visible on >= xl screens) */}
+      <nav className="hidden xl:flex items-center gap-6 lg:gap-7 text-[11px] font-semibold tracking-[0.18em] uppercase">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             onClick={() => spaceAudio.playChirp()}
             className={({ isActive }) =>
-              `transition-all py-1 relative ${
+              `transition-all py-1.5 relative ${
                 isActive
-                  ? 'text-[#EBEBEB] font-bold after:content-[""] after:absolute after:bottom-0 after:inset-x-0 after:h-[1.5px] after:bg-[#E4783B]'
+                  ? 'text-[#EBEBEB] font-bold after:content-[""] after:absolute after:bottom-0 after:inset-x-0 after:h-[2px] after:bg-[#E4783B]'
                   : 'text-[#ACACAC] hover:text-[#EBEBEB]'
               }`
             }
@@ -55,96 +94,145 @@ export default function Navbar({ isMuted, toggleSound, toggleFullScreen, onOpenA
       </nav>
 
       {/* 3. Right Quick Tools Cluster */}
-      <div className="flex items-center gap-2.5 sm:gap-3">
-        {/* Quick Launch AURA AI Surgeon */}
+      <div className="flex items-center gap-1.5 sm:gap-2.5">
+        {/* Quick Launch AURA AI Surgeon (Hidden on very small screens, accessible via menu) */}
         <button
           onClick={() => {
             spaceAudio.playChirp();
             if (onOpenAiDrawer) onOpenAiDrawer();
           }}
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E4783B]/15 hover:bg-[#E4783B]/25 text-[#E4783B] border border-[#E4783B]/40 font-mono-tech text-[10px] font-bold transition-all shadow-[0_0_15px_rgba(228,120,59,0.2)] hover:scale-105"
+          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E4783B]/15 hover:bg-[#E4783B]/25 text-[#E4783B] border border-[#E4783B]/40 font-mono-tech text-[10px] font-bold transition-all shadow-[0_0_15px_rgba(228,120,59,0.2)] hover:scale-105 min-h-[36px]"
+          aria-label="Launch AURA AI Surgeon Drawer"
         >
           <Bot size={13} />
           <span>AURA AI</span>
         </button>
 
-        {/* Audio Mute Switch */}
+        {/* Audio Mute Switch (Touch-friendly minimum 40px) */}
         <button
           onClick={toggleSound}
-          className={`p-1.5 sm:p-2 rounded-full border text-xs transition-all ${
+          className={`w-10 h-10 rounded-full border text-xs transition-all flex items-center justify-center ${
             !isMuted
               ? 'bg-[#E4783B]/15 text-[#E4783B] border-[#E4783B]/30'
               : 'bg-[#171311] text-[#808080] border-white/10'
           }`}
           title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+          aria-label={isMuted ? 'Unmute Audio' : 'Mute Audio'}
         >
-          {!isMuted ? <Volume2 size={15} /> : <VolumeX size={15} />}
+          {!isMuted ? <Volume2 size={16} /> : <VolumeX size={16} />}
         </button>
 
-        {/* Fullscreen Toggle */}
+        {/* Fullscreen Toggle (Desktop only) */}
         <button
           onClick={toggleFullScreen}
-          className="p-1.5 sm:p-2 rounded-full bg-[#171311] text-[#ACACAC] hover:text-[#EBEBEB] border border-white/10 transition-all hidden md:block"
+          className="w-10 h-10 rounded-full bg-[#171311] text-[#ACACAC] hover:text-[#EBEBEB] border border-white/10 transition-all hidden lg:flex items-center justify-center"
           title="Toggle Fullscreen"
+          aria-label="Toggle Fullscreen"
         >
           <Maximize2 size={15} />
         </button>
 
-        {/* Mobile Hamburger Menu Toggle (Visible on < xl screens) */}
+        {/* Mobile Hamburger Menu Toggle (Visible on < xl screens, min-h/w 44px for perfect touch accessibility) */}
         <button
           onClick={() => {
             spaceAudio.playChirp();
             setMobileMenuOpen(!mobileMenuOpen);
           }}
-          className="xl:hidden p-2 rounded-xl bg-[#171311] text-[#EBEBEB] border border-white/10"
+          className="xl:hidden w-11 h-11 rounded-xl bg-[#171311] text-[#EBEBEB] border border-white/15 flex items-center justify-center active:scale-95 transition-all shadow-lg"
+          aria-label={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
+          aria-expanded={mobileMenuOpen}
         >
-          {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          {mobileMenuOpen ? <X size={20} className="text-[#E4783B]" /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* 4. Mobile Flyout Menu (Matching Cinematic Aesthetic) */}
+      {/* ─────────────────────────────────────────────────────────────
+          4. FULL-SCREEN MOBILE OVERLAY NAVIGATION (Accessible & Touch-First)
+      ───────────────────────────────────────────────────────────── */}
       {mobileMenuOpen && (
-        <div className="xl:hidden fixed inset-x-4 top-20 z-50 p-5 rounded-3xl bg-[#13100E]/95 border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-3 font-sans-clean">
-          <div className="text-[10px] text-[#808080] font-mono-tech uppercase pb-2 border-b border-white/5">
-            ASTROVITALS NAVIGATION MENU
-          </div>
-          <div className="flex flex-col gap-2">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                onClick={() => {
-                  spaceAudio.playChirp();
-                  setMobileMenuOpen(false);
-                }}
-                className={({ isActive }) =>
-                  `px-3 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-between ${
-                    isActive
-                      ? 'bg-[#E4783B]/20 text-[#EBEBEB] border border-[#E4783B]/40'
-                      : 'text-[#ACACAC] hover:text-[#EBEBEB] hover:bg-white/5'
-                  }`
-                }
-              >
-                <span>{item.name}</span>
-                {location.pathname === item.path && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#E4783B]" />
-                )}
-              </NavLink>
-            ))}
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile Navigation"
+          className="xl:hidden fixed inset-0 z-50 bg-[#0D0B0A]/98 backdrop-blur-2xl flex flex-col justify-between p-5 sm:p-7 overflow-y-auto animate-in fade-in duration-200"
+        >
+          {/* Top Bar inside Overlay */}
+          <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+            <div className="flex items-center gap-1.5">
+              <span className="font-titan text-lg tracking-wider text-[#EBEBEB]">ASTR</span>
+              <div className="relative w-3.5 h-3.5 flex items-center justify-center mx-0.5">
+                <div className="w-2 h-2 rounded-full bg-[#EBEBEB]" />
+                <div className="absolute w-4 h-1 border border-[#EBEBEB] rounded-full rotate-[-26deg]" />
+              </div>
+              <span className="font-titan text-lg tracking-wider text-[#EBEBEB]">NAUT</span>
+            </div>
+
+            <button
+              onClick={() => {
+                spaceAudio.playChirp();
+                setMobileMenuOpen(false);
+              }}
+              className="w-11 h-11 rounded-full bg-[#171311] border border-white/15 text-[#EBEBEB] flex items-center justify-center hover:bg-[#252121] transition-all"
+              aria-label="Close menu"
+            >
+              <X size={20} className="text-[#E4783B]" />
+            </button>
           </div>
 
-          <div className="pt-2 border-t border-white/5 flex items-center gap-2">
+          {/* Navigation Links Grid/List with Large Touch Targets (Min 48px) */}
+          <nav className="flex-1 py-4 flex flex-col justify-center space-y-1.5 sm:space-y-2">
+            <span className="text-[10px] font-mono-tech text-[#808080] uppercase tracking-widest px-2 mb-1">
+              MISSION FLIGHT DECK NAVIGATION
+            </span>
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => {
+                    spaceAudio.playChirp();
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full min-h-[48px] px-4 py-2.5 rounded-2xl flex items-center justify-between transition-all ${
+                    isActive
+                      ? 'bg-[#E4783B]/20 text-[#EBEBEB] border border-[#E4783B]/50 shadow-[0_0_20px_rgba(228,120,59,0.25)] font-bold'
+                      : 'text-[#ACACAC] hover:text-[#EBEBEB] hover:bg-white/5 active:bg-white/10 font-semibold'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#E4783B]' : 'bg-transparent'}`} />
+                    <span className="text-sm sm:text-base font-sans tracking-wide uppercase">
+                      {item.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] text-[#808080] font-cairo">{item.label}</span>
+                    <ChevronRight size={14} className={isActive ? 'text-[#E4783B]' : 'text-[#808080]'} />
+                  </div>
+                </NavLink>
+              );
+            })}
+          </nav>
+
+          {/* Quick Action Footer in Mobile Overlay */}
+          <div className="pt-4 border-t border-white/[0.08] flex flex-col gap-2.5">
             <button
               onClick={() => {
                 spaceAudio.playChirp();
                 setMobileMenuOpen(false);
                 if (onOpenAiDrawer) onOpenAiDrawer();
               }}
-              className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#A64D2D] text-[#0D0B0A] font-bold text-xs flex items-center justify-center gap-2"
+              className="w-full min-h-[48px] py-3 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#A64D2D] text-[#0D0B0A] font-bold text-xs tracking-wider flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(228,120,59,0.35)] active:scale-95 transition-all"
             >
-              <Bot size={14} />
-              <span>LAUNCH AURA AI</span>
+              <Bot size={16} />
+              <span>LAUNCH AURA FLIGHT SURGEON</span>
             </button>
+
+            <div className="flex items-center justify-between text-[11px] text-[#808080] px-2 font-mono-tech">
+              <span>NASA-STD-3001 VOL 1</span>
+              <span>MISSION CONTROL 2026</span>
+            </div>
           </div>
         </div>
       )}
