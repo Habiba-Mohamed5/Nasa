@@ -47,9 +47,13 @@
 
 /* Atmospheric Space Backgrounds & Surface Cards */
 .cinematic-card-bg {
-  background: radial-gradient(ellipse at 42% 35%, rgba(126, 120, 201, 0.14) 0%, rgba(13, 23, 40, 0.65) 45%, rgba(7, 17, 31, 0.98) 78%),
+  background: radial-gradient(ellipse at 42% 35%, rgba(126, 120, 201, 0.16) 0%, rgba(13, 23, 40, 0.55) 45%, rgba(7, 17, 31, 0.90) 84%),
               linear-gradient(135deg, #0D1728 0%, #07111F 100%);
-  box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(180, 210, 235, 0.14);
+  box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.85), 0 0 1px 1px rgba(180, 210, 235, 0.16);
+}
+
+.headline-glow {
+  text-shadow: 0 0 40px rgba(122, 215, 234, 0.25), 0 2px 20px rgba(0, 0, 0, 0.9);
 }
 
 .cosmic-panel {

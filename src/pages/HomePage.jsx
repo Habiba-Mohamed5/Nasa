@@ -114,8 +114,16 @@ export default function HomePage({
             style={{ y: titleParallaxY }}
             className="relative z-30 ml-auto w-[50%] lg:w-[47%] xl:w-[46%] flex flex-col justify-center pl-4 lg:pl-8 pr-3 lg:pr-8"
           >
-            {/* Display Headline in Titan One */}
-            <h1 className="font-titan text-5xl lg:text-[60px] xl:text-[76px] 2xl:text-[86px] text-[#F4F7FC] uppercase leading-[0.92] tracking-tight drop-shadow-2xl select-none">
+            {/* Creative Deep Space Mission Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#132238]/80 border border-[#7AD7EA]/30 backdrop-blur-md mb-3 sm:mb-4 w-fit shadow-[0_0_15px_rgba(122,215,234,0.15)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#7AD7EA] animate-ping" />
+              <span className="text-[10px] font-mono-tech text-[#7AD7EA] tracking-widest uppercase">
+                404 IDEAS // SPACE FLIGHT DECK
+              </span>
+            </div>
+
+            {/* Display Headline in Titan One with Celestial Back-Glow */}
+            <h1 className="font-titan text-5xl lg:text-[60px] xl:text-[76px] 2xl:text-[86px] text-[#F4F7FC] uppercase leading-[0.92] tracking-tight drop-shadow-2xl select-none headline-glow">
               SPACE<br />
               ASTRONAUT
             </h1>
@@ -214,7 +222,13 @@ export default function HomePage({
           
           {/* Top Text Cluster: Headline & Subtitle */}
           <div className="space-y-2 max-w-md mx-auto pt-1">
-            <h1 className="font-titan text-3xl sm:text-4xl md:text-5xl text-[#F4F7FC] uppercase leading-[0.95] tracking-tight drop-shadow-2xl">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#132238]/80 border border-[#7AD7EA]/25 backdrop-blur-md mb-0.5 w-fit mx-auto shadow-[0_0_12px_rgba(122,215,234,0.15)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#7AD7EA] animate-ping" />
+              <span className="text-[9px] font-mono-tech text-[#7AD7EA] tracking-widest uppercase">
+                404 IDEAS // FLIGHT DECK
+              </span>
+            </div>
+            <h1 className="font-titan text-3xl sm:text-4xl md:text-5xl text-[#F4F7FC] uppercase leading-[0.95] tracking-tight drop-shadow-2xl headline-glow">
               SPACE ASTRONAUT
             </h1>
             <p className="text-[#C7D2E3] text-xs sm:text-sm font-sans leading-relaxed px-2 font-normal">
@@ -306,13 +320,16 @@ export default function HomePage({
               }}
               className="group text-left p-2.5 sm:p-0 rounded-xl bg-[#132238]/60 sm:bg-transparent border border-[rgba(180,210,235,0.12)] sm:border-0 hover:bg-[#182A44]/40 transition-colors"
             >
-              <h3 className="text-xs font-bold text-[#F4F7FC] group-hover:text-[#7AD7EA] uppercase tracking-wider font-sans mb-1 transition-colors flex items-center justify-between sm:block">
-                <span>THE MOON</span>
-                <ChevronRight size={12} className="sm:hidden text-[#98A7BD]" />
-              </h3>
+              <div className="flex items-center justify-between sm:block mb-1">
+                <h3 className="text-xs font-bold text-[#F4F7FC] group-hover:text-[#7AD7EA] uppercase tracking-wider font-sans transition-colors">
+                  THE MOON
+                </h3>
+                <span className="text-[9px] font-mono-tech text-[#7AD7EA]/70 sm:hidden">384,400 KM</span>
+              </div>
               <p className="text-[10px] sm:text-[11px] text-[#C7D2E3] group-hover:text-[#F4F7FC] max-w-[210px] leading-relaxed font-sans transition-colors">
                 The First Celestial Body To Be The Object Of Space Exploration
               </p>
+              <span className="hidden sm:block text-[9px] font-mono-tech text-[#7AD7EA]/70 mt-1">384,400 KM • 1.62 M/S²</span>
             </Link>
 
             {/* Block 2: THE SUN */}
@@ -324,13 +341,16 @@ export default function HomePage({
               }}
               className="group text-left p-2.5 sm:p-0 rounded-xl bg-[#132238]/60 sm:bg-transparent border border-[rgba(180,210,235,0.12)] sm:border-0 hover:bg-[#182A44]/40 transition-colors"
             >
-              <h3 className="text-xs font-bold text-[#F4F7FC] group-hover:text-[#7AD7EA] uppercase tracking-wider font-sans mb-1 transition-colors flex items-center justify-between sm:block">
-                <span>THE SUN</span>
-                <ChevronRight size={12} className="sm:hidden text-[#98A7BD]" />
-              </h3>
+              <div className="flex items-center justify-between sm:block mb-1">
+                <h3 className="text-xs font-bold text-[#F4F7FC] group-hover:text-[#7AD7EA] uppercase tracking-wider font-sans transition-colors">
+                  THE SUN
+                </h3>
+                <span className="text-[9px] font-mono-tech text-[#E4783B]/80 sm:hidden">1.000 AU</span>
+              </div>
               <p className="text-[10px] sm:text-[11px] text-[#C7D2E3] group-hover:text-[#F4F7FC] max-w-[210px] leading-relaxed font-sans transition-colors">
                 The Sun Never Been A Major Focus Of Space Exploration
               </p>
+              <span className="hidden sm:block text-[9px] font-mono-tech text-[#E4783B]/80 mt-1">1.000 AU • 5,778 K</span>
             </Link>
 
             {/* Block 3: MARS */}
@@ -342,13 +362,16 @@ export default function HomePage({
               }}
               className="group text-left p-2.5 sm:p-0 rounded-xl bg-[#132238]/60 sm:bg-transparent border border-[rgba(180,210,235,0.12)] sm:border-0 hover:bg-[#182A44]/40 transition-colors"
             >
-              <h3 className="text-xs font-bold text-[#F4F7FC] group-hover:text-[#7AD7EA] uppercase tracking-wider font-sans mb-1 transition-colors flex items-center justify-between sm:block">
-                <span>MARS</span>
-                <ChevronRight size={12} className="sm:hidden text-[#98A7BD]" />
-              </h3>
+              <div className="flex items-center justify-between sm:block mb-1">
+                <h3 className="text-xs font-bold text-[#F4F7FC] group-hover:text-[#7AD7EA] uppercase tracking-wider font-sans transition-colors">
+                  MARS
+                </h3>
+                <span className="text-[9px] font-mono-tech text-[#7AD7EA]/70 sm:hidden">0.524 AU</span>
+              </div>
               <p className="text-[10px] sm:text-[11px] text-[#C7D2E3] group-hover:text-[#F4F7FC] max-w-[210px] leading-relaxed font-sans transition-colors">
                 Mars Has Been An Important Part Of The Space Exploration
               </p>
+              <span className="hidden sm:block text-[9px] font-mono-tech text-[#7AD7EA]/70 mt-1">0.524 AU • 3.72 M/S²</span>
             </Link>
           </div>
 

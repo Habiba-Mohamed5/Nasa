@@ -8,13 +8,19 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
         {/* Col 1: Brand & Overview */}
         <div className="space-y-3">
-          <div className="flex items-center gap-1.5">
-            <span className="font-titan text-base tracking-wider text-[#F4F7FC]">ASTR</span>
-            <div className="relative w-3.5 h-3.5 flex items-center justify-center">
-              <div className="w-2 h-2 rounded-full bg-[#F4F7FC]" />
-              <div className="absolute w-4 h-1 border border-[#F4F7FC] rounded-full rotate-[-26deg]" />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0.5">
+              <span className="font-titan text-base tracking-tight text-[#F4F7FC]">4</span>
+              <div className="relative w-3.5 h-3.5 flex items-center justify-center mx-0.5">
+                <div className="w-2 h-2 rounded-full bg-[#F4F7FC]" />
+                <div className="absolute w-4 h-1 border border-[#7AD7EA] rounded-full rotate-[-26deg]" />
+              </div>
+              <span className="font-titan text-base tracking-tight text-[#F4F7FC]">4</span>
             </div>
-            <span className="font-titan text-base tracking-wider text-[#F4F7FC]">NAUT</span>
+            <span className="h-3.5 w-[1px] bg-white/20 mx-0.5" />
+            <span className="font-sans font-black text-xs tracking-[0.25em] text-[#7AD7EA] uppercase">
+              IDEAS
+            </span>
           </div>
           <p className="text-[11px] text-[#C7D2E3] leading-relaxed">
             Autonomous Deep Space Medical Platform & Clinical Decision Support System (CDSS) for long-duration crewed missions to Mars.

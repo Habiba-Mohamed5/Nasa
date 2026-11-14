@@ -55,22 +55,28 @@ export default function Navbar({
 
   return (
     <header className="relative z-40 px-3.5 sm:px-6 lg:px-12 pt-3.5 sm:pt-6 flex items-center justify-between shrink-0 select-none">
-      {/* 1. Logo: ASTR🪐NAUT (Exact Dribbble Style with orbital ring on O) */}
+      {/* 1. Brand Logo: 404 IDEAS (Futuristic Space Typographic Identity) */}
       <Link
         to="/"
         onClick={() => {
           spaceAudio.playChirp();
           setMobileMenuOpen(false);
         }}
-        className="flex items-center gap-1.5 cursor-pointer group shrink-0 min-h-[44px] items-center"
-        aria-label="AstroVitals Home"
+        className="flex items-center gap-2 cursor-pointer group shrink-0 min-h-[44px]"
+        aria-label="404 IDEAS Home"
       >
-        <span className="font-titan text-base sm:text-lg lg:text-xl tracking-wider text-[#F4F7FC]">ASTR</span>
-        <div className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 flex items-center justify-center mx-0.5">
-          <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#F4F7FC] group-hover:bg-[#7AD7EA] transition-colors" />
-          <div className="absolute w-4 sm:w-4.5 h-1.5 border border-[#F4F7FC] group-hover:border-[#7AD7EA] rounded-full rotate-[-26deg] transition-colors" />
+        <div className="flex items-center gap-0.5">
+          <span className="font-titan text-base sm:text-lg lg:text-xl tracking-tight text-[#F4F7FC]">4</span>
+          <div className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 flex items-center justify-center mx-0.5">
+            <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#F4F7FC] group-hover:bg-[#7AD7EA] transition-colors shadow-[0_0_8px_rgba(122,215,234,0.6)]" />
+            <div className="absolute w-4 sm:w-4.5 h-1.5 border border-[#7AD7EA] group-hover:border-[#F4F7FC] rounded-full rotate-[-26deg] transition-colors shadow-[0_0_6px_rgba(122,215,234,0.4)]" />
+          </div>
+          <span className="font-titan text-base sm:text-lg lg:text-xl tracking-tight text-[#F4F7FC]">4</span>
         </div>
-        <span className="font-titan text-base sm:text-lg lg:text-xl tracking-wider text-[#F4F7FC]">NAUT</span>
+        <span className="h-3.5 w-[1px] bg-white/20 mx-0.5" />
+        <span className="font-sans font-black text-xs sm:text-sm tracking-[0.25em] text-[#7AD7EA] group-hover:text-[#F4F7FC] transition-colors uppercase">
+          IDEAS
+        </span>
       </Link>
 
       {/* 2. Desktop Navigation Links (Visible on >= xl screens) */}
@@ -154,17 +160,23 @@ export default function Navbar({
           role="dialog"
           aria-modal="true"
           aria-label="Mobile Navigation"
-          className="xl:hidden fixed inset-0 z-50 bg-[#07111F]/98 backdrop-blur-2xl flex flex-col justify-between p-5 sm:p-7 overflow-y-auto animate-in fade-in duration-200"
+          className="xl:hidden fixed inset-0 z-[100] bg-[#07111F] flex flex-col justify-between p-5 sm:p-7 overflow-y-auto animate-in fade-in duration-200"
         >
           {/* Top Bar inside Overlay */}
           <div className="flex items-center justify-between pb-4 border-b border-[rgba(180,210,235,0.14)]">
-            <div className="flex items-center gap-1.5">
-              <span className="font-titan text-lg tracking-wider text-[#F4F7FC]">ASTR</span>
-              <div className="relative w-3.5 h-3.5 flex items-center justify-center mx-0.5">
-                <div className="w-2 h-2 rounded-full bg-[#F4F7FC]" />
-                <div className="absolute w-4 h-1 border border-[#F4F7FC] rounded-full rotate-[-26deg]" />
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-0.5">
+                <span className="font-titan text-lg tracking-tight text-[#F4F7FC]">4</span>
+                <div className="relative w-3.5 h-3.5 flex items-center justify-center mx-0.5">
+                  <div className="w-2 h-2 rounded-full bg-[#F4F7FC]" />
+                  <div className="absolute w-4 h-1 border border-[#7AD7EA] rounded-full rotate-[-26deg]" />
+                </div>
+                <span className="font-titan text-lg tracking-tight text-[#F4F7FC]">4</span>
               </div>
-              <span className="font-titan text-lg tracking-wider text-[#F4F7FC]">NAUT</span>
+              <span className="h-3.5 w-[1px] bg-white/20 mx-0.5" />
+              <span className="font-sans font-black text-xs tracking-[0.22em] text-[#7AD7EA] uppercase">
+                IDEAS
+              </span>
             </div>
 
             <button
