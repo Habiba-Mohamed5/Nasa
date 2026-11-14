@@ -7,22 +7,23 @@
     --font-cairo: 'Cairo', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    /* Dribbble Reference Design Tokens */
-    --color-canvas: #232323;
-    --color-card-dark: #0D0B0A;
-    --color-card-surface: #171311;
-    --color-warm-charcoal: #252121;
-    --color-burnt-brown: #4A251B;
-    --color-rust-orange: #A64D2D;
+    /* Refined Deep Space Palette (Comfortable, High-Contrast & Readable) */
+    --color-bg-primary: #07111F;
+    --color-bg-secondary: #0D1728;
+    --color-surface: #132238;
+    --color-surface-elevated: #182A44;
+    --color-cosmic-purple: #7E78C9;
+    --color-soft-cyan: #7AD7EA;
+    --color-text-primary: #F4F7FC;
+    --color-text-secondary: #C7D2E3;
+    --color-text-muted: #98A7BD;
+    --color-border-divider: rgba(180, 210, 235, 0.14);
     --color-cinematic-orange: #E4783B;
-    --color-off-white: #EBEBEB;
-    --color-muted-text: #ACACAC;
-    --color-dim-gray: #808080;
   }
 
   body {
-    background-color: #232323;
-    color: #EBEBEB;
+    background-color: #07111F;
+    color: #F4F7FC;
     font-family: var(--font-sans);
     overflow-x: hidden;
     margin: 0;
@@ -44,29 +45,65 @@
   font-family: 'Cairo', sans-serif;
 }
 
-/* Cinematic Atmospheric Backgrounds */
+/* Atmospheric Space Backgrounds & Surface Cards */
 .cinematic-card-bg {
-  background: radial-gradient(ellipse at 42% 35%, rgba(228, 120, 59, 0.16) 0%, rgba(166, 77, 45, 0.08) 35%, rgba(13, 11, 10, 0.98) 70%),
-              linear-gradient(135deg, #171311 0%, #0d0b0a 100%);
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.07);
+  background: radial-gradient(ellipse at 42% 35%, rgba(126, 120, 201, 0.14) 0%, rgba(13, 23, 40, 0.65) 45%, rgba(7, 17, 31, 0.98) 78%),
+              linear-gradient(135deg, #0D1728 0%, #07111F 100%);
+  box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(180, 210, 235, 0.14);
 }
 
-.cinematic-glow-orange {
-  filter: drop-shadow(0 0 35px rgba(228, 120, 59, 0.35));
+.cosmic-panel {
+  background: rgba(19, 34, 56, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(180, 210, 235, 0.14);
 }
 
-.cinematic-panel {
-  background: rgba(23, 19, 17, 0.85);
+.cosmic-panel-elevated {
+  background: rgba(24, 42, 68, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(122, 215, 234, 0.25);
+  box-shadow: 0 15px 40px -10px rgba(7, 17, 31, 0.85), 0 0 25px -5px rgba(122, 215, 234, 0.12);
 }
 
-.cinematic-panel-active {
-  background: rgba(41, 32, 29, 0.9);
+.cosmic-panel-active {
+  background: rgba(24, 42, 68, 0.95);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(228, 120, 59, 0.4);
-  box-shadow: 0 0 25px -5px rgba(228, 120, 59, 0.25);
+  border: 1px solid rgba(122, 215, 234, 0.45);
+  box-shadow: 0 0 25px -5px rgba(122, 215, 234, 0.25);
+}
+
+.cosmic-glow-cyan {
+  filter: drop-shadow(0 0 16px rgba(122, 215, 234, 0.35));
+}
+
+.cosmic-glow-purple {
+  filter: drop-shadow(0 0 16px rgba(126, 120, 201, 0.35));
+}
+
+.cosmic-glow-orange {
+  filter: drop-shadow(0 0 20px rgba(228, 120, 59, 0.35));
+}
+
+/* Subtle Floating Animation for Hero Astronaut */
+@keyframes astronautFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.4deg);
+  }
+}
+
+.animate-astronaut-float {
+  animation: astronautFloat 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-astronaut-float {
+    animation: none !important;
+  }
 }
 
 /* Sleek Cyber Scrollbars */
@@ -75,14 +112,14 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(13, 11, 10, 0.8);
+  background: #07111F;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(228, 120, 59, 0.3);
+  background: rgba(122, 215, 234, 0.3);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(228, 120, 59, 0.6);
+  background: rgba(122, 215, 234, 0.6);
 }
 
 .no-scrollbar::-webkit-scrollbar {

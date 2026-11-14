@@ -77,15 +77,15 @@ export default function FeaturesPage() {
   return (
     <div className="space-y-8 sm:space-y-12 max-w-6xl mx-auto px-3.5 sm:px-8 py-3 sm:py-4">
       {/* Header Banner */}
-      <section className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
+      <section className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-[rgba(180,210,235,0.14)] shadow-2xl relative overflow-hidden">
         <div className="relative z-10 max-w-2xl space-y-2 sm:space-y-3">
-          <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block">
+          <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-widest block">
             CLINICAL SPECIFICATIONS • NASA-STD-3001
           </span>
-          <h1 className="font-titan text-2xl sm:text-4xl lg:text-5xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
+          <h1 className="font-titan text-2xl sm:text-4xl lg:text-5xl text-[#F4F7FC] uppercase leading-tight tracking-wide">
             EXPLORE PLATFORM CLINICAL FEATURES
           </h1>
-          <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#C7D2E3] leading-relaxed">
             Every instrument, diagnostic scanner, and autonomous intervention protocol is engineered specifically for long-duration deep space exploration.
           </p>
         </div>
@@ -96,12 +96,12 @@ export default function FeaturesPage() {
         {featureList.map((feat, idx) => (
           <div
             key={feat.id}
-            className={`p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[28px] bg-[#171311] border border-white/[0.08] grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center ${
+            className={`p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[28px] bg-[#132238]/85 backdrop-blur-md border border-[rgba(180,210,235,0.14)] hover:border-[#7AD7EA]/40 hover:shadow-[0_15px_40px_rgba(7,17,31,0.8)] transition-all grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center ${
               idx % 2 === 1 ? 'lg:flex-row-reverse' : ''
             }`}
           >
             {/* Visual Preview */}
-            <div className={`lg:col-span-5 relative rounded-2xl overflow-hidden border border-white/10 shadow-xl h-64 sm:h-72 group ${
+            <div className={`lg:col-span-5 relative rounded-2xl overflow-hidden border border-[rgba(180,210,235,0.16)] shadow-xl h-64 sm:h-72 group ${
               idx % 2 === 1 ? 'lg:order-2' : ''
             }`}>
               <img
@@ -109,9 +109,9 @@ export default function FeaturesPage() {
                 alt={feat.title}
                 className="w-full h-full object-cover filter brightness-95 contrast-105 group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0B0A] via-[#0D0B0A]/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#07111F] via-[#07111F]/20 to-transparent" />
               <div className="absolute top-3 left-3">
-                <span className="text-[9px] font-mono-tech px-2.5 py-1 rounded-full bg-[#0D0B0A]/90 text-[#E4783B] border border-[#E4783B]/40 font-bold uppercase backdrop-blur-md">
+                <span className="text-[9px] font-mono-tech px-2.5 py-1 rounded-full bg-[#07111F]/90 text-[#7AD7EA] border border-[#7AD7EA]/40 font-bold uppercase backdrop-blur-md">
                   {feat.badge}
                 </span>
               </div>
@@ -120,22 +120,22 @@ export default function FeaturesPage() {
             {/* Description & Bullets */}
             <div className={`lg:col-span-7 space-y-4 ${idx % 2 === 1 ? 'lg:order-1' : ''}`}>
               <div>
-                <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-wider block mb-1">
+                <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-wider block mb-1">
                   {feat.subtitle}
                 </span>
-                <h3 className="font-titan text-xl sm:text-2xl text-[#EBEBEB] uppercase tracking-wide">
+                <h3 className="font-titan text-xl sm:text-2xl text-[#F4F7FC] uppercase tracking-wide">
                   {feat.title}
                 </h3>
               </div>
 
-              <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-[#C7D2E3] leading-relaxed font-sans">
                 {feat.description}
               </p>
 
-              <ul className="space-y-2 text-xs text-[#EBEBEB] font-sans">
+              <ul className="space-y-2 text-xs text-[#F4F7FC] font-sans">
                 {feat.bullets.map((b, bIdx) => (
                   <li key={bIdx} className="flex items-start gap-2">
-                    <CheckCircle2 size={15} className="text-[#E4783B] shrink-0 mt-0.5" />
+                    <CheckCircle2 size={15} className="text-[#7AD7EA] shrink-0 mt-0.5" />
                     <span className="leading-relaxed">{b}</span>
                   </li>
                 ))}
@@ -144,7 +144,7 @@ export default function FeaturesPage() {
               <div className="pt-2">
                 <Link
                   to={feat.linkUrl}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.3)] hover:scale-105"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.3)] hover:scale-105"
                 >
                   <span>{feat.linkText}</span>
                   <ArrowRight size={13} />

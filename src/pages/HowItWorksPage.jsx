@@ -77,15 +77,15 @@ export default function HowItWorksPage() {
   return (
     <div className="space-y-8 sm:space-y-12 max-w-6xl mx-auto px-3.5 sm:px-8 py-3 sm:py-4">
       {/* 1. Header Banner */}
-      <section className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
+      <section className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-[rgba(180,210,235,0.14)] shadow-2xl relative overflow-hidden">
         <div className="relative z-10 max-w-2xl space-y-2 sm:space-y-3">
-          <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block">
+          <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-widest block">
             HOW IT WORKS • END-TO-END CLINICAL ARCHITECTURE
           </span>
-          <h1 className="font-titan text-2xl sm:text-4xl lg:text-5xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
+          <h1 className="font-titan text-2xl sm:text-4xl lg:text-5xl text-[#F4F7FC] uppercase leading-tight tracking-wide">
             THE AUTONOMOUS CLINICAL WORKFLOW
           </h1>
-          <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#C7D2E3] leading-relaxed">
             From biosensors on the astronaut’s body to real-time neural diagnosis and closed-loop countermeasure execution.
           </p>
         </div>
@@ -99,17 +99,17 @@ export default function HowItWorksPage() {
             return (
               <div
                 key={st.num}
-                className="p-6 sm:p-8 rounded-[28px] bg-[#171311] border border-white/[0.08] hover:border-[#E4783B]/30 transition-all grid grid-cols-1 md:grid-cols-12 gap-6 items-start"
+                className="p-6 sm:p-8 rounded-[28px] bg-[#132238]/85 backdrop-blur-md border border-[rgba(180,210,235,0.14)] hover:border-[#7AD7EA]/40 transition-all grid grid-cols-1 md:grid-cols-12 gap-6 items-start"
               >
                 {/* Number & Icon */}
                 <div className="md:col-span-3 flex md:flex-col items-center md:items-start justify-between gap-4">
-                  <span className="font-titan text-4xl sm:text-5xl text-[#E4783B] drop-shadow-[0_0_20px_rgba(228,120,59,0.3)]">
+                  <span className="font-titan text-4xl sm:text-5xl text-[#7AD7EA] drop-shadow-[0_0_20px_rgba(122,215,234,0.3)]">
                     {st.num}
                   </span>
-                  <div className="w-12 h-12 rounded-2xl bg-[#E4783B]/10 border border-[#E4783B]/30 flex items-center justify-center text-[#E4783B]">
+                  <div className="w-12 h-12 rounded-2xl bg-[#7AD7EA]/15 border border-[#7AD7EA]/30 flex items-center justify-center text-[#7AD7EA]">
                     <Icon size={24} />
                   </div>
-                  <span className="text-[10px] font-mono-tech text-[#808080] uppercase block">
+                  <span className="text-[10px] font-mono-tech text-[#98A7BD] uppercase block">
                     STEP {st.num} OF 05
                   </span>
                 </div>
@@ -117,22 +117,22 @@ export default function HowItWorksPage() {
                 {/* Content */}
                 <div className="md:col-span-9 space-y-3">
                   <div>
-                    <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-wider block mb-1">
+                    <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-wider block mb-1">
                       {st.subtitle}
                     </span>
-                    <h3 className="font-titan text-xl sm:text-2xl text-[#EBEBEB] uppercase tracking-wide">
+                    <h3 className="font-titan text-xl sm:text-2xl text-[#F4F7FC] uppercase tracking-wide">
                       {st.title}
                     </h3>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed font-sans">
+                  <p className="text-xs sm:text-sm text-[#C7D2E3] leading-relaxed font-sans">
                     {st.desc}
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
                     {st.details.map((d, dIdx) => (
-                      <div key={dIdx} className="p-2.5 rounded-xl bg-[#0D0B0A] border border-white/5 flex items-start gap-2 text-xs text-[#EBEBEB]">
-                        <CheckCircle2 size={13} className="text-[#E4783B] shrink-0 mt-0.5" />
+                      <div key={dIdx} className="p-2.5 rounded-xl bg-[#0D1728] border border-[rgba(180,210,235,0.1)] flex items-start gap-2 text-xs text-[#F4F7FC]">
+                        <CheckCircle2 size={13} className="text-[#7AD7EA] shrink-0 mt-0.5" />
                         <span className="text-[11px] leading-snug">{d}</span>
                       </div>
                     ))}
@@ -145,25 +145,25 @@ export default function HowItWorksPage() {
       </section>
 
       {/* 3. Bottom CTA */}
-      <section className="p-8 rounded-[28px] bg-[#171311] border border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-6">
+      <section className="p-8 rounded-[28px] bg-[#132238]/90 backdrop-blur-md border border-[rgba(180,210,235,0.14)] flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
-          <h3 className="font-titan text-xl text-[#EBEBEB] uppercase">
+          <h3 className="font-titan text-xl text-[#F4F7FC] uppercase">
             EXPERIENCE THE PLATFORM IN ACTION
           </h3>
-          <p className="text-xs text-[#ACACAC] mt-1">
+          <p className="text-xs text-[#C7D2E3] mt-1">
             Access the live Mission Control Workspace to interact with the 3D astronaut and execute countermeasures.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             to="/workspace"
-            className="px-6 py-2.5 rounded-full bg-[#E4783B] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all hover:bg-[#d46a30]"
+            className="px-6 py-2.5 rounded-full bg-[#E4783B] text-[#07111F] font-bold text-xs tracking-wider transition-all hover:bg-[#d46a30] shadow-[0_0_18px_rgba(228,120,59,0.3)]"
           >
             ENTER WORKSPACE
           </Link>
           <Link
             to="/ai-identity"
-            className="px-6 py-2.5 rounded-full bg-[#252121] text-[#EBEBEB] border border-white/10 font-bold text-xs tracking-wider transition-all hover:bg-white/5"
+            className="px-6 py-2.5 rounded-full bg-[#182A44] text-[#F4F7FC] border border-[#7AD7EA]/30 font-bold text-xs tracking-wider transition-all hover:bg-[#1f3657]"
           >
             AURA SURGEON
           </Link>

@@ -66,15 +66,15 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
   return (
     <div className="space-y-8 sm:space-y-12 max-w-6xl mx-auto px-3.5 sm:px-8 py-3 sm:py-4">
       {/* 1. Header Banner */}
-      <section className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
+      <section className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-[rgba(180,210,235,0.14)] shadow-2xl relative overflow-hidden">
         <div className="relative z-10 max-w-2xl space-y-2 sm:space-y-3">
-          <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block">
+          <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-widest block">
             CELESTIAL TARGETS • ARTEMIS VII TRAJECTORY
           </span>
-          <h1 className="font-titan text-2xl sm:text-4xl lg:text-5xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
+          <h1 className="font-titan text-2xl sm:text-4xl lg:text-5xl text-[#F4F7FC] uppercase leading-tight tracking-wide">
             EXPLORE THE CELESTIAL BODIES
           </h1>
-          <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#C7D2E3] leading-relaxed">
             The landmark celestial structures defining human space exploration from Earth departure to Mars orbital insertion.
           </p>
         </div>
@@ -86,18 +86,18 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
           <div
             key={b.id}
             id={b.id}
-            className="p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[28px] bg-[#171311] border border-white/[0.08] grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center"
+            className="p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[28px] bg-[#132238]/85 backdrop-blur-md border border-[rgba(180,210,235,0.14)] hover:border-[#7AD7EA]/40 hover:shadow-[0_15px_40px_rgba(7,17,31,0.8)] transition-all grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center"
           >
             {/* Image */}
-            <div className="lg:col-span-5 relative rounded-2xl overflow-hidden border border-white/10 shadow-xl h-64 sm:h-72 group">
+            <div className="lg:col-span-5 relative rounded-2xl overflow-hidden border border-[rgba(180,210,235,0.16)] shadow-xl h-64 sm:h-72 group">
               <img
                 src={b.image}
                 alt={b.title}
                 className="w-full h-full object-cover filter brightness-95 contrast-105 group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0B0A] via-transparent to-transparent opacity-85" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#07111F] via-transparent to-transparent opacity-85" />
               <div className="absolute top-3 left-3">
-                <span className="text-[9px] font-mono-tech px-2.5 py-1 rounded-full bg-[#0D0B0A]/90 text-[#E4783B] border border-[#E4783B]/40 font-bold uppercase backdrop-blur-md">
+                <span className="text-[9px] font-mono-tech px-2.5 py-1 rounded-full bg-[#07111F]/90 text-[#7AD7EA] border border-[#7AD7EA]/40 font-bold uppercase backdrop-blur-md">
                   MISSION DAY {b.day}
                 </span>
               </div>
@@ -106,32 +106,32 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
             {/* Text & Specs */}
             <div className="lg:col-span-7 space-y-4">
               <div>
-                <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-wider block mb-1">
+                <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-wider block mb-1">
                   {b.subtitle}
                 </span>
-                <h3 className="font-titan text-2xl sm:text-3xl text-[#EBEBEB] uppercase tracking-wide">
+                <h3 className="font-titan text-2xl sm:text-3xl text-[#F4F7FC] uppercase tracking-wide">
                   {b.title}
                 </h3>
-                <p className="text-xs italic text-[#E4783B] mt-1 font-serif">
+                <p className="text-xs italic text-[#7AD7EA] mt-1 font-sans">
                   "{b.quote}"
                 </p>
               </div>
 
-              <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-[#C7D2E3] leading-relaxed font-sans">
                 {b.description}
               </p>
 
               {/* Specs Box */}
-              <div className="p-3.5 rounded-xl bg-[#0D0B0A] border border-white/5 space-y-1.5 text-xs font-mono-tech">
+              <div className="p-3.5 rounded-xl bg-[#0D1728] border border-[rgba(180,210,235,0.1)] space-y-1.5 text-xs font-mono-tech">
                 <div className="flex items-center justify-between">
-                  <span className="text-[#808080]">DISTANCE:</span>
-                  <span className="text-[#EBEBEB]">{b.stats.distance}</span>
+                  <span className="text-[#98A7BD]">DISTANCE:</span>
+                  <span className="text-[#F4F7FC]">{b.stats.distance}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[#808080]">GRAVITATIONAL SPECS:</span>
-                  <span className="text-[#E4783B]">{b.stats.gravity || b.stats.hazard}</span>
+                  <span className="text-[#98A7BD]">GRAVITATIONAL SPECS:</span>
+                  <span className="text-[#7AD7EA]">{b.stats.gravity || b.stats.hazard}</span>
                 </div>
-                <div className="pt-1 border-t border-white/5 text-[11px] text-[#ACACAC]">
+                <div className="pt-1 border-t border-[rgba(180,210,235,0.08)] text-[11px] text-[#C7D2E3]">
                   {b.stats.missionContext}
                 </div>
               </div>
@@ -139,13 +139,13 @@ export default function PlanetsPage({ setMissionDay, setCurrentPhase }) {
               <div className="pt-2 flex items-center gap-3">
                 <button
                   onClick={() => handleSelectBody(b)}
-                  className="px-5 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_15px_rgba(228,120,59,0.3)] hover:scale-105"
+                  className="px-5 py-2.5 rounded-full bg-[#E4783B] hover:bg-[#d46a30] text-[#07111F] font-bold text-xs tracking-wider transition-all shadow-[0_0_15px_rgba(228,120,59,0.3)] hover:scale-105"
                 >
                   SET TRAJECTORY TO {b.title}
                 </button>
                 <Link
                   to="/workspace"
-                  className="px-4 py-2.5 rounded-full bg-[#252121] text-[#EBEBEB] border border-white/10 text-xs font-bold transition-all hover:bg-white/5"
+                  className="px-4 py-2.5 rounded-full bg-[#182A44] text-[#F4F7FC] border border-[#7AD7EA]/30 text-xs font-bold transition-all hover:bg-[#1f3657]"
                 >
                   Open in Workspace
                 </Link>

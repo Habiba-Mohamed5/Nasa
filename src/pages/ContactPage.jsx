@@ -36,15 +36,15 @@ export default function ContactPage() {
   return (
     <div className="space-y-8 sm:space-y-12 max-w-4xl mx-auto px-3.5 sm:px-8 py-3 sm:py-4">
       {/* 1. Header Banner */}
-      <section className="p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-white/[0.08] shadow-2xl relative overflow-hidden">
+      <section className="p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-[32px] cinematic-card-bg border border-[rgba(180,210,235,0.14)] shadow-2xl relative overflow-hidden">
         <div className="relative z-10 space-y-2 sm:space-y-3">
-          <span className="text-[10px] font-mono-tech text-[#E4783B] uppercase tracking-widest block">
+          <span className="text-[10px] font-mono-tech text-[#7AD7EA] uppercase tracking-widest block">
             DEEP SPACE NETWORK • MISSION UPLINK
           </span>
-          <h1 className="font-titan text-2xl sm:text-4xl text-[#EBEBEB] uppercase leading-tight tracking-wide">
+          <h1 className="font-titan text-2xl sm:text-4xl text-[#F4F7FC] uppercase leading-tight tracking-wide">
             GROUND CONTROL & MISSION CONTACT
           </h1>
-          <p className="text-xs sm:text-sm text-[#ACACAC] leading-relaxed max-w-2xl">
+          <p className="text-xs sm:text-sm text-[#C7D2E3] leading-relaxed max-w-2xl">
             Dispatch queries, evaluate the NASA Space Apps submission, or transmit clinical advisory packets to the AstroVitals project team and autonomous avionics core.
           </p>
         </div>
@@ -53,14 +53,14 @@ export default function ContactPage() {
       {/* 2. Contact Form & Network Status */}
       <section className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6">
         {/* Left Column: Transmission Form */}
-        <div className="md:col-span-7 p-5 sm:p-8 rounded-2xl sm:rounded-[28px] bg-[#171311] border border-white/[0.08] shadow-xl">
-          <h2 className="font-titan text-lg text-[#EBEBEB] uppercase mb-4 tracking-wide">
+        <div className="md:col-span-7 p-5 sm:p-8 rounded-2xl sm:rounded-[28px] bg-[#132238]/85 backdrop-blur-md border border-[rgba(180,210,235,0.14)] shadow-xl">
+          <h2 className="font-titan text-lg text-[#F4F7FC] uppercase mb-4 tracking-wide">
             DISPATCH MISSION TELEMETRY PACKET
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4 text-xs font-sans">
             <div>
-              <label className="text-[10px] font-mono-tech text-[#808080] uppercase block mb-1">
+              <label className="text-[10px] font-mono-tech text-[#98A7BD] uppercase block mb-1">
                 CALLSIGN / NAME *
               </label>
               <input
@@ -68,19 +68,19 @@ export default function ContactPage() {
                 value={formData.callsign}
                 onChange={(e) => setFormData({ ...formData, callsign: e.target.value })}
                 placeholder="e.g. Dr. Sarah Chen / Space Apps Evaluator"
-                className="w-full bg-[#0D0B0A] border border-white/10 focus:border-[#E4783B] rounded-xl px-4 py-2.5 text-xs text-[#EBEBEB] placeholder-[#808080] outline-none transition-all"
+                className="w-full bg-[#0D1728] border border-[rgba(180,210,235,0.14)] focus:border-[#7AD7EA] rounded-xl px-4 py-2.5 text-xs text-[#F4F7FC] placeholder-[#98A7BD] outline-none transition-all"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-[10px] font-mono-tech text-[#808080] uppercase block mb-1">
+                <label className="text-[10px] font-mono-tech text-[#98A7BD] uppercase block mb-1">
                   ROLE / AFFILIATION
                 </label>
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full bg-[#0D0B0A] border border-white/10 focus:border-[#E4783B] rounded-xl px-3 py-2.5 text-xs text-[#EBEBEB] outline-none"
+                  className="w-full bg-[#0D1728] border border-[rgba(180,210,235,0.14)] focus:border-[#7AD7EA] rounded-xl px-3 py-2.5 text-xs text-[#F4F7FC] outline-none"
                 >
                   <option value="Flight Surgeon / Clinical Researcher">Flight Surgeon / Clinical</option>
                   <option value="NASA Space Apps Judge / Evaluator">Space Apps Evaluator</option>
@@ -90,13 +90,13 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label className="text-[10px] font-mono-tech text-[#808080] uppercase block mb-1">
+                <label className="text-[10px] font-mono-tech text-[#98A7BD] uppercase block mb-1">
                   TRANSMISSION TOPIC
                 </label>
                 <select
                   value={formData.topic}
                   onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
-                  className="w-full bg-[#0D0B0A] border border-white/10 focus:border-[#E4783B] rounded-xl px-3 py-2.5 text-xs text-[#EBEBEB] outline-none"
+                  className="w-full bg-[#0D1728] border border-[rgba(180,210,235,0.14)] focus:border-[#7AD7EA] rounded-xl px-3 py-2.5 text-xs text-[#F4F7FC] outline-none"
                 >
                   <option value="Telemetry Inquiry">Telemetry Inquiry</option>
                   <option value="AURA AI Medical Logic">AURA AI Medical Logic</option>
@@ -107,7 +107,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label className="text-[10px] font-mono-tech text-[#808080] uppercase block mb-1">
+              <label className="text-[10px] font-mono-tech text-[#98A7BD] uppercase block mb-1">
                 TRANSMISSION MESSAGE *
               </label>
               <textarea
@@ -115,7 +115,7 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="Enter technical observations, evaluation notes, or clinical inquiries..."
-                className="w-full bg-[#0D0B0A] border border-white/10 focus:border-[#E4783B] rounded-xl px-4 py-2.5 text-xs text-[#EBEBEB] placeholder-[#808080] outline-none transition-all resize-none"
+                className="w-full bg-[#0D1728] border border-[rgba(180,210,235,0.14)] focus:border-[#7AD7EA] rounded-xl px-4 py-2.5 text-xs text-[#F4F7FC] placeholder-[#98A7BD] outline-none transition-all resize-none"
               />
             </div>
 
@@ -141,7 +141,7 @@ export default function ContactPage() {
             <button
               type="submit"
               disabled={status.state === 'sending'}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#A64D2D] hover:opacity-95 text-[#0D0B0A] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)] flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#d46a30] hover:opacity-95 text-[#07111F] font-bold text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(228,120,59,0.35)] flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <Send size={14} />
               <span>{status.state === 'sending' ? 'PACKAGING TRANSMISSION...' : 'TRANSMIT VIA DEEP SPACE NETWORK'}</span>
@@ -151,43 +151,47 @@ export default function ContactPage() {
 
         {/* Right Column: Mission Control Telemetry Specs */}
         <div className="md:col-span-5 space-y-4">
-          <div className="p-6 rounded-[28px] bg-[#171311] border border-white/[0.08] space-y-3.5">
-            <div className="flex items-center gap-2 text-[#E4783B]">
+          <div className="p-6 rounded-[28px] bg-[#132238]/85 backdrop-blur-md border border-[rgba(180,210,235,0.14)] space-y-3.5">
+            <div className="flex items-center gap-2 text-[#7AD7EA]">
               <Radio size={16} className="animate-pulse" />
-              <h3 className="font-titan text-sm text-[#EBEBEB] uppercase">DSN FREQUENCY SPECS</h3>
+              <h3 className="font-titan text-sm text-[#F4F7FC] uppercase">DSN FREQUENCY SPECS</h3>
             </div>
 
-            <div className="space-y-2 text-xs font-mono-tech text-[#808080]">
-              <div className="flex justify-between border-b border-white/5 pb-1">
+            <div className="space-y-2 text-xs font-mono-tech text-[#98A7BD]">
+              <div className="flex justify-between border-b border-[rgba(180,210,235,0.1)] pb-1">
                 <span>FREQUENCY BAND</span>
-                <span className="text-[#EBEBEB]">Ka-Band (32 GHz)</span>
+                <span className="text-[#F4F7FC]">Ka-Band (32 GHz)</span>
               </div>
-              <div className="flex justify-between border-b border-white/5 pb-1">
+              <div className="flex justify-between border-b border-[rgba(180,210,235,0.1)] pb-1">
                 <span>DSN GROUND SITES</span>
-                <span className="text-[#EBEBEB]">Goldstone • Madrid • Canberra</span>
+                <span className="text-[#F4F7FC]">Goldstone • Madrid • Canberra</span>
               </div>
-              <div className="flex justify-between border-b border-white/5 pb-1">
+              <div className="flex justify-between border-b border-[rgba(180,210,235,0.1)] pb-1">
                 <span>PAYLOAD ENCRYPTION</span>
-                <span className="text-[#EBEBEB]">AES-256-GCM (NASA-STD)</span>
+                <span className="text-[#7AD7EA]">AES-256-GCM DSN Standard</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between border-b border-[rgba(180,210,235,0.1)] pb-1">
                 <span>SIMULATED LATENCY</span>
                 <span className="text-[#E4783B]">0.1 to 22.4 Minutes</span>
+              </div>
+              <div className="flex justify-between pb-1">
+                <span>ACTIVE AVIONICS</span>
+                <span className="text-emerald-400">STARSHIP / ORION FLIGHT DECK</span>
               </div>
             </div>
           </div>
 
-          <div className="p-6 rounded-[28px] bg-[#171311] border border-white/[0.08] space-y-3">
-            <h3 className="font-titan text-sm text-[#EBEBEB] uppercase">PROJECT REPOSITORY & DATA</h3>
-            <p className="text-[11px] text-[#ACACAC] leading-relaxed">
+          <div className="p-6 rounded-[28px] bg-[#132238] border border-[rgba(180,210,235,0.14)] space-y-3">
+            <h3 className="font-titan text-sm text-[#F4F7FC] uppercase">PROJECT REPOSITORY & DATA</h3>
+            <p className="text-[11px] text-[#C7D2E3] leading-relaxed">
               Developed for the NASA Space Apps Challenge 2026. Codebase incorporates NASA Open Science Data Repository (OSDR) pipelines and Human Research Program evidentiary baselines.
             </p>
-            <div className="pt-1 flex flex-col gap-2 text-xs text-[#E4783B] font-mono-tech">
+            <div className="pt-1 flex flex-col gap-2 text-xs text-[#7AD7EA] font-mono-tech">
               <a
                 href="https://osdr.nasa.gov/"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between hover:underline p-2 rounded-lg bg-[#0D0B0A] border border-white/5"
+                className="flex items-center justify-between hover:underline p-2.5 rounded-xl bg-[#07111F] border border-[rgba(180,210,235,0.12)] text-[#C7D2E3] hover:text-[#7AD7EA] transition-all"
               >
                 <span>NASA Open Science Data (OSDR)</span>
                 <ExternalLink size={12} />
@@ -196,7 +200,7 @@ export default function ContactPage() {
                 href="https://humanresearchroadmap.nasa.gov/"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between hover:underline p-2 rounded-lg bg-[#0D0B0A] border border-white/5"
+                className="flex items-center justify-between hover:underline p-2.5 rounded-xl bg-[#07111F] border border-[rgba(180,210,235,0.12)] text-[#C7D2E3] hover:text-[#7AD7EA] transition-all"
               >
                 <span>NASA Human Research Roadmap</span>
                 <ExternalLink size={12} />

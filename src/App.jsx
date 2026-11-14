@@ -22,6 +22,8 @@ import AiFlightSurgeonDrawer from './AiFlightSurgeonDrawer';
 import NasaRiskScenariosModal, { NASA_SCENARIOS } from './NasaRiskScenariosModal';
 import { MISSION_PHASES } from './UserJourneyStepper';
 import { spaceAudio } from './utils/spaceAudio';
+import GlobalCosmicBackground from './components/GlobalCosmicBackground';
+import SpaceScrollTelemetryRail from './components/SpaceScrollTelemetryRail';
 
 export default function App() {
   const location = useLocation();
@@ -102,13 +104,19 @@ export default function App() {
   return (
     <div
       dir="ltr"
-      className="min-h-screen bg-[#232323] text-[#EBEBEB] flex flex-col justify-between select-none overflow-x-hidden font-sans-clean"
+      className="min-h-screen bg-[#07111F] text-[#F4F7FC] flex flex-col justify-between select-none overflow-x-hidden font-sans-clean relative"
     >
+      {/* 0. Site-Wide Seamless Cosmic & Star Atmosphere */}
+      <GlobalCosmicBackground />
+
+      {/* Spaceflight Altitude Scroll Progress Rail (Active on Home) */}
+      {isHomePage && <SpaceScrollTelemetryRail />}
+
       {/* ─────────────────────────────────────────────────────────────
           1. TOP NAVIGATION FOR SUBPAGES (On Home, Navbar is inside the hero card)
       ───────────────────────────────────────────────────────────── */}
       {!isHomePage && (
-        <div className="w-full max-w-[1440px] mx-auto">
+        <div className="w-full max-w-[1440px] mx-auto relative z-30">
           <Navbar
             isMuted={isMuted}
             toggleSound={toggleSound}
@@ -122,7 +130,7 @@ export default function App() {
       {/* ─────────────────────────────────────────────────────────────
           2. MAIN ROUTED APPLICATION CONTENT
       ───────────────────────────────────────────────────────────── */}
-      <main className="w-full max-w-[1440px] mx-auto flex-1 py-2 sm:py-4 px-2 sm:px-6">
+      <main className="w-full max-w-[1440px] mx-auto flex-1 py-2 sm:py-4 px-2 sm:px-6 relative z-10">
         <Routes>
           <Route
             path="/"

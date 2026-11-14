@@ -37,25 +37,25 @@ export default function WorkspacePage({
   return (
     <div className="space-y-4 sm:space-y-6 max-w-7xl mx-auto px-3 sm:px-6 py-2 select-none">
       {/* 1. Cockpit Header Bar */}
-      <section className="p-3.5 sm:p-5 rounded-2xl bg-[#171311] border border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <section className="p-3.5 sm:p-5 rounded-2xl bg-[#132238]/90 backdrop-blur-md border border-[rgba(180,210,235,0.14)] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         {/* Left: Crew Selector */}
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#E4783B] shadow-[0_0_15px_rgba(228,120,59,0.3)] shrink-0">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#7AD7EA] shadow-[0_0_15px_rgba(122,215,234,0.3)] shrink-0">
             <img
               src={assetPath('astronaut_portrait.jpg')}
               alt={selectedCrew.name}
               className="w-full h-full object-cover"
             />
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#0D0B0A]" />
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#07111F]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-titan text-sm text-[#EBEBEB] tracking-wide">{selectedCrew.name}</span>
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#E4783B]/20 text-[#E4783B] font-mono-tech font-bold">
+              <span className="font-titan text-sm text-[#F4F7FC] tracking-wide">{selectedCrew.name}</span>
+              <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#7AD7EA]/20 text-[#7AD7EA] font-mono-tech font-bold">
                 {selectedCrew.role}
               </span>
             </div>
-            <div className="text-[10px] text-[#808080] font-mono-tech mt-0.5">
+            <div className="text-[10px] text-[#98A7BD] font-mono-tech mt-0.5">
               Mission: Artemis VII • Mars Transit Alpha
             </div>
           </div>
@@ -64,17 +64,17 @@ export default function WorkspacePage({
         {/* Center: Mission Telemetry Badges */}
         <div className="hidden lg:flex items-center gap-6 text-xs font-mono-tech">
           <div>
-            <span className="text-[#808080] block text-[9px]">DISTANCE</span>
-            <strong className="text-[#EBEBEB] font-titan text-sm">{telemetry.distanceFromEarthKm}M km</strong>
+            <span className="text-[#98A7BD] block text-[9px]">DISTANCE</span>
+            <strong className="text-[#F4F7FC] font-titan text-sm">{telemetry.distanceFromEarthKm}M km</strong>
           </div>
           <div>
-            <span className="text-[#808080] block text-[9px]">COMM DELAY (ONE-WAY)</span>
+            <span className="text-[#98A7BD] block text-[9px]">COMM DELAY (ONE-WAY)</span>
             <strong className={`font-titan text-sm ${isCommBlackout ? 'text-amber-400' : 'text-emerald-400'}`}>
               {telemetry.commDelayMinutes} min
             </strong>
           </div>
           <div>
-            <span className="text-[#808080] block text-[9px]">PHYSIOLOGICAL RISK</span>
+            <span className="text-[#98A7BD] block text-[9px]">PHYSIOLOGICAL RISK</span>
             <strong className="text-xs px-2 py-0.5 rounded font-bold" style={{ backgroundColor: `${telemetry.riskColor}22`, color: telemetry.riskColor, border: `1px solid ${telemetry.riskColor}55` }}>
               {telemetry.riskLevel}
             </strong>
@@ -88,7 +88,7 @@ export default function WorkspacePage({
             className={`px-3 py-2 rounded-xl text-[11px] font-mono-tech font-bold transition-all border flex items-center gap-1.5 min-h-[40px] ${
               isCommBlackout
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/60 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
-                : 'bg-[#0D0B0A] text-[#808080] border-white/10 hover:text-[#EBEBEB]'
+                : 'bg-[#0D1728] text-[#98A7BD] border-[rgba(180,210,235,0.14)] hover:text-[#F4F7FC]'
             }`}
           >
             {isCommBlackout ? <WifiOff size={13} className="text-amber-400 animate-pulse" /> : <Radio size={13} className="text-emerald-400" />}
@@ -100,7 +100,7 @@ export default function WorkspacePage({
               spaceAudio.playChirp();
               if (onOpenRisksModal) onOpenRisksModal();
             }}
-            className="px-3 py-2 rounded-xl bg-[#252121] hover:bg-[#29201D] text-[#E4783B] border border-[#E4783B]/30 text-[11px] font-mono-tech font-bold transition-all flex items-center gap-1.5 min-h-[40px]"
+            className="px-3 py-2 rounded-xl bg-[#182A44] hover:bg-[#1f3657] text-[#E4783B] border border-[#E4783B]/30 text-[11px] font-mono-tech font-bold transition-all flex items-center gap-1.5 min-h-[40px]"
           >
             <ShieldAlert size={13} />
             <span>NASA RISKS</span>
@@ -109,11 +109,11 @@ export default function WorkspacePage({
       </section>
 
       {/* Mobile-Only Cockpit View Switcher Tabs (Visible on < lg screens) */}
-      <div className="lg:hidden flex items-center p-1 bg-[#13100E] rounded-2xl border border-white/10 gap-1 text-xs font-mono-tech">
+      <div className="lg:hidden flex items-center p-1 bg-[#0D1728] rounded-2xl border border-[rgba(180,210,235,0.14)] gap-1 text-xs font-mono-tech">
         <button
           onClick={() => { spaceAudio.playChirp(); setActiveMobileTab('telemetry'); }}
           className={`flex-1 py-2.5 rounded-xl text-center font-bold transition-all min-h-[44px] flex items-center justify-center gap-1.5 ${
-            activeMobileTab === 'telemetry' ? 'bg-[#E4783B] text-[#0D0B0A] shadow-md' : 'text-[#808080] hover:text-[#EBEBEB]'
+            activeMobileTab === 'telemetry' ? 'bg-[#7AD7EA] text-[#07111F] shadow-md' : 'text-[#98A7BD] hover:text-[#F4F7FC]'
           }`}
         >
           <Activity size={14} />
@@ -122,7 +122,7 @@ export default function WorkspacePage({
         <button
           onClick={() => { spaceAudio.playChirp(); setActiveMobileTab('viewport'); }}
           className={`flex-1 py-2.5 rounded-xl text-center font-bold transition-all min-h-[44px] flex items-center justify-center gap-1.5 ${
-            activeMobileTab === 'viewport' ? 'bg-[#E4783B] text-[#0D0B0A] shadow-md' : 'text-[#808080] hover:text-[#EBEBEB]'
+            activeMobileTab === 'viewport' ? 'bg-[#7AD7EA] text-[#07111F] shadow-md' : 'text-[#98A7BD] hover:text-[#F4F7FC]'
           }`}
         >
           <Eye size={14} />
@@ -131,7 +131,7 @@ export default function WorkspacePage({
         <button
           onClick={() => { spaceAudio.playChirp(); setActiveMobileTab('countermeasures'); }}
           className={`flex-1 py-2.5 rounded-xl text-center font-bold transition-all min-h-[44px] flex items-center justify-center gap-1.5 ${
-            activeMobileTab === 'countermeasures' ? 'bg-[#E4783B] text-[#0D0B0A] shadow-md' : 'text-[#808080] hover:text-[#EBEBEB]'
+            activeMobileTab === 'countermeasures' ? 'bg-[#7AD7EA] text-[#07111F] shadow-md' : 'text-[#98A7BD] hover:text-[#F4F7FC]'
           }`}
         >
           <Zap size={14} />
@@ -166,13 +166,13 @@ export default function WorkspacePage({
         </div>
 
         {/* Center Column (col-span-5): 3D Zero-G Astronaut Viewport */}
-        <div className={`lg:col-span-5 rounded-3xl bg-[#171311] border border-white/[0.08] shadow-2xl relative overflow-hidden flex-col justify-between min-h-[420px] sm:min-h-[520px] ${
+        <div className={`lg:col-span-5 rounded-3xl bg-[#132238]/90 backdrop-blur-md border border-[rgba(180,210,235,0.14)] shadow-2xl relative overflow-hidden flex-col justify-between min-h-[420px] sm:min-h-[520px] ${
           activeMobileTab === 'viewport' ? 'flex' : 'hidden lg:flex'
         }`}>
-          <div className="p-3.5 sm:p-4 border-b border-white/[0.06] flex items-center justify-between z-20 relative">
+          <div className="p-3.5 sm:p-4 border-b border-[rgba(180,210,235,0.12)] flex items-center justify-between z-20 relative">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="font-titan text-xs text-[#EBEBEB] uppercase tracking-wider">
+              <span className="font-titan text-xs text-[#F4F7FC] uppercase tracking-wider">
                 ZERO-G EVA SUIT VIEWPORT
               </span>
             </div>
@@ -185,8 +185,8 @@ export default function WorkspacePage({
                 }}
                 className={`px-2.5 py-1 rounded-xl text-[10px] font-mono-tech font-bold border transition-all flex items-center gap-1 min-h-[34px] ${
                   scanMode
-                    ? 'bg-[#E4783B] text-[#0D0B0A] border-[#E4783B] shadow-[0_0_15px_rgba(228,120,59,0.35)]'
-                    : 'bg-[#0D0B0A] text-[#ACACAC] border-white/10 hover:text-[#EBEBEB]'
+                    ? 'bg-[#7AD7EA] text-[#07111F] border-[#7AD7EA] shadow-[0_0_15px_rgba(122,215,234,0.35)]'
+                    : 'bg-[#0D1728] text-[#C7D2E3] border-[rgba(180,210,235,0.14)] hover:text-[#F4F7FC]'
                 }`}
               >
                 <Eye size={12} />
@@ -205,9 +205,9 @@ export default function WorkspacePage({
           </div>
 
           {/* Bottom helper pill */}
-          <div className="p-3 border-t border-white/[0.04] bg-[#0D0B0A]/80 flex items-center justify-between text-[10px] font-mono-tech text-[#808080] z-20 relative">
+          <div className="p-3 border-t border-[rgba(180,210,235,0.08)] bg-[#07111F]/80 flex items-center justify-between text-[10px] font-mono-tech text-[#98A7BD] z-20 relative">
             <span>اسحب أفقياً لتدوير الرائد 360°</span>
-            <span className="text-[#E4783B]">DAY {missionDay} SIMULATION</span>
+            <span className="text-[#7AD7EA]">DAY {missionDay} SIMULATION</span>
           </div>
         </div>
 

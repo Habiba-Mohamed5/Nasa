@@ -106,23 +106,23 @@ export default function AiFlightSurgeonDrawer({
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 z-50 w-full sm:max-w-md md:max-w-lg bg-[#13100E]/98 border-l border-white/[0.08] backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.9)] flex flex-col justify-between select-none font-sans">
+      <div className="fixed inset-y-0 right-0 z-50 w-full sm:max-w-md md:max-w-lg bg-[#0D1728]/98 border-l border-[rgba(180,210,235,0.14)] backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.95)] flex flex-col justify-between select-none font-sans">
         {/* 1. Header with Neural Pulse Visualizer */}
-        <div className="p-4 border-b border-white/[0.08] bg-[#171311] flex items-center justify-between">
+        <div className="p-4 border-b border-[rgba(180,210,235,0.14)] bg-[#07111F] flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 rounded-2xl bg-[#E4783B]/20 border border-[#E4783B]/40 flex items-center justify-center text-[#E4783B] shadow-[0_0_20px_rgba(228,120,59,0.3)]">
+          <div className="relative w-10 h-10 rounded-2xl bg-[#7AD7EA]/15 border border-[#7AD7EA]/40 flex items-center justify-center text-[#7AD7EA] shadow-[0_0_20px_rgba(122,215,234,0.25)]">
             <Bot size={22} />
-            <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#E4783B] border-2 border-[#13100E] animate-ping" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#7AD7EA] border-2 border-[#07111F] animate-ping" />
           </div>
           <div className="text-right">
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold text-[#EBEBEB] tracking-wider font-titan">AURA AI SURGEON</h3>
-              <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#E4783B]/20 text-[#E4783B] border border-[#E4783B]/40 font-mono-tech">
+              <h3 className="text-sm font-bold text-[#F4F7FC] tracking-wider font-titan">AURA AI SURGEON</h3>
+              <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#7AD7EA]/15 text-[#7AD7EA] border border-[#7AD7EA]/40 font-mono-tech">
                 ExMC CDSS
               </span>
             </div>
-            <div className="text-[10px] text-[#A64D2D] font-mono-tech flex items-center gap-1.5 mt-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E4783B] animate-pulse" />
+            <div className="text-[10px] text-[#98A7BD] font-mono-tech flex items-center gap-1.5 mt-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#7AD7EA] animate-pulse" />
               <span>{isCommBlackout ? 'AUTONOMOUS LOCAL NEURAL CORE' : 'EDGE CLINICAL TELEMETRY ACTIVE'}</span>
             </div>
           </div>
@@ -130,17 +130,17 @@ export default function AiFlightSurgeonDrawer({
 
         <button
           onClick={onClose}
-          className="text-[#ACACAC] hover:text-[#EBEBEB] p-2 rounded-xl hover:bg-[#252121] border border-transparent hover:border-white/10 transition-all"
+          className="text-[#98A7BD] hover:text-[#F4F7FC] p-2 rounded-xl hover:bg-[#132238] border border-transparent hover:border-[rgba(180,210,235,0.14)] transition-all"
         >
           <X size={18} />
         </button>
       </div>
 
       {/* 2. Real-Time Biometric Neural Waveform */}
-      <div className="px-4 py-2.5 bg-[#171311]/50 border-b border-white/[0.06] flex items-center justify-between">
+      <div className="px-4 py-2.5 bg-[#132238]/60 border-b border-[rgba(180,210,235,0.1)] flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <Activity size={14} className="text-[#E4783B] animate-pulse" />
-          <span className="text-[10px] font-mono-tech text-[#ACACAC] uppercase">
+          <Activity size={14} className="text-[#7AD7EA] animate-pulse" />
+          <span className="text-[10px] font-mono-tech text-[#C7D2E3] uppercase">
             Biometric Sync: {telemetry.currentHR} BPM • {telemetry.currentHRV} ms
           </span>
         </div>
@@ -150,7 +150,7 @@ export default function AiFlightSurgeonDrawer({
           {[8, 14, 22, 12, 18, 10, 16, 24, 11, 7].map((h, i) => (
             <span
               key={i}
-              className="w-1 bg-[#E4783B] rounded-full animate-pulse"
+              className="w-1 bg-[#7AD7EA] rounded-full animate-pulse"
               style={{
                 height: `${h}px`,
                 animationDelay: `${i * 0.1}s`,
@@ -162,9 +162,9 @@ export default function AiFlightSurgeonDrawer({
       </div>
 
       {/* 3. Quick Medical Inquiry Chips */}
-      <div className="p-3 border-b border-white/[0.06] bg-[#171311]/30">
-        <div className="text-[10px] text-[#808080] font-mono-tech mb-2 flex items-center gap-1 text-right">
-          <Sparkles size={11} className="text-[#E4783B]" />
+      <div className="p-3 border-b border-[rgba(180,210,235,0.1)] bg-[#07111F]/80">
+        <div className="text-[10px] text-[#98A7BD] font-mono-tech mb-2 flex items-center gap-1 text-right">
+          <Sparkles size={11} className="text-[#7AD7EA]" />
           <span>استفسارات سريرية فورية (CLINICAL INQUIRIES)</span>
         </div>
         <div className="flex flex-col gap-1.5">
@@ -172,10 +172,10 @@ export default function AiFlightSurgeonDrawer({
             <button
               key={idx}
               onClick={() => handleSend(p.query)}
-              className="text-right px-3 py-2 rounded-xl bg-[#1C1714] hover:bg-[#252121] border border-white/[0.06] hover:border-[#E4783B]/40 text-[11px] text-[#ACACAC] hover:text-[#EBEBEB] transition-all flex items-center justify-between group font-cairo"
+              className="text-right px-3 py-2 rounded-xl bg-[#132238] hover:bg-[#182A44] border border-[rgba(180,210,235,0.12)] hover:border-[#7AD7EA]/50 text-[11px] text-[#C7D2E3] hover:text-[#F4F7FC] transition-all flex items-center justify-between group font-cairo"
             >
               <span className="truncate">{p.title}</span>
-              <ArrowRight size={12} className="text-[#808080] group-hover:text-[#E4783B] opacity-60 group-hover:opacity-100 transition-all ml-1 shrink-0 rotate-180" />
+              <ArrowRight size={12} className="text-[#98A7BD] group-hover:text-[#7AD7EA] opacity-60 group-hover:opacity-100 transition-all ml-1 shrink-0 rotate-180" />
             </button>
           ))}
         </div>
@@ -191,26 +191,26 @@ export default function AiFlightSurgeonDrawer({
             <div
               className={`max-w-[92%] p-3.5 rounded-2xl text-right ${
                 msg.sender === 'user'
-                  ? 'bg-[#A64D2D] text-[#EBEBEB] rounded-bl-none shadow-md font-cairo'
-                  : 'bg-[#171311] border border-white/[0.08] text-[#EBEBEB] rounded-br-none shadow-xl'
+                  ? 'bg-[#182A44] border border-[rgba(122,215,234,0.3)] text-[#F4F7FC] rounded-bl-none shadow-md font-cairo'
+                  : 'bg-[#132238] border border-[rgba(180,210,235,0.14)] text-[#F4F7FC] rounded-br-none shadow-xl'
               }`}
             >
               <p className="leading-relaxed text-[11px] font-cairo">{msg.text}</p>
 
               {/* Prescription Deck Card if generated by AI */}
               {msg.prescription && (
-                <div className="mt-3 p-3 rounded-xl bg-[#0D0B0A] border border-[#E4783B]/40 text-right">
+                <div className="mt-3 p-3 rounded-xl bg-[#07111F] border border-[#7AD7EA]/40 text-right">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-bold text-[#E4783B] font-titan tracking-wider">
+                    <span className="text-[10px] font-bold text-[#7AD7EA] font-titan tracking-wider">
                       {msg.prescription.title}
                     </span>
-                    <Zap size={13} className="text-[#E4783B]" />
+                    <Zap size={13} className="text-[#7AD7EA]" />
                   </div>
-                  <ul className="space-y-1 mb-2.5 text-[10px] text-[#ACACAC] font-cairo">
+                  <ul className="space-y-1 mb-2.5 text-[10px] text-[#C7D2E3] font-cairo">
                     {msg.prescription.items.map((it, i) => (
                       <li key={i} className="flex items-center gap-1.5 justify-end">
                         <span>{it}</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#E4783B]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#7AD7EA]" />
                       </li>
                     ))}
                   </ul>
@@ -219,7 +219,7 @@ export default function AiFlightSurgeonDrawer({
                   {!countermeasureApplied ? (
                     <button
                       onClick={onApplyCountermeasure}
-                      className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#E4783B] to-[#A64D2D] hover:opacity-90 text-[#0D0B0A] font-black text-[11px] font-cairo transition-all shadow-[0_0_15px_rgba(228,120,59,0.35)] flex items-center justify-center gap-1.5"
+                      className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#E4783B] to-[#C86026] hover:opacity-90 text-white font-black text-[11px] font-cairo transition-all shadow-[0_0_15px_rgba(228,120,59,0.35)] flex items-center justify-center gap-1.5"
                     >
                       <Zap size={13} />
                       <span>تطبيق هذه الوصفة السريرية فوراً</span>
@@ -235,11 +235,11 @@ export default function AiFlightSurgeonDrawer({
 
               {/* Citations Footer */}
               {msg.citations && msg.citations.length > 0 && (
-                <div className="mt-2.5 pt-2 border-t border-white/[0.08] flex flex-wrap gap-1 justify-end">
+                <div className="mt-2.5 pt-2 border-t border-[rgba(180,210,235,0.1)] flex flex-wrap gap-1 justify-end">
                   {msg.citations.map((cite, cIdx) => (
                     <span
                       key={cIdx}
-                      className="px-2 py-0.5 rounded bg-[#252121] text-[#E4783B] border border-[#E4783B]/30 text-[9px] font-mono-tech"
+                      className="px-2 py-0.5 rounded bg-[#07111F] text-[#7AD7EA] border border-[#7AD7EA]/30 text-[9px] font-mono-tech"
                     >
                       {cite}
                     </span>
@@ -251,15 +251,15 @@ export default function AiFlightSurgeonDrawer({
         ))}
 
         {isGenerating && (
-          <div className="flex items-center gap-2 text-[#E4783B] text-xs font-mono-tech justify-end">
+          <div className="flex items-center gap-2 text-[#7AD7EA] text-xs font-mono-tech justify-end">
             <span>AURA is generating clinical evaluation...</span>
-            <span className="w-2 h-2 rounded-full bg-[#E4783B] animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-[#7AD7EA] animate-ping" />
           </div>
         )}
       </div>
 
       {/* 5. Input Dock */}
-      <div className="p-3 border-t border-white/[0.08] bg-[#171311]">
+      <div className="p-3 border-t border-[rgba(180,210,235,0.14)] bg-[#07111F]">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -270,7 +270,7 @@ export default function AiFlightSurgeonDrawer({
           <button
             type="submit"
             disabled={!inputQuery.trim() || isGenerating}
-            className="p-3 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#A64D2D] text-[#0D0B0A] font-bold hover:opacity-90 disabled:opacity-40 transition-all shadow-[0_0_15px_rgba(228,120,59,0.3)] shrink-0"
+            className="p-3 rounded-xl bg-gradient-to-r from-[#E4783B] to-[#C86026] text-white font-bold hover:opacity-90 disabled:opacity-40 transition-all shadow-[0_0_15px_rgba(228,120,59,0.3)] shrink-0"
           >
             <Send size={16} className="rotate-180" />
           </button>
@@ -279,7 +279,7 @@ export default function AiFlightSurgeonDrawer({
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}
             placeholder="اسأل AURA عن المؤشرات الحيوية، العظام، أو SANS..."
-            className="flex-1 bg-[#0D0B0A] border border-white/[0.08] focus:border-[#E4783B] rounded-xl px-4 py-2.5 text-xs text-[#EBEBEB] placeholder-[#808080] outline-none transition-all text-right font-cairo"
+            className="flex-1 bg-[#0D1728] border border-[rgba(180,210,235,0.14)] focus:border-[#7AD7EA] rounded-xl px-4 py-2.5 text-xs text-[#F4F7FC] placeholder-[#98A7BD] outline-none transition-all text-right font-cairo"
           />
         </form>
       </div>
