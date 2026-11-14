@@ -213,14 +213,15 @@ export default function ThreeJsSolarSystem({
       const sphereGeo = new THREE.SphereGeometry(body.radius3D, 48, 48);
       disposableResources.geometries.push(sphereGeo);
 
-      const texture = loadPlanetTexture(body.id);
-      disposableResources.textures.push(texture);
-
       let material;
       if (body.id === 'sun') {
         material = new THREE.MeshBasicMaterial({
-          map: texture,
-          color: 0xffffff
+          color: 0xffb533
+        });
+        loadPlanetTexture(body.id, (loadedTex) => {
+          material.map = loadedTex;
+          material.color.setHex(0xffffff);
+          material.needsUpdate = true;
         });
 
         // Sun outer atmospheric corona glow
@@ -239,9 +240,14 @@ export default function ThreeJsSolarSystem({
       } else {
         const isGasGiant = ['jupiter', 'saturn', 'uranus', 'neptune'].includes(body.id);
         material = new THREE.MeshStandardMaterial({
-          map: texture,
+          color: new THREE.Color(body.color),
           roughness: isGasGiant ? 0.45 : body.id === 'earth' ? 0.6 : 0.85,
           metalness: 0.02
+        });
+        loadPlanetTexture(body.id, (loadedTex) => {
+          material.map = loadedTex;
+          material.color.setHex(0xffffff);
+          material.needsUpdate = true;
         });
       }
       disposableResources.materials.push(material);

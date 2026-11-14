@@ -39,12 +39,14 @@ const NASA_TEXTURE_MAPS = {
 };
 
 /**
- * Loads authentic NASA planetary texture with caching and filtering
+ * Loads authentic NASA planetary texture with caching, filtering, and async callback
  */
-export function loadPlanetTexture(bodyId) {
+export function loadPlanetTexture(bodyId, onLoadCallback) {
   const key = bodyId.toLowerCase();
   if (textureCache.has(key)) {
-    return textureCache.get(key);
+    const cached = textureCache.get(key);
+    if (onLoadCallback) onLoadCallback(cached);
+    return cached;
   }
 
   const mapFile = NASA_TEXTURE_MAPS[key];
@@ -58,10 +60,14 @@ export function loadPlanetTexture(bodyId) {
         t.minFilter = THREE.LinearMipMapLinearFilter;
         t.magFilter = THREE.LinearFilter;
         t.needsUpdate = true;
+        if (onLoadCallback) onLoadCallback(t);
       },
       undefined,
       (err) => {
         console.warn(`NASA texture load failed for ${bodyId}, using procedural fallback`, err);
+        const fallback = createFallbackTexture(bodyId);
+        textureCache.set(key, fallback);
+        if (onLoadCallback) onLoadCallback(fallback);
       }
     );
     texture.wrapS = THREE.RepeatWrapping;
@@ -73,6 +79,7 @@ export function loadPlanetTexture(bodyId) {
   // Fallback to procedural generator
   const fallback = createFallbackTexture(bodyId);
   textureCache.set(key, fallback);
+  if (onLoadCallback) onLoadCallback(fallback);
   return fallback;
 }
 
