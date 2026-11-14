@@ -7,6 +7,8 @@ const METRICS = [
   ['respiratory_rate', 'Respiratory rate'],
   ['spo2', 'SpO₂'],
 ];
+const DROPOUT_START_S = 20;
+const DROPOUT_END_S = 30;
 
 export default function RecordedTelemetry() {
   const inputId = useId();
@@ -14,6 +16,7 @@ export default function RecordedTelemetry() {
   const [record, setRecord] = useState(null);
   const [hasError, setHasError] = useState(false);
   const [sampleIndex, setSampleIndex] = useState(0);
+  const [simulateDropout, setSimulateDropout] = useState(false);
 
   useEffect(() => {
     if (!isOpen || record) return;
@@ -42,6 +45,14 @@ export default function RecordedTelemetry() {
   }, [isOpen, record]);
 
   const sample = record?.samples[sampleIndex];
+  const dropout = simulateDropout && sample &&
+    sample.elapsed_s >= DROPOUT_START_S && sample.elapsed_s < DROPOUT_END_S;
+  const missingCount = sample
+    ? METRICS.filter(([metric]) => !Number.isFinite(sample.values[metric])).length
+    : 0;
+  const status = dropout ? 'Signal unavailable · Simulated dropout'
+    : missingCount === METRICS.length ? 'Signal unavailable · All recorded readings are missing'
+    : missingCount > 0 ? 'Some recorded readings are missing' : '';
 
   return (
     <details
@@ -57,6 +68,18 @@ export default function RecordedTelemetry() {
         </p>
         {sample ? (
           <>
+            <label className="flex min-h-[44px] items-center gap-2 text-xs text-[#C7D2E3]">
+              <input
+                type="checkbox"
+                checked={simulateDropout}
+                onChange={(event) => setSimulateDropout(event.target.checked)}
+                className="accent-[#7AD7EA]"
+              />
+              Simulate signal dropout (20–30 s)
+            </label>
+            {simulateDropout && (
+              <p className="text-xs font-bold text-[#7AD7EA]">SIMULATED · Dropout replay</p>
+            )}
             <label htmlFor={inputId} className="block text-xs text-[#C7D2E3]">
               Sample time · {sample.elapsed_s} s from recording start
             </label>
@@ -71,12 +94,13 @@ export default function RecordedTelemetry() {
               onChange={(event) => setSampleIndex(Number(event.target.value))}
               className="w-full accent-[#7AD7EA]"
             />
+            <div role="status" className="text-xs font-bold text-amber-300">{status}</div>
             <dl className="grid grid-cols-2 gap-2">
               {METRICS.map(([metric, label]) => (
                 <div key={metric} className="rounded-lg bg-[#0D1728] p-2">
                   <dt className="text-xs text-[#C7D2E3]">{label}</dt>
                   <dd className="text-sm font-mono-tech text-[#F4F7FC]">
-                    {sample.values[metric] === null
+                    {dropout || !Number.isFinite(sample.values[metric])
                       ? 'Missing'
                       : `${sample.values[metric]} ${record.units[metric]}`}
                   </dd>
